@@ -14,7 +14,7 @@ def test_num_of_persons(expected, path):
     assert ans == expected
 
 
-test_num_of_persons(4, 'D:/School/Project/SecurityDrone/yolov5/data/images/bus.jpg')
-test_person_pos(2, 'D:/School/Project/SecurityDrone/yolov5/data/images/zidane.jpg')
-test_num_of_persons(0, 'D:/School/Project/SecurityDrone/yolov5/data/images/index.jpg')
-test_num_of_persons(0, 'D:/School/Project/SecurityDrone/yolov5/data/images/bus_no_pepole.jpg')
+test_num_of_persons(4, 'D:/School/Project/SecurityDrone/ObjectDetectionService/yolov5/data/images/bus.jpg')
+test_person_pos(2, 'D:/School/Project/SecurityDrone/ObjectDetectionService/yolov5/data/images/zidane.jpg')
+test_num_of_persons(0, 'D:/School/Project/SecurityDrone/ObjectDetectionService/yolov5/data/images/index.jpg')
+test_num_of_persons(0, 'D:/School/Project/SecurityDrone/ObjectDetectionService/yolov5/data/images/bus_no_pepole.jpg')

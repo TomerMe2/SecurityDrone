@@ -20,7 +20,7 @@ def num_of_persons(img_path, delete_old=True):
     MY_COUNT += 1
 
     num_of_man = 0
-    my_command = 'python ../yolov5/detect.py --weights yolov5s.pt --source ' + img_path + ' --save-txt'
+    my_command = 'python ./yolov5/detect.py --weights yolov5s.pt --source ' + img_path + ' --save-txt'
     os.system(my_command)
     image_name = img_path.split('/')[-1]
     image_name = image_name.split('.')[0]
@@ -52,7 +52,7 @@ def person_pos(img_path, delete_old=True):
     MY_COUNT += 1
 
     pos_arr = []
-    my_command = 'python ../yolov5/detect.py --weights yolov5s.pt --source ' + img_path + ' --save-txt'
+    my_command = 'python ./yolov5/detect.py --weights yolov5s.pt --source ' + img_path + ' --save-txt'
     os.system(my_command)
     image_name = img_path.split('/')[-1]
     image_name = image_name.split('.')[0]
