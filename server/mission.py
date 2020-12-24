@@ -4,6 +4,7 @@ from time import sleep
 import med_comm
 import json
 import io
+import base64
 
 
 def run(db):
@@ -27,15 +28,15 @@ class mission_controller:
             insert_list.append(row)
         col.insert_many(insert_list)
 
-    def add_thief(self,im):
+    def add_thief(self,img):
         #call image detection
-        images = db.images
-        image_bytes = io.BytesIO()
-        im.save(image_bytes, format='JPEG')
+        col = self.db['images']
+        img_byte_arr = io.BytesIO()
+        img.save(img_byte_arr, format='JPEG')
         image = {
-            'data': image_bytes.getvalue()
+            'data': img_byte_arr.getvalue()
         }
-        images.insert_one(image)
+        col.insert_one(image)
 
     def start_patrol(self):
         thread = Thread(target=run, args=db)
