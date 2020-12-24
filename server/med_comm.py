@@ -5,9 +5,9 @@ import numpy as np
 import mission
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*", message_queue='redis://', async_mode='eventlet')
+socketio = SocketIO(app, async_mode=None)
 
-@socketio.on('image')
+@app.route('/image', methods=('POST',))
 def analys_photo(data):
     r = request
     # convert string of image data to uint8

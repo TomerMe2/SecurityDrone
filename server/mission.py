@@ -14,16 +14,18 @@ def run(db):
 
 class mission_controller:
     def __init__(self):
+        #database will be created only when invoked for the first time
         myclient = pymongo.MongoClient("mongodb://localhost:27017/")
         self.db = myclient["mydatabase"]
 
     def update_waypoints(self,waypoints):
         insert_list = []
         col = self.db['waypoints']
-        print(waypoints)
+        col.delete_many({})
         for point in waypoints:
             row = {'latitude': point['latitude'], 'longtitude': point['longtitude']}
-            col.insert_one(row)
+            insert_list.append(row)
+        col.insert_many(insert_list)
 
     def add_thief(self,im):
         #call image detection

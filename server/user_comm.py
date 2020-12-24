@@ -11,7 +11,7 @@ def up_waypoints():
         waypoints = request.get_json(force = True)
         m = mission.mission_controller()
         m.update_waypoints(waypoints)
-        return True
+        return 'true'
 
 @app.route('/patrol', methods=('POST',))
 def send_patrol():
