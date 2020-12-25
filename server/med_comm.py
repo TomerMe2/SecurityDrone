@@ -7,7 +7,10 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 app = Flask(__name__)
-socketio = SocketIO(app, async_mode=None)
+socketio = SocketIO(app)
+
+def patrol(waypoints):
+    socketio.emit('patrol', waypoints)
 
 @app.route('/image', methods=('POST',))
 def analys_photo():

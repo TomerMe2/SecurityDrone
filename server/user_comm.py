@@ -17,7 +17,8 @@ def up_waypoints():
 def send_patrol():
     if request.method == 'POST':
         m = mission.mission_controller()
-        m.update_waypoints(waypoints)
+        m.start_patrol()
+    return ''
 
 if __name__ == "__main__":
     app.run(port=5000)

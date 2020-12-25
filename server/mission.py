@@ -1,17 +1,9 @@
 import pymongo
 from threading import Thread
 from time import sleep
-import med_comm
 import json
 import io
 import base64
-
-
-def run(db):
-    col  = db['waypoints']
-    waypoints = col.find()
-    med_comm.socketio.emit('patrol',json.dumps(waypoints))
-
 
 class mission_controller:
     def __init__(self):
@@ -39,6 +31,9 @@ class mission_controller:
         col.insert_one(image)
 
     def start_patrol(self):
-        thread = Thread(target=run, args=db)
-        thread.start()
-        thread.join()
+        col = self.db['waypoints']
+        list =[]
+        waypoints = col.find()
+        for point in waypoints:
+            list.append(point)
+
