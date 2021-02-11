@@ -2,7 +2,8 @@ import sys
 import json
 import pymongo
 import unittest
-from user_comm import app
+from user_api import app
+from config import config
 
 # quick ref for mongod for sanity:
 # C:\Program Files\MongoDB\Server\4.4\bin\mongod.exe
@@ -34,9 +35,9 @@ class TestWaypointsUpdate(unittest.TestCase):
 
         assert response.data.decode() == 'true'
 
-        db_client = pymongo.MongoClient("mongodb://localhost:27017/")
-        db = db_client["mydatabase"]
-        col = db['waypoints']
+        db_client = pymongo.MongoClient(config['db_url'])
+        db = db_client[config['app_db_client_name']]
+        col = db[config['waypoints_db_name']]
         waypoints_from_db = list(col.find())
 
         assert compare_lst_from_db(waypoints, waypoints_from_db)

@@ -1,27 +1,24 @@
 import pymongo
-from threading import Thread
-from time import sleep
-import json
+from config import config
 import io
-import base64
 
-class mission_controller:
+
+class MissionController:
     def __init__(self):
-        #database will be created only when invoked for the first time
-        myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-        self.db = myclient["mydatabase"]
+        self.db_client = pymongo.MongoClient(config['db_url'])
+        self.db = self.db_client[config['app_db_client_name']]
 
-    def update_waypoints(self,waypoints):
-        insert_list = []
-        col = self.db['waypoints']
+    def close_db(self):
+        self.db_client.close()
+
+    def update_waypoints(self, waypoints):
+        col = self.db[config['waypoints_db_name']]
         col.delete_many({})
-        for point in waypoints:
-            row = {'latitude': point['latitude'], 'longtitude': point['longtitude']}
-            insert_list.append(row)
-        col.insert_many(insert_list)
+        insert_lst = [{'latitude': point['latitude'], 'longtitude': point['longtitude']} for point in waypoints]
+        col.insert_many(insert_lst)
 
-    def add_thief(self,img):
-        #call image detection
+    def add_thief(self, img):
+        # call image detection
         col = self.db['images']
         img_byte_arr = io.BytesIO()
         img.save(img_byte_arr, format='JPEG')
@@ -32,8 +29,5 @@ class mission_controller:
 
     def start_patrol(self):
         col = self.db['waypoints']
-        list =[]
-        waypoints = col.find()
-        for point in waypoints:
-            list.append(point)
+        waypoints = list(col.find())
 

@@ -20,7 +20,7 @@ def analys_photo():
     # decode image
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     im = Image.fromarray(img, 'RGB')
-    m = mission.mission_controller()
+    m = mission.MissionController()
     m.add_thief(im)
     return 'true'
 
