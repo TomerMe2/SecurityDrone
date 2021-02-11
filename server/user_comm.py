@@ -1,17 +1,18 @@
-from flask import Flask,request
-import json
+from flask import Flask, request
 import mission
 
 
 app = Flask(__name__)
 
+
 @app.route('/update_waypoints', methods=('POST',))
 def up_waypoints():
     if request.method == 'POST':
-        waypoints = request.get_json(force = True)
+        waypoints = request.get_json(force=True)
         m = mission.mission_controller()
         m.update_waypoints(waypoints)
         return 'true'
+
 
 @app.route('/patrol', methods=('POST',))
 def send_patrol():
@@ -19,6 +20,7 @@ def send_patrol():
         m = mission.mission_controller()
         m.start_patrol()
     return ''
+
 
 if __name__ == "__main__":
     app.run(port=5000)
