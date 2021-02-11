@@ -42,6 +42,8 @@ class TestWaypointsUpdate(unittest.TestCase):
 
         assert compare_lst_from_db(waypoints, waypoints_from_db)
 
+        db_client.close()
+
     def test_update_waypoint_test1(self):
         waypoint1 = {'latitude': 29.36, 'longtitude': 30.55}
         waypoint2 = {'latitude': 33.36, 'longtitude': 31.55}

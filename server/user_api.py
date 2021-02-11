@@ -3,8 +3,8 @@ import mission
 import json
 from config import config
 
-app = Flask(__name__)
 
+app = Flask(__name__)
 
 
 @app.route('/update_waypoints', methods=('POST',))
@@ -13,6 +13,7 @@ def update_waypoints():
         waypoints = request.get_json(force=True)
         m = mission.MissionController()
         m.update_waypoints(waypoints)
+        m.close_db()
         return 'true'
 
 
