@@ -1,9 +1,12 @@
 import pymongo
 from config import config
 import io
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
 
-class MissionController:
+
+class data_controller:
     def __init__(self):
         self.db_client = pymongo.MongoClient(config['db_url'])
         self.db = self.db_client[config['app_db_client_name']]
@@ -25,9 +28,12 @@ class MissionController:
         image = {
             'data': img_byte_arr.getvalue()
         }
+        imgplot = plt.imshow(image)
+        plt.show()
         col.insert_one(image)
 
-    def start_patrol(self):
+    def get_waypoints(self):
         col = self.db['waypoints']
         waypoints = list(col.find())
+        return waypoints
 
