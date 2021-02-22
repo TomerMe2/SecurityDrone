@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="eddd37f4-01cb-431f-9718-5a9567fbc59e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/tests/med_mock_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/analyze_photo_api_test.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="JupyterTrust" id="4186ad5e-2769-442f-9d93-3d804f40e2d0" />
+  <component name="ProjectId" id="1o5NVAy47uLuqohR2Uhay2hnZxa" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\university\project\SecurityDrone\server\tests" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python tests.Unittests in analyze_photo_api_test.py">
+    <configuration name="nini" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/nini.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="server" type="PythonConfigurationType" factoryName="Python">
+      <module name="server" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\tomer\miniconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\university\project\SecurityDrone\server\mediator_api.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flask" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="target" value="$PROJECT_DIR$/ahh.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in analyze_photo_api_test.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/analyze_photo_api_test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in set_waypoints_test.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/set_waypoints_test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Flask server.Flask" />
+      <item itemvalue="Python.server" />
+      <item itemvalue="Python.nini" />
+      <item itemvalue="Python tests.Unittests in set_waypoints_test.py" />
+      <item itemvalue="Python tests.Unittests in analyze_photo_api_test.py" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Unittests in analyze_photo_api_test.py" />
+        <item itemvalue="Python tests.Unittests in set_waypoints_test.py" />
+        <item itemvalue="Python.nini" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="eddd37f4-01cb-431f-9718-5a9567fbc59e" name="Default Changelist" comment="" />
+      <created>1612572512849</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1612572512849</updated>
+      <workItem from="1612572513915" duration="3711000" />
+      <workItem from="1613044712798" duration="8713000" />
+      <workItem from="1613080151270" duration="519000" />
+      <workItem from="1614012353151" duration="601000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1613076559168">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1613076559168" />
+    <state width="924" height="466" key="DebuggerActiveHint" timestamp="1613072691761">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="924" height="466" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1613072691761" />
+    <state width="1478" height="210" key="GridCell.Tab.0.bottom" timestamp="1613080129357">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1613080129357" />
+    <state width="1478" height="210" key="GridCell.Tab.0.center" timestamp="1613080129357">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1613080129357" />
+    <state width="1478" height="210" key="GridCell.Tab.0.left" timestamp="1613080129357">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1613080129357" />
+    <state width="1478" height="210" key="GridCell.Tab.0.right" timestamp="1613080129357">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1613080129357" />
+    <state width="1478" height="258" key="GridCell.Tab.1.bottom" timestamp="1613080129354">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="258" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1613080129354" />
+    <state width="1478" height="258" key="GridCell.Tab.1.center" timestamp="1613080129354">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="258" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1613080129354" />
+    <state width="1478" height="258" key="GridCell.Tab.1.left" timestamp="1613080129353">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="258" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1613080129353" />
+    <state width="1478" height="258" key="GridCell.Tab.1.right" timestamp="1613080129354">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="258" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1613080129354" />
+    <state x="277" y="57" key="SettingsEditor" timestamp="1612572629430">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1612572629430" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/mediator_api.py</url>
+          <line>22</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/server$Unittests_for_user_mock_test_TestWaypointsUpdate_test_update_waypoint_test1.coverage" NAME="Unittests for user_mock_test.TestWaypointsUpdate.test_update_waypoint_test1 Coverage Results" MODIFIED="1613073106599" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/server$Unittests_in_set_waypoints_test_py.coverage" NAME="Unittests in set_waypoints_test.py Coverage Results" MODIFIED="1613077777850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/server$Flask__ahh_py_.coverage" NAME="Flask (ahh.py) Coverage Results" MODIFIED="1612575807707" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/server$Unittests_in_user_mock_test_py.coverage" NAME="Unittests in set_waypoints_test.py Coverage Results" MODIFIED="1613076526021" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/server$nini.coverage" NAME="nini Coverage Results" MODIFIED="1612575689263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/server$Unittests_in_analyze_photo_api_test_py.coverage" NAME="Unittests in analyze_photo_api_test.py Coverage Results" MODIFIED="1613079907316" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+  </component>
+</project>
