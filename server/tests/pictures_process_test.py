@@ -86,6 +86,25 @@ class TestMediatorApi(unittest.TestCase):
                     image_from_db['date'] > datetime.datetime.now() - datetime.timedelta(seconds=10)
                     for image_from_db in images_from_db])
 
+    def test_no_thief(self):
+        db_client = pymongo.MongoClient(config['db_url'])
+        db = db_client[config['app_db_client_name']]
+        col = db[config['thief_images_db_name']]
+        col.delete_many({})
+
+        # picture with a man in it
+        img = cv2.imread('field-from-drone-view-no-humans.jpg')
+        # encode image as jpeg
+        _, img_encoded = cv2.imencode('.jpeg', img)
+        string_of_img = img_encoded.tostring()
+        # send http request with image and receive response
+        response = self.test_client.post(test_url, data=string_of_img, headers={'content-type': 'image/jpeg'})
+
+        assert response.status_code == 200
+
+        images_from_db = list(col.find())
+        assert len(images_from_db) == 0
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-
 from data_access.data_controller import DataController
 
 
@@ -21,14 +20,15 @@ class LogicController:
         data_controller = DataController()
         return data_controller.get_waypoints()
 
-    def process_image(self, image_str, date):
+    def process_image(self, image_str, date, object_detector):
         arr = np.fromstring(image_str, np.uint8)
         # decode image
         img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
 
-        # TODO: CHECK WITH ML MODEL, CHANGE THE NEXT LINE!
-        is_thief = True
+        is_thief = object_detector.predict(img)
 
         if is_thief:
             data_controller = DataController()
             return data_controller.save_thief_img(image_str, date)
+        else:
+            return True
