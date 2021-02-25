@@ -1,5 +1,5 @@
-from flask import Flask, request, Response
-from flask_socketio import SocketIO, emit,join_room
+from flask import Flask, request, g
+from flask_socketio import SocketIO, emit, join_room
 import cv2
 import numpy as np
 
@@ -11,7 +11,15 @@ from object_detection.yolov5_adapter import YoloAdapter
 
 app = Flask(__name__)
 socketio = SocketIO(app)
-object_detector = YoloAdapter()
+
+
+# handle yolo adapter as a singleton, to save RAM and save CPU time loading weights into the RAM each time a flask
+# process is spawned
+def get_object_detector():
+    if 'object_detector' not in g:
+        g.object_detector = YoloAdapter()
+
+    return g.object_detector
 
 
 @socketio.on('join_mediator')
@@ -34,7 +42,7 @@ def process_image():
     current_date = datetime.now()
 
     logic_controller = LogicController()
-    return do_and_return_response(lambda: logic_controller.process_image(request.data, current_date, object_detector))
+    return do_and_return_response(lambda: logic_controller.process_image(request.data, current_date, get_object_detector()))
 
 
 if __name__ == "__main__":
