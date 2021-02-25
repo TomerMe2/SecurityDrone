@@ -1,37 +1,36 @@
-from flask import Flask, request
-from flask_socketio import SocketIO,send,emit,join_room
-import logic
-import json
-from config import config
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-from PIL import Image
+from flask import Flask, request, Response
+from flask_socketio import SocketIO, emit, join_room
 
+from apis.api_utils import do_and_return_response
+from logic.logic_controller import LogicController
+from config import config
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+
 
 @socketio.on('join_us')
 def on_join_us():
     join_room('us')
 
+
 @socketio.on('join_admin')
 def on_join_ad():
     join_room('admin')
+
 
 @socketio.on('notify_thief')
 def notify(im_json):
     emit('thief_found',im_json,room='user')
 
-@app.route('/update_waypoints', methods=('POST',))
+
+@app.route('/update_waypoints', methods=['POST'])
 def update_waypoints():
-    if request.method == 'POST':
-        waypoints = request.get_json(force=True)
-        l = logic.logic_controller()
-        l.update_waypoints(waypoints)
-        l.close_db()
-    return 'true'
+    waypoints = request.get_json(force=True)
+
+    logic_controller = LogicController()
+
+    return do_and_return_response(lambda: logic_controller.update_waypoints(waypoints))
 
 
 @app.route('/patrol', methods=('POST',))

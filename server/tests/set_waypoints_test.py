@@ -2,7 +2,7 @@ import sys
 import json
 import pymongo
 import unittest
-from user_api import app
+from apis.user_api import app
 from config import config
 
 # quick ref for mongod for sanity:
@@ -33,7 +33,7 @@ class TestWaypointsUpdate(unittest.TestCase):
         data = json.dumps(waypoints)
         response = self.test_client.post(test_url, data=data)
 
-        assert response.data.decode() == 'true'
+        assert response.status_code == 200
 
         db_client = pymongo.MongoClient(config['db_url'])
         db = db_client[config['app_db_client_name']]
@@ -45,15 +45,15 @@ class TestWaypointsUpdate(unittest.TestCase):
         db_client.close()
 
     def test_update_waypoint_test1(self):
-        waypoint1 = {'latitude': 29.36, 'longtitude': 30.55}
-        waypoint2 = {'latitude': 33.36, 'longtitude': 31.55}
+        waypoint1 = {'latitude': 29.36, 'longitude': 30.55}
+        waypoint2 = {'latitude': 33.36, 'longitude': 31.55}
         waypoints = [waypoint1, waypoint2]
         self.check_for_waypoints(waypoints)
 
     def test_update_waypoint_test2(self):
-        waypoint2 = {'latitude': 33.36, 'longtitude': 31.55}
-        waypoint3 = {'latitude': 41.36, 'longtitude': 14.55}
-        waypoint4 = {'latitude': 39.11, 'longtitude': 25.25}
+        waypoint2 = {'latitude': 33.36, 'longitude': 31.55}
+        waypoint3 = {'latitude': 41.36, 'longitude': 14.55}
+        waypoint4 = {'latitude': 39.11, 'longitude': 25.25}
         waypoints = [waypoint2, waypoint3, waypoint4]
         self.check_for_waypoints(waypoints)
 
