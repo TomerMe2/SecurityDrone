@@ -49,7 +49,7 @@ def process_and_notify_if_thief(current_date, img_in_string):
     is_there_thief, is_successful = logic_controller.process_image(img_in_string, current_date, get_object_detector())
 
     if is_there_thief:
-        socketio.emit('thief_found', room='connector')
+        socketio.emit('thief_found', room='connector', data=img_in_string)
 
     return is_successful
 

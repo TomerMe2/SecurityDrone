@@ -18,6 +18,7 @@ class ProductionApisConnector:
         self.socket_user = SocketIO('localhost', config['user_api_port'], LoggingNamespace)
         self.socket_mediator.emit('join_connector')
         self.socket_user.emit('join_connector')
+        # TODO: the following 2 lines
         self.socket_mediator.on('thief_found', self.thief_found)
         self.socket_user.on('patrol', self.send_patrol)
         self.socket_mediator.wait()
