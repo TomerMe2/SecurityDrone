@@ -9,9 +9,9 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 
-@socketio.on('join_us')
+@socketio.on('join_user')
 def on_join_us():
-    join_room('us')
+    join_room('user')
 
 
 @socketio.on('join_connector')
@@ -35,7 +35,7 @@ def update_waypoints():
 
 @app.route('/patrol', methods=('POST',))
 def send_patrol():
-    emit('patrol',room='admin')
+    socketio.emit('patrol_request', room='connector')
     return ''
 
 

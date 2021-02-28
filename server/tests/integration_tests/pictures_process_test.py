@@ -32,7 +32,7 @@ class TestMediatorApi(unittest.TestCase):
         col.delete_many({})
 
         # picture with a man in it
-        img = cv2.imread('dune-sand-man-desert.jpg')
+        img = cv2.imread('../dune-sand-man-desert.jpg')
         # encode image as jpeg
         _, img_encoded = cv2.imencode('.jpeg', img)
         string_of_img = img_encoded.tostring()
@@ -60,7 +60,7 @@ class TestMediatorApi(unittest.TestCase):
         col.delete_many({})
 
         # picture with a man in it
-        img = cv2.imread('dune-sand-man-desert.jpg')
+        img = cv2.imread('../dune-sand-man-desert.jpg')
         # encode image as jpeg
         _, img_encoded = cv2.imencode('.jpeg', img)
         string_of_img = img_encoded.tostring()
