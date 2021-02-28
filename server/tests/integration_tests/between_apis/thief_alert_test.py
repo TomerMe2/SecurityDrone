@@ -31,7 +31,7 @@ class TestThiefAlert(unittest.TestCase):
 
     def test_thief_alert(self):
         # picture with a man in it
-        img = cv2.imread('../dune-sand-man-desert.jpg')
+        img = cv2.imread('../../dune-sand-man-desert.jpg')
         # encode image as jpeg
         _, img_encoded = cv2.imencode('.jpeg', img)
         string_of_img = img_encoded.tostring()
@@ -48,7 +48,7 @@ class TestThiefAlert(unittest.TestCase):
 
     def test_no_thief_no_alert(self):
         # picture with a man in it
-        img = cv2.imread('../field-from-drone-view-no-humans.jpg')
+        img = cv2.imread('../../field-from-drone-view-no-humans.jpg')
         # encode image as jpeg
         _, img_encoded = cv2.imencode('.jpeg', img)
         string_of_img = img_encoded.tostring()
