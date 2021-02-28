@@ -23,26 +23,35 @@ def get_object_detector():
 
 
 @socketio.on('join_mediator')
-def on_join_med():
+def on_join_mediator():
     join_room('mediator')
 
 
-@socketio.on('join_admin')
-def on_join_ad():
-    join_room('admin')
+@socketio.on('join_connector')
+def on_join_connector():
+    join_room('connector')
 
 
 @socketio.on('send_patrol')
 def patrol(waypoints):
-    emit('patrol', waypoints, room='med')
+    emit('patrol', waypoints, room='mediator')
 
 
 @app.route('/image', methods=['POST'])
 def process_image():
     current_date = datetime.now()
 
+    return do_and_return_response(lambda: process_and_notify_if_thief(current_date, request.data))
+
+
+def process_and_notify_if_thief(current_date, img_in_string):
     logic_controller = LogicController()
-    return do_and_return_response(lambda: logic_controller.process_image(request.data, current_date, get_object_detector()))
+    is_there_thief, is_successful = logic_controller.process_image(img_in_string, current_date, get_object_detector())
+
+    if is_there_thief:
+        socketio.emit('thief_found', room='connector')
+
+    return is_successful
 
 
 if __name__ == "__main__":

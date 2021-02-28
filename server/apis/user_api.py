@@ -14,9 +14,9 @@ def on_join_us():
     join_room('us')
 
 
-@socketio.on('join_admin')
+@socketio.on('join_connector')
 def on_join_ad():
-    join_room('admin')
+    join_room('connector')
 
 
 @socketio.on('notify_thief')
