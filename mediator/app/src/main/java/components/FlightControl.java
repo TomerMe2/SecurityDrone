@@ -35,9 +35,36 @@ public class FlightControl {
                 }
         );
     }
+    public void cancelTakeOff(){
+        mFlightController.cancelTakeoff(
+                new  CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(DJIError djiError) {
+                        if (djiError != null) {
+                            //TODO add what to do when there is error
+                        } else {
+                            //TODO add what to do when there is success
+                        }
+                    }
+                }
+        );
+    }
 
     public void goHome(){
         mFlightController.startGoHome( new  CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(DJIError djiError) {
+                if (djiError != null) {
+                    //TODO add what to do when there is error
+                } else {
+                    //TODO add what to do when there is success
+                }
+            }
+        });
+    }
+
+    public void setHome(LocationCoordinate2D loc){
+        mFlightController.setHomeLocation(loc, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError djiError) {
                 if (djiError != null) {
@@ -122,5 +149,4 @@ public class FlightControl {
         });
     }
 
-    //public
 }

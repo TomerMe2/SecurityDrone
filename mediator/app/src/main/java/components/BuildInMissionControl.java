@@ -1,5 +1,7 @@
 package components;
 
+import android.graphics.RectF;
+
 import java.util.ArrayList;
 import java.util.List;
 
