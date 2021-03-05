@@ -2,7 +2,7 @@ from flask import Flask, request, Response
 from flask_socketio import SocketIO, emit, join_room
 
 from apis.api_utils import do_and_return_response
-from logic.logic_controller import LogicController
+from busniess_layer.logic_controller import LogicController
 from config import config
 
 app = Flask(__name__)

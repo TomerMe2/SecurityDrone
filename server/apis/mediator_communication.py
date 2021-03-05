@@ -5,7 +5,7 @@ import numpy as np
 
 from apis.api_utils import do_and_return_response
 from config import config
-from logic.logic_controller import LogicController
+from busniess_layer.logic_controller import LogicController
 from datetime import datetime
 from object_detection.yolov5_adapter import YoloAdapter
 
