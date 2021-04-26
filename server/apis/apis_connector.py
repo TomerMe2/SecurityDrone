@@ -1,7 +1,5 @@
 from socketIO_client import SocketIO, LoggingNamespace
 from config import config
-import busniess_layer
-import json
 
 
 class MockApisConnector:

@@ -21,7 +21,7 @@ def on_join_ad():
 
 @socketio.on('notify_thief')
 def notify(im_json):
-    emit('thief_found',im_json,room='user')
+    emit('thief_found', im_json, room='user')
 
 
 @app.route('/update_waypoints', methods=['POST'])

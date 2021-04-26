@@ -1,4 +1,3 @@
-from socketIO_client import SocketIO, LoggingNamespace
 import sys
 import unittest
 from apis.mediator_communication import socketio as mediator_socketio, app as mediator_app
