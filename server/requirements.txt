@@ -16,3 +16,4 @@ tensorboard>=2.2
 tqdm>=4.41.0
 pandas
 seaborn
+pytest

@@ -1,8 +1,8 @@
 from socketIO_client import SocketIO, LoggingNamespace
 import sys
 import unittest
-from apis.mediator_api import socketio as mediator_socketio, app as mediator_app
-from apis.user_api import socketio as user_socketio, app as user_app
+from apis.mediator_communication import socketio as mediator_socketio, app as mediator_app
+from apis.user_communication import socketio as user_socketio, app as user_app
 from apis.apis_connector import MockApisConnector
 import cv2
 

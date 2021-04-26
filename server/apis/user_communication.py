@@ -37,7 +37,7 @@ def update_waypoints():
 def send_patrol():
     socketio.emit('patrol_request', room='connector')
     # TODO: handle this with flight initiate
-    return do_and_return_response(lambda: None)
+    return do_and_return_response(lambda: True)
 
 
 if __name__ == "__main__":

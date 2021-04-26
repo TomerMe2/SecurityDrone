@@ -2,7 +2,7 @@ import sys
 import json
 import pymongo
 import unittest
-from apis.user_api import app
+from apis.user_communication import app
 from config import config
 
 # quick ref for mongod for sanity:

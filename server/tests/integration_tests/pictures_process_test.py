@@ -3,7 +3,7 @@ import sys
 import unittest
 import datetime
 from config import config
-from apis.mediator_api import app
+from apis.mediator_communication import app
 import cv2
 import pymongo
 
@@ -93,7 +93,7 @@ class TestMediatorApi(unittest.TestCase):
         col.delete_many({})
 
         # picture with a man in it
-        img = cv2.imread('field-from-drone-view-no-humans.jpg')
+        img = cv2.imread('../field-from-drone-view-no-humans.jpg')
         # encode image as jpeg
         _, img_encoded = cv2.imencode('.jpeg', img)
         string_of_img = img_encoded.tostring()
