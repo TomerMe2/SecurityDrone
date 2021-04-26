@@ -5,7 +5,11 @@ from apis.mediator_communication import socketio as mediator_socketio, app as me
 from apis.user_communication import socketio as user_socketio, app as user_app
 from apis.apis_connector import MockApisConnector
 import cv2
+from tests.tests_utils import make_json_from
+import os
 
+
+file_path = os.path.dirname(os.path.abspath(__file__))
 send_img_url = '/image'
 
 
@@ -31,13 +35,12 @@ class TestThiefAlert(unittest.TestCase):
 
     def test_thief_alert(self):
         # picture with a man in it
-        img = cv2.imread('../../dune-sand-man-desert.jpg')
+        img = cv2.imread(f'{file_path}/../../dune-sand-man-desert.jpg')
         # encode image as jpeg
         _, img_encoded = cv2.imencode('.jpeg', img)
         string_of_img = img_encoded.tostring()
         # send http request with image and receive response
-        response = self.test_client_flask_mediator.post(send_img_url, data=string_of_img,
-                                                        headers={'content-type': 'image/jpeg'})
+        response = self.test_client_flask_mediator.post(send_img_url, data=make_json_from(string_of_img))
 
         assert response.status_code == 200
 
@@ -48,13 +51,12 @@ class TestThiefAlert(unittest.TestCase):
 
     def test_no_thief_no_alert(self):
         # picture with a man in it
-        img = cv2.imread('../../field-from-drone-view-no-humans.jpg')
+        img = cv2.imread(f'{file_path}/../../field-from-drone-view-no-humans.jpg')
         # encode image as jpeg
         _, img_encoded = cv2.imencode('.jpeg', img)
         string_of_img = img_encoded.tostring()
         # send http request with image and receive response
-        response = self.test_client_flask_mediator.post(send_img_url, data=string_of_img,
-                                                        headers={'content-type': 'image/jpeg'})
+        response = self.test_client_flask_mediator.post(send_img_url, data=make_json_from(string_of_img))
 
         assert response.status_code == 200
 

@@ -20,7 +20,7 @@ class LogicController:
         data_controller = DataController()
         return data_controller.get_waypoints()
 
-    def process_image(self, image_str, date, object_detector):
+    def process_image(self, image_str, date, lat, lon, object_detector):
         """
         :param object_detector: yolov5 adaptor instance
         :return: 2-tuple, first cell is is_there_thief, second cell is true iff the code run successfully
@@ -34,6 +34,6 @@ class LogicController:
 
         if is_thief:
             data_controller = DataController()
-            return True, data_controller.save_thief_img(image_str, date)
+            return True, data_controller.save_thief_img(image_str, date, lat, lon)
         else:
             return False, True
