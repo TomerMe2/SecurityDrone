@@ -77,8 +77,8 @@ class DataController:
             query_params['$lte'] = date_until
 
         if query_params == {}:
-            return col.find({}, {'_id': 0}).sort('date').skip(index_from).limit(index_until - index_from)
+            return col.find({}, {'_id': 0}).sort('date', -1).skip(index_from).limit(index_until - index_from)
         else:
-            return col.find({'date': query_params}, {'_id': 0}).sort('date').\
+            return col.find({'date': query_params}, {'_id': 0}).sort('date', -1).\
                 skip(index_from).limit(index_until - index_from)
 

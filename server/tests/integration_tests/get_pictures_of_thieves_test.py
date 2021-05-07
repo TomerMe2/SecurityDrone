@@ -73,8 +73,8 @@ class TestGetPicturesOfThieves(unittest.TestCase):
         assert len(response_data) == 3
         for i, obj in enumerate(response_data):
             assert obj['image'] == self.img_in_base64
-            assert obj['lat'] == self.base_lat + i
-            assert obj['lon'] == self.base_lon + i
+            assert obj['lat'] == self.base_lat + self.NUMBER_OF_IMGS_IN_DB - 1 - i
+            assert obj['lon'] == self.base_lon + self.NUMBER_OF_IMGS_IN_DB - 1 - i
 
     def test_get_thieves_pictures_middle(self):
         """
@@ -95,8 +95,8 @@ class TestGetPicturesOfThieves(unittest.TestCase):
         assert len(response_data) == 2
         for i, obj in enumerate(response_data):
             assert obj['image'] == self.img_in_base64
-            assert obj['lat'] == self.base_lat + 3 + i
-            assert obj['lon'] == self.base_lon + 3 + i
+            assert obj['lat'] == self.base_lat + self.NUMBER_OF_IMGS_IN_DB - 1 - i - 3
+            assert obj['lon'] == self.base_lon + self.NUMBER_OF_IMGS_IN_DB - 1 - i - 3
 
 
 if __name__ == "__main__":
