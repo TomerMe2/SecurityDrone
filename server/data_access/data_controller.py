@@ -60,9 +60,25 @@ class DataController:
         """
         self.__connect_to_db()
 
-        col = self.db['waypoints']
+        col = self.db[config['waypoints_db_name']]
         waypoints = list(col.find())
 
         self.__close_db()
         return waypoints
+
+    def get_images_of_thieves(self, date_from, date_until, index_from, index_until):
+        self.__connect_to_db()
+        col = self.db[config['thief_images_db_name']]
+
+        query_params = {}
+        if date_from is not None:
+            query_params['$gte'] = date_from
+        if date_until is not None:
+            query_params['$lte'] = date_until
+
+        if query_params == {}:
+            return col.find({}, {'_id': 0}).sort('date').skip(index_from).limit(index_until - index_from)
+        else:
+            return col.find({'date': query_params}, {'_id': 0}).sort('date').\
+                skip(index_from).limit(index_until - index_from)
 
