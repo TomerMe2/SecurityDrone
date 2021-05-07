@@ -6,7 +6,11 @@ from config import config
 from apis.mediator_communication import app
 import cv2
 import pymongo
+from tests.tests_utils import make_json_from
+import os
 
+
+file_path = os.path.dirname(os.path.abspath(__file__))
 test_url = '/image'
 
 
@@ -32,12 +36,13 @@ class TestMediatorApi(unittest.TestCase):
         col.delete_many({})
 
         # picture with a man in it
-        img = cv2.imread('../dune-sand-man-desert.jpg')
+        img = cv2.imread(f'{file_path}/../dune-sand-man-desert.jpg')
         # encode image as jpeg
         _, img_encoded = cv2.imencode('.jpeg', img)
         string_of_img = img_encoded.tostring()
         # send http request with image and receive response
-        response = self.test_client.post(test_url, data=string_of_img, headers={'content-type': 'image/jpeg'})
+        response = self.test_client.post(test_url, data=make_json_from(string_of_img, 34.12, 31.11))
+        #response = self.test_client.post(test_url, data=string_of_img, headers={'content-type': 'image/jpeg'})
 
         assert response.status_code == 200
 
@@ -49,6 +54,8 @@ class TestMediatorApi(unittest.TestCase):
         assert image_from_db['date'] > datetime.datetime.now() - datetime.timedelta(seconds=10)
         # check that the image data is correct
         assert image_from_db['image'] == string_of_img
+        assert image_from_db['lat'] == 34.12
+        assert image_from_db['lon'] == 31.11
 
     def test_thief_picture_not_overriding(self):
         """
@@ -60,12 +67,12 @@ class TestMediatorApi(unittest.TestCase):
         col.delete_many({})
 
         # picture with a man in it
-        img = cv2.imread('../dune-sand-man-desert.jpg')
+        img = cv2.imread(f'{file_path}/../dune-sand-man-desert.jpg')
         # encode image as jpeg
         _, img_encoded = cv2.imencode('.jpeg', img)
         string_of_img = img_encoded.tostring()
         # send http request with image and receive response
-        response = self.test_client.post(test_url, data=string_of_img, headers={'content-type': 'image/jpeg'})
+        response = self.test_client.post(test_url, data=make_json_from(string_of_img, 34.12, 31.11))
 
         assert response.status_code == 200
 
@@ -75,7 +82,7 @@ class TestMediatorApi(unittest.TestCase):
         image_from_db = images_from_db[0]
         assert image_from_db['image'] == string_of_img
 
-        response = self.test_client.post(test_url, data=string_of_img, headers={'content-type': 'image/jpeg'})
+        response = self.test_client.post(test_url, data=make_json_from(string_of_img, 34.12, 31.11))
 
         assert response.status_code == 200
 
@@ -93,12 +100,12 @@ class TestMediatorApi(unittest.TestCase):
         col.delete_many({})
 
         # picture with a man in it
-        img = cv2.imread('../field-from-drone-view-no-humans.jpg')
+        img = cv2.imread(f'{file_path}/../field-from-drone-view-no-humans.jpg')
         # encode image as jpeg
         _, img_encoded = cv2.imencode('.jpeg', img)
         string_of_img = img_encoded.tostring()
         # send http request with image and receive response
-        response = self.test_client.post(test_url, data=string_of_img, headers={'content-type': 'image/jpeg'})
+        response = self.test_client.post(test_url, data=make_json_from(string_of_img, 34.12, 31.11))
 
         assert response.status_code == 200
 

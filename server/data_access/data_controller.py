@@ -36,18 +36,19 @@ class DataController:
         # return true iff inserted the correct number of waypoints
         return len(inserted.inserted_ids) == len(waypoints)
 
-    # TODO: IMPROVEMENT - add GPS location to the image
-    def save_thief_img(self, img_str, received_date):
+    def save_thief_img(self, img_str, received_date, lat_of_pic, lon_of_pic):
         """
         This function is called after the ML model decided that there's a person in this picture
         :param img_str: the raw string of the data from the request
         :param received_date: the date that the server received the request at
+        :param lat_of_pic: the latitude of the location of the drone when the picture was taken
+        :param lon_of_pic: the longitude of the location of the drone when the picture was taken
         :return: true iff image inserted successfully
         """
         self.__connect_to_db()
         col = self.db[config['thief_images_db_name']]
 
-        inserted = col.insert_one({'image': img_str, 'date': received_date})
+        inserted = col.insert_one({'image': img_str, 'date': received_date, 'lat': lat_of_pic, 'lon': lon_of_pic})
 
         self.__close_db()
 

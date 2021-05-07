@@ -1,13 +1,11 @@
 from flask import Flask, request, g
 from flask_socketio import SocketIO, emit, join_room
-import cv2
-import numpy as np
-
 from apis.api_utils import do_and_return_response
 from config import config
 from busniess_layer.logic_controller import LogicController
 from datetime import datetime
 from object_detection.yolov5_adapter import YoloAdapter
+import codecs
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -40,13 +38,17 @@ def patrol(waypoints):
 @app.route('/image', methods=['POST'])
 def process_image():
     current_date = datetime.now()
+    request_json = request.get_json(force=True)
+    image = codecs.decode(request_json['image'].encode(), 'base64')
+    lat = request_json['lat']
+    lon = request_json['lon']
+    return do_and_return_response(lambda: process_and_notify_if_thief(current_date, image, lat, lon))
 
-    return do_and_return_response(lambda: process_and_notify_if_thief(current_date, request.data))
 
-
-def process_and_notify_if_thief(current_date, img_in_string):
+def process_and_notify_if_thief(current_date, img_in_string, lat_of_img, lon_of_img):
     logic_controller = LogicController()
-    is_there_thief, is_successful = logic_controller.process_image(img_in_string, current_date, get_object_detector())
+    is_there_thief, is_successful = logic_controller.process_image(img_in_string, current_date,
+                                                                   lat_of_img, lon_of_img, get_object_detector())
 
     if is_there_thief:
         socketio.emit('thief_found', room='connector', data=img_in_string)
