@@ -37,3 +37,13 @@ class LogicController:
             return True, data_controller.save_thief_img(image_str, date, lat, lon)
         else:
             return False, True
+
+    def get_images_of_thieves(self, date_from, date_until, index_from, index_until):
+        data_controller = DataController()
+
+        if index_from is None:
+            index_from = 0
+        if index_until is None:
+            index_until = 20
+
+        return list(data_controller.get_images_of_thieves(date_from, date_until, index_from, index_until))

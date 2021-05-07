@@ -42,7 +42,6 @@ class TestMediatorApi(unittest.TestCase):
         string_of_img = img_encoded.tostring()
         # send http request with image and receive response
         response = self.test_client.post(test_url, data=make_json_from(string_of_img, 34.12, 31.11))
-        #response = self.test_client.post(test_url, data=string_of_img, headers={'content-type': 'image/jpeg'})
 
         assert response.status_code == 200
 
