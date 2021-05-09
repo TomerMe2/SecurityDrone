@@ -7,4 +7,5 @@ public interface Config {
     String RTMPUrl = "";
     float flightSpeed = 10.0f;
     long timeUploadMission = 60000;//ms
+    int ThreadCount = 5;
 }

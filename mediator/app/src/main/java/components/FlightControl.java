@@ -1,6 +1,7 @@
 package components;
 
 import Utils.Config;
+import Utils.MissionState;
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.LocationCoordinate3D;
 import dji.common.model.LocationCoordinate2D;
@@ -21,72 +22,72 @@ public class FlightControl {
         }
     }
 
-    public void takeOff(){
+    public void takeOff(MissionState state){
         mFlightController.startTakeoff(
                 new  CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(DJIError djiError) {
                         if (djiError != null) {
-                            //TODO add what to do when there is error
+                            state.fail();
                         } else {
-                            //TODO add what to do when there is success
+                            state.success();
                         }
                     }
                 }
         );
     }
-    public void cancelTakeOff(){
+    public void cancelTakeOff(MissionState state){
         mFlightController.cancelTakeoff(
                 new  CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(DJIError djiError) {
                         if (djiError != null) {
-                            //TODO add what to do when there is error
+                            state.fail();
                         } else {
-                            //TODO add what to do when there is success
+                            state.success();
                         }
                     }
                 }
         );
     }
 
-    public void goHome(){
+    public void goHome(MissionState state){
         mFlightController.startGoHome( new  CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError djiError) {
                 if (djiError != null) {
-                    //TODO add what to do when there is error
+                    state.fail();
                 } else {
-                    //TODO add what to do when there is success
+                    state.success();
                 }
             }
         });
     }
 
-    public void setHome(LocationCoordinate2D loc){
+    public void setHome(LocationCoordinate2D loc,MissionState state){
         mFlightController.setHomeLocation(loc, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError djiError) {
                 if (djiError != null) {
-                    //TODO add what to do when there is error
+                    state.fail();
                 } else {
-                    //TODO add what to do when there is success
+                    state.success();
                 }
             }
         });
     }
 
 
-    public void stopGoHome(){
+    public void stopGoHome(MissionState state){
         mFlightController.cancelGoHome(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError djiError) {
 
                 if (djiError!= null){
-                    //TODO add what to do when there is error
+                    state.fail();
                 }
                 else{
-                    //TODO add what to do when there is success
+                    state.success();
                 }
             }
         });
@@ -96,27 +97,27 @@ public class FlightControl {
         return mFlightControllerState;
     }
 
-    public void startLanding(){
+    public void startLanding(MissionState state){
         landing= true;
         mFlightController.startLanding(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError djiError) {
 
                 if (djiError!= null){
-                    //TODO add what to do when there is error
+                    state.fail();
                 }
                 else{
                     long startTime = System.currentTimeMillis();
                     while (!isFinishedLanding() && landing){
                         if(System.currentTimeMillis() - startTime > Config.MAX_TIME_WAIT_FOR_LANDING){
-                            //TODO do if max time passed
+                            state.fail();
                         }
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
                         }
                     }
-                    //TODO do when finished landing
+                    state.success();
                 }
             }
         });
@@ -126,7 +127,7 @@ public class FlightControl {
         return getDroneState().isLandingConfirmationNeeded() || !mFlightController.getState().areMotorsOn();
     }
 
-    public LocationCoordinate2D getLocation(){
+    public LocationCoordinate2D getLocation(MissionState state){
         LocationCoordinate3D currentLocation = mFlightControllerState.getAircraftLocation();
         double longitude = currentLocation.getLongitude();
         double latitude = currentLocation.getLatitude();
@@ -134,16 +135,16 @@ public class FlightControl {
         return currentLocation2D;
     }
 
-    public void stopLanding() {
+    public void stopLanding(MissionState state) {
         landing = false;
         mFlightController.cancelLanding(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError djiError) {
                 if (djiError!= null){
-                    //TODO add what to do when there is error
+                    state.fail();
                 }
                 else{
-                    //TODO add what to do when there is success
+                    state.success();
                 }
             }
         });

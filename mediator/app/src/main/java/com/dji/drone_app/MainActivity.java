@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,19 +23,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import BL.TaskManager;
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
+import dji.common.realname.AircraftBindingState;
+import dji.common.realname.AppActivationState;
+import dji.common.useraccount.UserAccountState;
+import dji.common.util.CommonCallbacks;
 import dji.sdk.base.BaseComponent;
 import dji.sdk.base.BaseProduct;
+import dji.sdk.realname.AppActivationManager;
 import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
+import dji.sdk.useraccount.UserAccountManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getName();
     public static final String FLAG_CONNECTION_CHANGE = "dji_sdk_connection_change";
     private static BaseProduct mProduct;
+    private AppActivationManager appActivationManager;
+    private AppActivationState.AppActivationStateListener activationStateListener;
+    private AircraftBindingState.AircraftBindingStateListener bindingStateListener;
     private Handler mHandler;
+    protected TextView bindingStateTV;
+    protected TextView appActivationStateTV;
+    protected Button loginBtn;
+    protected Button logoutBtn;
 
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
             Manifest.permission.VIBRATE,
@@ -66,9 +83,20 @@ public class MainActivity extends AppCompatActivity {
 
         //Initialize DJI SDK Manager
         mHandler = new Handler(Looper.getMainLooper());
-
+        initUI();
+        initData();
+        TaskManager manager = TaskManager.getInstance();
     }
 
+    private void initUI(){
+//        bindingStateTV = (TextView) findViewById(R.id.tv_binding_state_info);
+//        appActivationStateTV = (TextView) findViewById(R.id.tv_activation_state_info);
+//        loginBtn = (Button) findViewById(R.id.btn_login);
+//        logoutBtn = (Button) findViewById(R.id.btn_logout);
+        loginBtn.setOnClickListener(this);
+        logoutBtn.setOnClickListener(this);
+
+    }
     /**
      * Checks if there is any missing permissions, and
      * requests runtime permission if needed.
@@ -115,6 +143,136 @@ public class MainActivity extends AppCompatActivity {
             showToast("Missing permissions!!!");
         }
     }
+
+    private void initData(){
+        setUpListener();
+
+        appActivationManager = DJISDKManager.getInstance().getAppActivationManager();
+
+        if (appActivationManager != null) {
+            appActivationManager.addAppActivationStateListener(activationStateListener);
+            appActivationManager.addAircraftBindingStateListener(bindingStateListener);
+            MainActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    appActivationStateTV.setText("" + appActivationManager.getAppActivationState());
+                    bindingStateTV.setText("" + appActivationManager.getAircraftBindingState());
+                }
+            });
+        }
+    }
+
+    private void setUpListener() {
+        // Example of Listener
+        activationStateListener = new AppActivationState.AppActivationStateListener() {
+            @Override
+            public void onUpdate(final AppActivationState appActivationState) {
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        appActivationStateTV.setText("" + appActivationState);
+                    }
+                });
+            }
+        };
+
+        bindingStateListener = new AircraftBindingState.AircraftBindingStateListener() {
+
+            @Override
+            public void onUpdate(final AircraftBindingState bindingState) {
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bindingStateTV.setText("" + bindingState);
+                    }
+                });
+            }
+        };
+    }
+
+    private void tearDownListener() {
+        if (activationStateListener != null) {
+            appActivationManager.removeAppActivationStateListener(activationStateListener);
+            MainActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    appActivationStateTV.setText("Unknown");
+                }
+            });
+        }
+        if (bindingStateListener !=null) {
+            appActivationManager.removeAircraftBindingStateListener(bindingStateListener);
+            MainActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    bindingStateTV.setText("Unknown");
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onResume() {
+        Log.e(TAG, "onResume");
+        setUpListener();
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.e(TAG, "onDestroy");
+        tearDownListener();
+        super.onDestroy();
+    }
+
+    private void loginAccount(){
+
+        UserAccountManager.getInstance().logIntoDJIUserAccount(this,
+                new CommonCallbacks.CompletionCallbackWith<UserAccountState>() {
+                    @Override
+                    public void onSuccess(final UserAccountState userAccountState) {
+                        showToast("Login Success");
+                    }
+                    @Override
+                    public void onFailure(DJIError error) {
+                        showToast("Login Error:"
+                                + error.getDescription());
+                    }
+                });
+
+    }
+
+    private void logoutAccount(){
+        UserAccountManager.getInstance().logoutOfDJIUserAccount(new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(DJIError error) {
+                if (null == error) {
+                    showToast("Logout Success");
+                } else {
+                    showToast("Logout Error:"
+                            + error.getDescription());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+
+//        switch (v.getId()) {
+//            case R.id.btn_login:{
+//                loginAccount();
+//                break;
+//            }
+//            case R.id.btn_logout:{
+//                logoutAccount();
+//                break;
+//            }
+//            default:
+//                break;
+//        }
+    }
+
 
     private void startSDKRegistration() {
         if (isRegistrationInProgress.compareAndSet(false, true)) {

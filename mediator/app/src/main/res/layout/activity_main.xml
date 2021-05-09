@@ -1,19 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dji.importSDKDemo.MainActivity">
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/main_title_rl"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/black_overlay" >
+
+        <ImageButton
+            android:id="@+id/ReturnBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:onClick="onReturn"
+            android:scaleType="centerInside"/>
+
+        <TextView
+            android:id="@+id/ConnectStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="SimulatorDemo"
+            android:textColor="@android:color/white"
+            android:textSize="19sp" />
+    </RelativeLayout>
 
     <TextView
+        android:layout_marginTop="70dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_centerHorizontal="true"
+        android:text="Simulator is off."
+        android:id="@+id/textview_simulator"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Virtual Stick"
+        style="@style/common_button"
+        android:id="@+id/btn_enable_virtual_stick"
+        android:layout_marginLeft="5dp"
+        android:layout_alignTop="@+id/btn_start_simulator"
+        android:layout_alignStart="@+id/directionJoystickRight"
+        android:layout_marginTop="0dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Disable Virtual Stick"
+        style="@style/common_button"
+        android:id="@+id/btn_disable_virtual_stick"
+        android:layout_below="@+id/btn_enable_virtual_stick"
+        android:layout_alignStart="@+id/btn_enable_virtual_stick"
+        android:layout_marginLeft="0dp"
+        android:layout_alignEnd="@+id/btn_enable_virtual_stick" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take Off"
+        style="@style/common_button"
+        android:id="@+id/btn_take_off"
+        android:layout_alignTop="@+id/btn_disable_virtual_stick"
+        android:layout_alignStart="@+id/btn_start_simulator"
+        android:layout_marginTop="0dp"
+        android:layout_alignEnd="@+id/btn_start_simulator" />
+
+    <ToggleButton
+        android:id="@+id/btn_start_simulator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Simulator"
+        android:textOff="Start Simulator"
+        android:textOn="Stop Simulator"
+        style="@style/common_button"
+        android:layout_below="@+id/textview_simulator"
+        android:layout_toEndOf="@+id/btn_enable_virtual_stick"
+        android:layout_marginTop="107dp"
+        android:layout_marginLeft="10dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Land"
+        style="@style/common_button"
+        android:id="@+id/btn_land"
+        android:layout_alignTop="@+id/btn_take_off"
+        android:layout_marginTop="0dp"
+        android:layout_alignEnd="@+id/directionJoystickLeft"
+        android:layout_toEndOf="@+id/btn_take_off"
+        android:layout_marginLeft="10dp" />
+
+    <simulator.OnScreenJoystick
+        android:id="@+id/directionJoystickRight"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@mipmap/joystick_bg"/>
+
+    <simulator.OnScreenJoystick
+        android:id="@+id/directionJoystickLeft"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@mipmap/joystick_bg"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/binding_state_label"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_below="@+id/textView"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Binding State:"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textSize="17sp"-->
+<!--        android:textStyle="bold" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_binding_state_info"-->
+<!--        android:layout_width="220dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_below="@+id/binding_state_label"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Unknown"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textSize="17sp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_login"-->
+<!--        style="@style/common_button"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignStart="@+id/tv_activation_state_info"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_marginBottom="79dp"-->
+<!--        android:text="Login" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_logout"-->
+<!--        style="@style/common_button"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignEnd="@+id/tv_activation_state_info"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_marginBottom="79dp"-->
+<!--        android:text="Logout" />-->
+
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:text="Application Activation Demo"-->
+<!--        android:textSize="17sp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_centerHorizontal="true" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/activation_state_label"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_below="@+id/tv_binding_state_info"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="11dp"-->
+<!--        android:text="App Activation State:"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textSize="17sp"-->
+<!--        android:textStyle="bold" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_activation_state_info"-->
+<!--        android:layout_width="220dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_alignEnd="@+id/tv_binding_state_info"-->
+<!--        android:layout_below="@+id/activation_state_label"-->
+<!--        android:text="Unknown"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textSize="17sp" />-->
+
+</RelativeLayout>

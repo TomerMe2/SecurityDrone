@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mediator.iml" filepath="$PROJECT_DIR$/.idea/modules/mediator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mediator.iml" filepath="$PROJECT_DIR$/.idea/mediator.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/mediator.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/mediator.app.iml" />
     </modules>
   </component>
