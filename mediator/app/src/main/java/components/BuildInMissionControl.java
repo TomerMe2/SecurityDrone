@@ -1,11 +1,7 @@
 package components;
 
-import android.graphics.RectF;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import Utils.Config;
+import Utils.MissionState;
 import dji.common.error.DJIError;
 import dji.common.mission.waypoint.Waypoint;
 import dji.common.mission.waypoint.WaypointMission;
@@ -29,7 +25,7 @@ public class BuildInMissionControl {
         operator = missionControl.getWaypointMissionOperator();
     }
 
-    public void goToWaypoint(float longitude, float latitude, float altitude){
+    public void goToWaypoint(float longitude, float latitude, float altitude, MissionState state){
         WaypointMission.Builder waypointMissionBuilder = new WaypointMission.Builder().finishedAction(mFinishedAction).headingMode(mHeadingMode).autoFlightSpeed(Config.flightSpeed).maxFlightSpeed(Config.flightSpeed).flightPathMode(WaypointMissionFlightPathMode.NORMAL);
         Waypoint waypoint = new Waypoint(latitude,longitude,altitude);
         waypointMissionBuilder.addWaypoint(waypoint);
@@ -57,15 +53,15 @@ public class BuildInMissionControl {
         }
 
         if(errorOccurred){
-            //TODO add when load or upload fail
+            state.fail();
         }else{
             operator.startMission(new CommonCallbacks.CompletionCallback() {
                 @Override
                 public void onResult(DJIError djiError) {
                     if (djiError == null){
-                        //TODO add if success
+                        state.success();
                     }else {
-                        //TODO add if fail
+                        state.fail();
                     }
                 }
             });
@@ -73,14 +69,14 @@ public class BuildInMissionControl {
 
     }
 
-    public void stopGoWaypoint(){
+    public void stopGoWaypoint(MissionState state){
         operator.stopMission(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError djiError) {
                 if (djiError == null){
-                    //TODO add if success
+                    state.success();
                 }else {
-                    //TODO add if fail
+                    state.fail();
                 }
             }
         });
