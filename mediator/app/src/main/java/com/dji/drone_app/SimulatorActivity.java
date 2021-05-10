@@ -112,15 +112,12 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            super.onCreate(savedInstanceState);
             checkAndRequestPermissions();
-        }
-        mHandler = new Handler(Looper.getMainLooper());
+            mHandler = new Handler(Looper.getMainLooper());
 
-        setContentView(R.layout.activity_main);
-        initUI();
-        updateTitleBar();
+            setContentView(R.layout.activity_main);
+            initUI();
     }
     /**
      * Checks if there is any missing permissions, and
@@ -132,6 +129,9 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
             if (ContextCompat.checkSelfPermission(this, eachPermission) != PackageManager.PERMISSION_GRANTED) {
                 missingPermission.add(eachPermission);
             }
+        }
+        for(String perm:missingPermission){
+            showToast(perm);
         }
         // Request for missing permissions
         if (missingPermission.isEmpty()) {
@@ -189,8 +189,6 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
     public void onResume() {
         Log.e(TAG, "onResume");
         super.onResume();
-
-        //initFlightController();
     }
 
     private void updateTitleBar() {
@@ -199,15 +197,15 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
         BaseProduct product = DJISimulatorApplication.getProductInstance();
         if (product != null) {
 
-            if(product.isConnected()) {
+            if (product.isConnected()) {
                 //The product is connected
                 mConnectStatusTextView.setText(DJISimulatorApplication.getProductInstance().getModel() + " Connected");
 
                 ret = true;
             } else {
-                if(product instanceof Aircraft) {
-                    Aircraft aircraft = (Aircraft)product;
-                    if(aircraft.getRemoteController() != null && aircraft.getRemoteController().isConnected()) {
+                if (product instanceof Aircraft) {
+                    Aircraft aircraft = (Aircraft) product;
+                    if (aircraft.getRemoteController() != null && aircraft.getRemoteController().isConnected()) {
                         // The product is not connected, but the remote controller is connected
                         mConnectStatusTextView.setText("only RC Connected");
                         showToast("only RC Connected\"");
@@ -215,14 +213,11 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
                     }
                 }
             }
-        }else{
-            showToast("NULLLLLLLLLL");
         }
 
         if(!ret) {
             // The product or the remote controller are not connected.
             mConnectStatusTextView.setText("Disconnected");
-            showToast("disconnected");
         }
     }
 
@@ -479,7 +474,8 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
                         public void onRegister(DJIError djiError) {
                             if (djiError == DJISDKError.REGISTRATION_SUCCESS) {
                                 showToast("Register Success");
-                                DJISDKManager.getInstance().startConnectionToProduct();
+                                 Boolean result = DJISDKManager.getInstance().startConnectionToProduct();
+                                 showToast(result.toString());
                             } else {
                                 showToast("Register sdk fails, please check the bundle id and network connection!");
                             }
@@ -497,6 +493,8 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
                         public void onProductConnect(BaseProduct baseProduct) {
                             Log.d(TAG, String.format("onProductConnect newProduct:%s", baseProduct));
                             showToast("Product Connected");
+                            updateTitleBar();
+                            initFlightController();
                             notifyStatusChange();
 
                         }
