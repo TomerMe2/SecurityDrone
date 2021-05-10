@@ -21,4 +21,9 @@ class LatLngPoint {
         'latitude': lat,
         'longitude': lng,
       };
+
+  @override
+  String toString() {
+    return "latitude: ${lat.toString()} longitude: ${lng.toString()}";
+  }
 }
