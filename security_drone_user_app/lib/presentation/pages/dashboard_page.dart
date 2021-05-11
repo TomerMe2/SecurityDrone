@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:security_drone_user_app/data/models/dashboard_entry.dart';
-import 'package:security_drone_user_app/data/models/thief_entry.dart';
 import 'package:security_drone_user_app/logic/dashboard_bloc.dart';
-import 'package:security_drone_user_app/logic/thief_page_bloc.dart';
 import 'package:security_drone_user_app/presentation/text_section.dart';
+import 'package:security_drone_user_app/style.dart';
 
 import '../image_banner.dart';
 
@@ -100,7 +99,7 @@ class DashBoardList extends StatelessWidget {
                       contentPadding: EdgeInsets.symmetric(horizontal: 50),
                       title: Text(
                           state.entries[index].entryMinimalDescription(),
-                          style: Theme.of(context).textTheme.body1
+                          style: Body1TextStyle
                       ),
                       subtitle: Text(index.toString()),
                       onTap: () => _bloc.add(DashboardEntryClicked(index)),
@@ -118,9 +117,11 @@ class DashBoardList extends StatelessWidget {
                     "Action Full Desctiption:",
                     state.entries[index].toString()
                 ),
-                RaisedButton(
+                ElevatedButton(
                     child: Icon(Icons.keyboard_return),
-                    color: Colors.blue,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue)
+                    ),
                     onPressed: () => _bloc.add(
                         DisplayDashboardEntries()
                     ))
@@ -133,6 +134,7 @@ class DashBoardList extends StatelessWidget {
           }
         },
         listener: (BuildContext context, state) {
+          /*
           var text;
           if (state is ShowDashboardEntries) {
             text = "Display entries";
@@ -143,6 +145,7 @@ class DashBoardList extends StatelessWidget {
           return Scaffold.of(context).showSnackBar(
               SnackBar(content: Text(text))
           );
+           */
         },
 
       ),

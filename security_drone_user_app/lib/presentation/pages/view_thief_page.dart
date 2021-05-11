@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:security_drone_user_app/data/models/thief_entry.dart';
 import 'package:security_drone_user_app/logic/thief_page_bloc.dart';
 import 'package:security_drone_user_app/presentation/text_section.dart';
 
@@ -103,9 +102,11 @@ class ThiefList extends StatelessWidget {
                   state.entries[index].date.toString(),
                   state.entries[index].waypoint.toString()
                 ),
-                RaisedButton(
+                ElevatedButton(
                     child: Icon(Icons.keyboard_return),
-                    color: Colors.blue,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    ),
                     onPressed: () => _bloc.add(
                       DisplayThiefEntries()
                     ))
@@ -118,6 +119,7 @@ class ThiefList extends StatelessWidget {
           }
         },
         listener: (BuildContext context, state) {
+          /*
           var text;
           if (state is ShowThiefEntries) {
             text = "Display entries";
@@ -128,6 +130,7 @@ class ThiefList extends StatelessWidget {
           return Scaffold.of(context).showSnackBar(
           SnackBar(content: Text(text))
           );
+           */
         },
 
       ),

@@ -25,11 +25,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
-          textTheme: TextTheme(title: AppBarTextStyle)
+          textTheme: TextTheme(headline6: AppBarTextStyle)
         ),
         textTheme: TextTheme(
-          title: TitleTextStyle,
-          body1: Body1TextStyle
+          headline6: TitleTextStyle,
+          bodyText2: Body1TextStyle
         ),
         primarySwatch: Colors.blue,
       ),
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){Navigator.of(context).pushNamed('Dashboard Page');},
+        onPressed: (){Navigator.of(context).pushNamed('Thief Page');},
         child: Icon(Icons.arrow_right),
       ),
     );

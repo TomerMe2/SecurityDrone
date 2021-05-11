@@ -1,10 +1,8 @@
-import 'dart:ffi';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:security_drone_user_app/data/models/thief_entry.dart';
-import 'package:security_drone_user_app/presentation/pages/view_thief_page.dart';
 part 'thief_page_event.dart';
 part 'thief_page_state.dart';
 
@@ -13,6 +11,9 @@ class ThiefPageBloc extends Bloc<ThiefPageEvent, ThiefPageState> {
   //TODO: replace current dummy thief entries and add api request for said entries
 
   ThiefPageBloc() : super(ShowThiefEntries([ThiefEntry.dummyFetch()]));
+
+  // for testing purposes
+  ThiefPageBloc.test(ThiefEntry entry) : super(ShowThiefEntries([entry]));
 
   @override
   Stream<ThiefPageState> mapEventToState(ThiefPageEvent event) async* {

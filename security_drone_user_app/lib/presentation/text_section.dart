@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:security_drone_user_app/style.dart';
 
 class TextSection extends StatelessWidget {
   final String _title;
@@ -15,11 +16,11 @@ class TextSection extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.fromLTRB(_hPad, 32.0, _hPad, 4.0),
-          child: Text(_title, style: Theme.of(context).textTheme.title,),
+          child: Text(_title, style: TitleTextStyle),
         ),
         Container(
           padding: const EdgeInsets.fromLTRB(_hPad, 10.0, _hPad, _hPad),
-          child: Text(_body, style: Theme.of(context).textTheme.body1)
+          child: Text(_body, style: Body1TextStyle)
         ),
         ],
     );

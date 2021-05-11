@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,16 +30,21 @@ class PatrolSetPageState extends State<PatrolSetPage> {
         padding: EdgeInsets.all(3),
         child: SizedBox(
           width: 75,
-          child: FlatButton(
-            padding: EdgeInsets.all(0),
+          child: TextButton(
+            //padding: EdgeInsets.all(0),
             onPressed: func,
             child: Text(text,
                 overflow: TextOverflow.visible,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 13)
             ),
-            color: Colors.transparent,
-            highlightColor: Colors.blueAccent,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+              foregroundColor: MaterialStateProperty.all(Colors.blueAccent),
+              padding: MaterialStateProperty.all(EdgeInsets.all(0))
+            ),
+            // color: Colors.transparent,
+            // highlightColor: Colors.blueAccent,
           ),
         ),
       );
@@ -91,9 +94,12 @@ class PatrolSetPageState extends State<PatrolSetPage> {
             alignment: Alignment.topRight,
             child: Padding(
               padding: EdgeInsets.only(right: 5),
-              child: FlatButton(
+              child: TextButton(
                   onPressed: () {_bloc.add(DonePickingPoints());},
-                  color: Colors.blue,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue)
+                  ),
+                  //color: Colors.blue,
                   child:  Text('done',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 19, color: Colors.white)

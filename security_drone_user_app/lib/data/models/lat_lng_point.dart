@@ -26,4 +26,11 @@ class LatLngPoint {
   String toString() {
     return "latitude: ${lat.toString()} longitude: ${lng.toString()}";
   }
+  @override
+  bool operator ==(Object other) {
+    if (other is LatLngPoint){
+      return other.lat == this.lat && other.lng == this.lng;
+    }
+    return false;
+  }
 }

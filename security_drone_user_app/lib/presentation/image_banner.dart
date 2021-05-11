@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ImageBanner extends StatelessWidget {
-  String _path;
+  final String _path;
 
   ImageBanner(this._path);
 
