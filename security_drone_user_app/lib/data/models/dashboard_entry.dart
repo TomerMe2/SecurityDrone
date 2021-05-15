@@ -34,6 +34,8 @@ class DashBoardEntry {
       DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.success, "trigger", ""),
       DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
       DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
+      DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
+      DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
     ];
   }
 

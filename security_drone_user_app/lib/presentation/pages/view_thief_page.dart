@@ -4,9 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:security_drone_user_app/logic/thief_page_bloc.dart';
 import 'package:security_drone_user_app/presentation/text_section.dart';
 
-import '../image_banner.dart';
-
-
 class ViewThiefPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -18,44 +15,16 @@ class ViewThiefPageState extends State<ViewThiefPage>{
   ThiefPageBloc _bloc = ThiefPageBloc();
 
   @override
-  Widget build(BuildContext context){
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Security Drone"),
-          actions: [
-            ImageBanner('assets/images/icon.jpg')
-          ],
-        ),
-      body: ThiefListClass(_bloc),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          FloatingActionButton(
-            child: Icon(Icons.refresh),
-            onPressed: () => _bloc.add(
-              RefreshThiefEntries(),
-            ),
-          ),
-        ],
-      )
-    );
+  void dispose() {
+    _bloc.close();
+    super.dispose();
   }
-}
-
-
-class ThiefListClass extends StatelessWidget {
-  final ThiefPageBloc _bloc;
-
-  ThiefListClass(this._bloc);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ThiefList(_bloc),
-    );
+  Widget build(BuildContext context){
+    return ThiefList(_bloc);
   }
 }
-
 
 class ThiefList extends StatelessWidget {
   final ThiefPageBloc _bloc;
@@ -74,6 +43,12 @@ class ThiefList extends StatelessWidget {
 
         builder: (context, state) {
           if (state is ShowThiefEntries) {
+            var button = TextButton(
+              child: Icon(Icons.refresh),
+              onPressed: () => _bloc.add(
+                RefreshThiefEntries(),
+              ),
+            );
             var builder = ListView.builder(
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
@@ -90,7 +65,12 @@ class ThiefList extends StatelessWidget {
                   );
                 }
             );
-            return builder;
+            return Column(
+              children: [
+                builder,
+                button
+              ],
+            );
           }
           else if (state is ShowThiefEntry){
             var index = state.focusedIndex;

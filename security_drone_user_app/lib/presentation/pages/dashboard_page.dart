@@ -6,9 +6,6 @@ import 'package:security_drone_user_app/logic/dashboard_bloc.dart';
 import 'package:security_drone_user_app/presentation/text_section.dart';
 import 'package:security_drone_user_app/style.dart';
 
-import '../image_banner.dart';
-
-
 class DashboardPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -20,44 +17,16 @@ class DashboardPageState extends State<DashboardPage>{
   DashboardBloc _bloc = DashboardBloc();
 
   @override
-  Widget build(BuildContext context){
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Security Drone"),
-          actions: [
-            ImageBanner('assets/images/icon.jpg')
-          ],
-        ),
-        body: DashboardListClass(_bloc),
-        floatingActionButton: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            FloatingActionButton(
-              child: Icon(Icons.refresh),
-              onPressed: () => _bloc.add(
-                RefreshDashboardEntries(),
-              ),
-            ),
-          ],
-        )
-    );
+  void dispose() {
+    _bloc.close();
+    super.dispose();
   }
-}
-
-
-class DashboardListClass extends StatelessWidget {
-  final DashboardBloc _bloc;
-
-  DashboardListClass(this._bloc);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: DashBoardList(_bloc),
-    );
+  Widget build(BuildContext context){
+    return DashBoardList(_bloc);
   }
 }
-
 
 class DashBoardList extends StatelessWidget {
   final DashboardBloc _bloc;
@@ -75,6 +44,12 @@ class DashBoardList extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is ShowDashboardEntries) {
+            var button = TextButton(
+              child: Icon(Icons.refresh),
+              onPressed: () => _bloc.add(
+                RefreshDashboardEntries(),
+              ),
+            );
             var builder = ListView.builder(
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
@@ -105,7 +80,12 @@ class DashBoardList extends StatelessWidget {
                   );
                 }
             );
-            return builder;
+            return Column(
+              children: [
+                builder,
+                button
+              ],
+            );
           }
           else if (state is ShowDashboardEntry){
             var index = state.focusedIndex;

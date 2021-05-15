@@ -3,7 +3,6 @@ import 'package:security_drone_user_app/presentation/image_banner.dart';
 import 'package:security_drone_user_app/presentation/pages/dashboard_page.dart';
 import 'package:security_drone_user_app/presentation/pages/patrol_set_page.dart';
 import 'package:security_drone_user_app/presentation/pages/view_thief_page.dart';
-import 'package:security_drone_user_app/presentation/text_section.dart';
 import 'style.dart';
 
 void main() {
@@ -14,13 +13,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var routes = <String, WidgetBuilder>{
-      'Patrol Page': (BuildContext context) => new PatrolSetPage(),
-      'Home Page' : (BuildContext context) => new MyHomePage(title: 'Security Drone'),
-      'Thief Page' : (BuildContext context) => new ViewThiefPage(),
-      'Dashboard Page' : (BuildContext context) => new DashboardPage()
-    };
-
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -33,23 +25,40 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.blue,
       ),
-
       home: MyHomePage(title: 'Security Drone'),
-      routes: routes,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
   final String title;
+
+  MyHomePage({Key key, this.title}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+  var routes = <String, Widget>{
+    'Patrol Page': PatrolSetPage(),
+    'Thief Page' : ViewThiefPage(),
+    'Dashboard Page' : DashboardPage()
+  };
+
+  TabController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = new TabController(vsync: this, length: routes.length);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,34 +68,29 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           ImageBanner('assets/images/icon.jpg')
         ],
+        bottom: TabBar(
+          controller: _controller,
+          tabs: <Widget>[
+            Tab(
+              text: 'Dashboard page',
+            ),
+            Tab(
+              text: 'thief page',
+            ),
+            Tab(
+              text: 'Patrol page',
+            )
+          ],
+        ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextSection("HELLOOOOO", "hellohellohellohellohellohellohellohellohellohello")
-        ],
+      body: TabBarView(
+        controller: _controller,
+          children: [
+            routes['Dashboard Page'],
+            routes['Thief Page'],
+            routes['Patrol Page']
+          ],
       ),
-      floatingActionButton: Column (
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: (){Navigator.of(context).pushNamed('Thief Page');},
-            heroTag: 'Thief_page',
-            child: Icon(Icons.arrow_right),
-          ),
-          FloatingActionButton(
-            onPressed: (){Navigator.of(context).pushNamed('Dashboard Page');},
-            heroTag: 'Dashboard_page',
-          ),
-          FloatingActionButton(
-            onPressed: (){Navigator.of(context).pushNamed('Patrol Page');},
-            heroTag: 'Patrol_page',
-          )
-        ],
-      )
 
     );
   }
