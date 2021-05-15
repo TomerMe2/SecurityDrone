@@ -40,5 +40,10 @@ class ThiefEntry{
   String toString() {
     return this.date.toString() + this.waypoint.toString();
   }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => super.hashCode;
+
 }
 

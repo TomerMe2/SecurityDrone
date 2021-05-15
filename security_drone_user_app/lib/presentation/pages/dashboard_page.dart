@@ -6,6 +6,8 @@ import 'package:security_drone_user_app/logic/dashboard_bloc.dart';
 import 'package:security_drone_user_app/presentation/text_section.dart';
 import 'package:security_drone_user_app/style.dart';
 
+import '../image_banner.dart';
+
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -20,6 +22,12 @@ class DashboardPageState extends State<DashboardPage>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+        appBar: AppBar(
+          title: Text("Security Drone"),
+          actions: [
+            ImageBanner('assets/images/icon.jpg')
+          ],
+        ),
         body: DashboardListClass(_bloc),
         floatingActionButton: Column(
           mainAxisSize: MainAxisSize.min,

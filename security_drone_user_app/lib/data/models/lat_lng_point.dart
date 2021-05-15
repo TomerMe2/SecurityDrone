@@ -40,4 +40,10 @@ class LatLngPoint {
     }
     return false;
   }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => super.hashCode;
+
+
 }

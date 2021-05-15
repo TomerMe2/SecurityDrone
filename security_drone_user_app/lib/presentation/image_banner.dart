@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class ImageBanner extends StatelessWidget {
   final String _path;
-  double height;
-  double width;
+  final double height;
+  final double width;
   ImageBanner(this._path, {this.width = 100.0, this.height=100.0});
 
   @override
