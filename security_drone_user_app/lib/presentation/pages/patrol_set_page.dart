@@ -31,7 +31,6 @@ class PatrolSetPageState extends State<PatrolSetPage> {
         child: SizedBox(
           width: 75,
           child: TextButton(
-            //padding: EdgeInsets.all(0),
             onPressed: func,
             child: Text(text,
                 overflow: TextOverflow.visible,
@@ -43,8 +42,6 @@ class PatrolSetPageState extends State<PatrolSetPage> {
               foregroundColor: MaterialStateProperty.all(Colors.blueAccent),
               padding: MaterialStateProperty.all(EdgeInsets.all(0))
             ),
-            // color: Colors.transparent,
-            // highlightColor: Colors.blueAccent,
           ),
         ),
       );
@@ -99,7 +96,6 @@ class PatrolSetPageState extends State<PatrolSetPage> {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue)
                   ),
-                  //color: Colors.blue,
                   child:  Text('done',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 19, color: Colors.white)

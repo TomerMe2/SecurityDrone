@@ -22,7 +22,6 @@ class ThiefPageBloc extends Bloc<ThiefPageEvent, ThiefPageState> {
       yield ShowThiefEntry(state.entries, event.clickedOn);
     }
     else if (event is RefreshThiefEntries) {
-      print('api request to refresh the entries');
       List<ThiefEntry> entries = ThiefEntry.dummyFetchAll();
       yield ShowThiefEntries(entries);
     }

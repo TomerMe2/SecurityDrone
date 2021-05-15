@@ -76,10 +76,27 @@ class _MyHomePageState extends State<MyHomePage> {
           TextSection("HELLOOOOO", "hellohellohellohellohellohellohellohellohellohello")
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){Navigator.of(context).pushNamed('Thief Page');},
-        child: Icon(Icons.arrow_right),
-      ),
+      floatingActionButton: Column (
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: (){Navigator.of(context).pushNamed('Thief Page');},
+            heroTag: 'Thief_page',
+            child: Icon(Icons.arrow_right),
+          ),
+          FloatingActionButton(
+            onPressed: (){Navigator.of(context).pushNamed('Dashboard Page');},
+            heroTag: 'Dashboard_page',
+          ),
+          FloatingActionButton(
+            onPressed: (){Navigator.of(context).pushNamed('Patrol Page');},
+            heroTag: 'Patrol_page',
+          )
+        ],
+      )
+
     );
   }
 }

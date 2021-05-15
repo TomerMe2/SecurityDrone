@@ -19,7 +19,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield ShowDashboardEntry(state.entries, event.clickedOn);
     }
     else if (event is RefreshDashboardEntries) {
-      print('api request to refresh the entries');
       List<DashBoardEntry> entries = DashBoardEntry.dummyFetchAll();
       yield ShowDashboardEntries(entries);
     }

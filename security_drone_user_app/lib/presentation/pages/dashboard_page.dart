@@ -6,7 +6,6 @@ import 'package:security_drone_user_app/logic/dashboard_bloc.dart';
 import 'package:security_drone_user_app/presentation/text_section.dart';
 import 'package:security_drone_user_app/style.dart';
 
-import '../image_banner.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -16,12 +15,10 @@ class DashboardPage extends StatefulWidget {
 }
 
 class DashboardPageState extends State<DashboardPage>{
+  DashboardBloc _bloc = DashboardBloc();
 
   @override
   Widget build(BuildContext context){
-    // ignore: close_sinks
-    DashboardBloc _bloc = DashboardBloc();
-
     return Scaffold(
         body: DashboardListClass(_bloc),
         floatingActionButton: Column(
@@ -39,29 +36,23 @@ class DashboardPageState extends State<DashboardPage>{
   }
 }
 
-// ignore: must_be_immutable
+
 class DashboardListClass extends StatelessWidget {
-  DashboardBloc _bloc;
+  final DashboardBloc _bloc;
 
   DashboardListClass(this._bloc);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Security Drone"),
-        actions: [
-          ImageBanner('assets/images/icon.jpg')
-        ],
-      ),
       body: DashBoardList(_bloc),
     );
   }
 }
 
-// ignore: must_be_immutable
+
 class DashBoardList extends StatelessWidget {
-  DashboardBloc _bloc;
+  final DashboardBloc _bloc;
 
   DashBoardList(this._bloc);
 
@@ -74,7 +65,6 @@ class DashBoardList extends StatelessWidget {
         buildWhen: (prev, curr){
           return curr.entries.isNotEmpty;
         },
-        // ignore: missing_return,
         builder: (context, state) {
           if (state is ShowDashboardEntries) {
             var builder = ListView.builder(
@@ -83,7 +73,7 @@ class DashBoardList extends StatelessWidget {
                 padding: EdgeInsets.all(10.0),
                 itemCount: state.entries.length,
                 itemBuilder: (context, index) {
-                  var color;
+                  Color color;
                   if (state.entries[index].missionResult == MissionResultType.success){
                     color = Colors.green;
                   }
@@ -130,22 +120,11 @@ class DashBoardList extends StatelessWidget {
             return display;
           }
           else {
-            return Text("OK");
+            return Text("Unrecognized state");
           }
         },
         listener: (BuildContext context, state) {
-          /*
-          var text;
-          if (state is ShowDashboardEntries) {
-            text = "Display entries";
-          }
-          else if (state is ShowDashboardEntry) {
-            text = "Display entry";
-          }
-          return Scaffold.of(context).showSnackBar(
-              SnackBar(content: Text(text))
-          );
-           */
+
         },
 
       ),

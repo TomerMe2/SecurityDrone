@@ -32,7 +32,7 @@ class ThiefEntry{
   @override
   bool operator ==(Object other) {
     if (other is ThiefEntry){
-      return other.date == this.date && other.waypoint == this.waypoint;
+      return this.date.compareTo(other.date) == 0 && other.waypoint == this.waypoint;
     }
     return false;
   }

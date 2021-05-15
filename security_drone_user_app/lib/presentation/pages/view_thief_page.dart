@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:security_drone_user_app/logic/thief_page_bloc.dart';
 import 'package:security_drone_user_app/presentation/text_section.dart';
 
-import '../image_banner.dart';
 
 class ViewThiefPage extends StatefulWidget {
   @override
@@ -14,12 +13,10 @@ class ViewThiefPage extends StatefulWidget {
 }
 
 class ViewThiefPageState extends State<ViewThiefPage>{
+  ThiefPageBloc _bloc = ThiefPageBloc();
 
   @override
   Widget build(BuildContext context){
-    // ignore: close_sinks
-    ThiefPageBloc _bloc = ThiefPageBloc();
-
     return Scaffold(
       body: ThiefListClass(_bloc),
       floatingActionButton: Column(
@@ -37,42 +34,36 @@ class ViewThiefPageState extends State<ViewThiefPage>{
   }
 }
 
-// ignore: must_be_immutable
+
 class ThiefListClass extends StatelessWidget {
-  ThiefPageBloc _bloc;
+  final ThiefPageBloc _bloc;
 
   ThiefListClass(this._bloc);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Security Drone"),
-        actions: [
-          ImageBanner('assets/images/icon.jpg')
-        ],
-      ),
       body: ThiefList(_bloc),
     );
   }
 }
 
-// ignore: must_be_immutable
+
 class ThiefList extends StatelessWidget {
-  ThiefPageBloc _bloc;
+  final ThiefPageBloc _bloc;
 
   ThiefList(this._bloc);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: EdgeInsets.all(10.0),
       child: BlocConsumer<ThiefPageBloc, ThiefPageState>(
         cubit: _bloc,
-        buildWhen: (prev, curr){
+        buildWhen: (prev, curr) {
           return curr.entries.isNotEmpty;
         },
-        // ignore: missing_return,
+
         builder: (context, state) {
           if (state is ShowThiefEntries) {
             var builder = ListView.builder(
@@ -113,24 +104,11 @@ class ThiefList extends StatelessWidget {
               ],
             );
             return display;
-          }
-          else {
-            return Text("OK");
+          } else {
+            return Text("Unrecognized state");
           }
         },
         listener: (BuildContext context, state) {
-          /*
-          var text;
-          if (state is ShowThiefEntries) {
-            text = "Display entries";
-          }
-          else if (state is ShowThiefEntry) {
-            text = "Display entry";
-          }
-          return Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text(text))
-          );
-           */
         },
 
       ),

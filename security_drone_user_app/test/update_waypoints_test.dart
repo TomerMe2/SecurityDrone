@@ -18,7 +18,7 @@ void main() {
   var closePoint = LatLngPoint(point.lat + 0.00000001, point.lng);
   var farPoint = LatLngPoint(point.lat, point.lng + 0.01);
 
-  // say the we are testing
+  // say that we are testing
   debugTestingProd = 1;
 
   blocTest('Check add point',

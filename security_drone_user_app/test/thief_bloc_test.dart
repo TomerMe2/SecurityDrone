@@ -16,14 +16,14 @@ void main() {
   var point = LatLngPoint(35.12, 34.11);
   var entry = ThiefEntry(Image.asset("assets/images/thief.jpg"), DateTime.now(), point);
 
-  // say the we are testing
+  // say that we are testing
   debugTestingProd = 1;
   var index = 0;
 
   blocTest('Check clicked entry',
       build: () => ThiefPageBloc.test(entry),
       act: (bloc) => bloc.add(ThiefEntryClicked(index)),
-      expect: [ShowThiefEntry([entry],index)]
+      expect: [ShowThiefEntry([entry], index)]
   );
 
   blocTest('Check refresh entries',

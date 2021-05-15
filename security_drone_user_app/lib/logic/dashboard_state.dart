@@ -2,7 +2,7 @@ part of 'dashboard_bloc.dart';
 
 
 @immutable
-abstract class DashboardState extends Equatable  {
+abstract class DashboardState extends Equatable {
   final List<DashBoardEntry> entries;
 
 

@@ -2,10 +2,13 @@
 import 'package:flutter/cupertino.dart';
 import 'dart:math';
 
+
+
 @immutable
 class LatLngPoint {
   final double lat;
   final double lng;
+
 
   LatLngPoint(this.lat, this.lng);
 
@@ -27,9 +30,13 @@ class LatLngPoint {
     return "latitude: ${lat.toString()} longitude: ${lng.toString()}";
   }
   @override
-  bool operator ==(Object other) {
+  bool operator == (Object other) {
+    const double EPSILON = 0.001;
+
     if (other is LatLngPoint){
-      return other.lat == this.lat && other.lng == this.lng;
+      var lat = other.lat - this.lat;
+      var lng = other.lng - this.lng;
+      return lat.abs() < EPSILON && lng.abs() < EPSILON;
     }
     return false;
   }

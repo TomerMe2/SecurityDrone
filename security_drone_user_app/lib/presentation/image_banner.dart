@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class ImageBanner extends StatelessWidget {
   final String _path;
-
-  ImageBanner(this._path);
+  double height;
+  double width;
+  ImageBanner(this._path, {this.width = 100.0, this.height=100.0});
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +12,8 @@ class ImageBanner extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
       children: [Container(
       constraints: BoxConstraints.expand(
-        height: 100.0,
-        width: 100.0
+        height: this.height,
+        width: this.width
       ),
       decoration: BoxDecoration(
         color: Colors.grey
