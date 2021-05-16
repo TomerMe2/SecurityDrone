@@ -18,7 +18,7 @@ class ThiefPageBloc extends Bloc<ThiefPageEvent, ThiefPageState> {
   @override
   Stream<ThiefPageState> mapEventToState(ThiefPageEvent event) async* {
 
-    if (event is ThiefEntryClicked){
+    if (event is ThiefEntryClicked) {
       yield ShowThiefEntry(state.entries, event.clickedOn);
     }
     else if (event is RefreshThiefEntries) {

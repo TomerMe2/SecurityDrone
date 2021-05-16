@@ -14,7 +14,7 @@ class SubActivity{
 
   @override
   bool operator ==(Object other) {
-    if (other is SubActivity){
+    if (other is SubActivity) {
       return this.type == other.type
           && this.date.compareTo(other.date) == 0
           && this.location == other.location;

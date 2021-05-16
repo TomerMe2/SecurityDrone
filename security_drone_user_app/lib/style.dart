@@ -8,7 +8,7 @@ const String FontNameDefault = 'Montserrat';
 
 const AppBarTextStyle = TextStyle(
   fontFamily: FontNameDefault,
-  fontWeight: FontWeight.w300,
+  fontWeight: FontWeight.w700,
   fontSize: MEDIUM_TEXT_SIZE,
   color: Colors.white,
 );

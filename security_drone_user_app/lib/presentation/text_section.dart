@@ -30,7 +30,6 @@ class TextSection extends StatelessWidget {
           ),
         ),
         ],
-
     );
   }
 }

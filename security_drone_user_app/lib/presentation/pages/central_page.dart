@@ -3,15 +3,14 @@ import 'package:security_drone_user_app/presentation/pages/patrol_set_page.dart'
 import 'package:security_drone_user_app/presentation/pages/view_thief_page.dart';
 import 'package:security_drone_user_app/presentation/pages/dashboard_page.dart';
 import 'package:security_drone_user_app/presentation/pages/info_page.dart';
-import '../image_banner.dart';
+import '../../style.dart';
 
 
-class CentralPage extends StatefulWidget{
+class CentralPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return CentralPageState();
   }
-
 }
 
 class CentralPageState extends State<CentralPage> with SingleTickerProviderStateMixin {
@@ -39,9 +38,9 @@ class CentralPageState extends State<CentralPage> with SingleTickerProviderState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Security Drone"),
+        title: Text("Security Drone", style: AppBarTextStyle),
         actions: [
-          ImageBanner('assets/images/icon.jpg')
+          Image.asset('assets/images/icon.jpg')
         ],
         bottom: TabBar(
           controller: this._controller,

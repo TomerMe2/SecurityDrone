@@ -44,5 +44,4 @@ class LatLngPoint {
   @override
   int get hashCode => super.hashCode;
 
-
 }

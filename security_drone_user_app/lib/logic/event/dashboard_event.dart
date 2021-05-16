@@ -10,9 +10,9 @@ class DashboardEntryClicked extends DashboardEvent {
   DashboardEntryClicked(this.clickedOn);
 }
 
-class RefreshDashboardEntries extends DashboardEvent{}
+class RefreshDashboardEntries extends DashboardEvent {}
 
-class DisplayDashboardEntries extends DashboardEvent{}
+class DisplayDashboardEntries extends DashboardEvent {}
 
 
 

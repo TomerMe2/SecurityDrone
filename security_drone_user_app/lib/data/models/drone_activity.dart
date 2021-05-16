@@ -9,7 +9,7 @@ class DroneActivity{
   String toString() {
     var str = "";
 
-    for(int i=0; i < activities.length; i++){
+    for(int i=0; i < activities.length; i++) {
       str += "Sub-Activity-${i.toString()} : \n" + activities[i].toString() + "\n";
     }
     return str;
@@ -18,16 +18,15 @@ class DroneActivity{
   @override
   bool operator ==(Object other) {
     if (other is DroneActivity) {
-      if (other.activities.length != this.activities.length){
+      if (other.activities.length != this.activities.length) {
         return false;
       }
 
-      for (int i = 0; i < this.activities.length; i++){
-        if(this.activities[i] != (other.activities[i])){
+      for (int i = 0; i < this.activities.length; i++) {
+        if(this.activities[i] != (other.activities[i])) {
           return false;
         }
       }
-
       return true;
     }
     return false;

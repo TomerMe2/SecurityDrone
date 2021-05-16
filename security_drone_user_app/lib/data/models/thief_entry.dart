@@ -9,11 +9,11 @@ class ThiefEntry{
 
   ThiefEntry(this.image, this.date, this.waypoint);
 
-  static ThiefEntry dummyFetch(){
+  static ThiefEntry dummyFetch() {
     return ThiefEntry(Image.asset('assets/images/thief.jpg',fit: BoxFit.contain), DateTime.parse("1999-01-12"), LatLngPoint(10.0, 10.0));
   }
 
-  static List<ThiefEntry> dummyFetchAll(){
+  static List<ThiefEntry> dummyFetchAll() {
     return [
       ThiefEntry(Image.asset('assets/images/thief.jpg',fit: BoxFit.contain), DateTime.parse("1999-01-12"), LatLngPoint(10.0, 10.0)),
       ThiefEntry(Image.asset('assets/images/thief.jpg',fit: BoxFit.contain), DateTime.parse("1999-01-12"), LatLngPoint(11.0, 11.0)),
@@ -31,7 +31,7 @@ class ThiefEntry{
 
   @override
   bool operator ==(Object other) {
-    if (other is ThiefEntry){
+    if (other is ThiefEntry) {
       return this.date.compareTo(other.date) == 0 && other.waypoint == this.waypoint;
     }
     return false;

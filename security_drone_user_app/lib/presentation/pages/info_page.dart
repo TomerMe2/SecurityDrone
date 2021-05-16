@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:security_drone_user_app/presentation/text_section.dart';
 
-class InfoPage extends StatefulWidget{
+class InfoPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return InfoPageState();
   }
 }
 
-class InfoPageState extends State<InfoPage>{
+class InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,5 +31,4 @@ class InfoPageState extends State<InfoPage>{
       ),
     );
   }
-
 }

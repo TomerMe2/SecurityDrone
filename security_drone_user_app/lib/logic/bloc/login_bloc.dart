@@ -14,7 +14,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
 
-    if (event is PressedLoginButtonEvent){
+    if (event is PressedLoginButtonEvent) {
       //TODO; add proper authentication
       if (dummyAuthenticate(event.username, event.password)) {
         yield LoginSuccessful();
@@ -24,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield LoginUninitialized();
       }
     }
-    else if (event is DisplayLoginPage){
+    else if (event is DisplayLoginPage) {
       yield LoginUninitialized();
     }
     else {
@@ -32,7 +32,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  bool dummyAuthenticate(String username, String password){
+  bool dummyAuthenticate(String username, String password) {
     return username.length > 3 && password.length > 3;
   }
 }

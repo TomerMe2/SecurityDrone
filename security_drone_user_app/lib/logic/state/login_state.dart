@@ -11,7 +11,7 @@ abstract class LoginState extends Equatable {
 
 class LoginSuccessful extends LoginState {}
 
-class LoginDenied extends LoginState{}
+class LoginDenied extends LoginState {}
 
 class LoginUninitialized extends LoginState {}
 

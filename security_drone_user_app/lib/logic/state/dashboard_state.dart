@@ -5,21 +5,18 @@ part of '../bloc/dashboard_bloc.dart';
 abstract class DashboardState extends Equatable {
   final List<DashBoardEntry> entries;
 
-
   DashboardState(this.entries);
 
   @override
   List<Object> get props => [entries];
 }
 
-//TODO; not sure what states to add
-class ShowDashboardEntry extends DashboardState{
+class ShowDashboardEntry extends DashboardState {
   final int focusedIndex;
 
   ShowDashboardEntry(List<DashBoardEntry> entries, this.focusedIndex) : super(entries);
 
   @override
-  // TODO: implement props
   List<Object> get props => super.props + [focusedIndex];
 }
 

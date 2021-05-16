@@ -3,7 +3,7 @@ part of '../bloc/patrol_map_bloc.dart';
 
 
 @immutable
-abstract class PatrolMapState extends Equatable  {
+abstract class PatrolMapState extends Equatable {
   final List<LatLngPoint> points;
 
   PatrolMapState(this.points);
@@ -29,7 +29,6 @@ class WantApprovalForDeletion extends PatrolMapState {
 
 
 class SendingDataToServer extends PatrolMapState {
-
   SendingDataToServer(List<LatLngPoint> points) : super(points);
 }
 

@@ -11,7 +11,7 @@ class ThiefPage extends StatefulWidget {
   }
 }
 
-class ViewThiefPageState extends State<ThiefPage>{
+class ViewThiefPageState extends State<ThiefPage> {
   ThiefPageBloc _bloc = ThiefPageBloc();
 
   @override
@@ -21,7 +21,7 @@ class ViewThiefPageState extends State<ThiefPage>{
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Container(
       child: ThiefList(_bloc),
     );
@@ -42,7 +42,6 @@ class ThiefList extends StatelessWidget {
         buildWhen: (prev, curr) {
           return curr.entries.isNotEmpty;
         },
-
         builder: (context, state) {
           if (state is ShowThiefEntries) {
             var button = TextButton(
@@ -74,7 +73,7 @@ class ThiefList extends StatelessWidget {
               ],
             );
           }
-          else if (state is ShowThiefEntry){
+          else if (state is ShowThiefEntry) {
             var index = state.focusedIndex;
             var display = Column(
               children: [
@@ -98,9 +97,7 @@ class ThiefList extends StatelessWidget {
             return Text("Unrecognized state");
           }
         },
-        listener: (BuildContext context, state) {
-        },
-
+        listener: (BuildContext context, state) {},
       ),
     );
   }

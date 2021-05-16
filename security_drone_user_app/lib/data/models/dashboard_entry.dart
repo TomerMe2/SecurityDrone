@@ -42,7 +42,7 @@ class DashBoardEntry {
   @override
   String toString() {
     var abort = "";
-    if (abortReason != ""){
+    if (abortReason != "") {
       abort = "Abort reason: " + abortReason.toString();
     }
 
@@ -54,7 +54,7 @@ class DashBoardEntry {
     + abort;
   }
 
-  String entryMinimalDescription(){
+  String entryMinimalDescription() {
     return "Start time: " + startTime.toString() + "\n"
         + "End time: " + endTime.toString()  + "\n"
         + "Result: "+ missionResult.toString().split(".").last + "\n";
@@ -62,7 +62,7 @@ class DashBoardEntry {
 
   @override
   bool operator ==(Object other) {
-    if (other is DashBoardEntry){
+    if (other is DashBoardEntry) {
       return this.startTime.compareTo(other.startTime) == 0
         && this.endTime.compareTo(other.endTime) == 0
         && this.abortReason.compareTo(other.abortReason) == 0
@@ -75,7 +75,6 @@ class DashBoardEntry {
 
   @override
   int get hashCode => super.hashCode;
-
 }
 
 enum MissionResultType {success, fail, ongoing}

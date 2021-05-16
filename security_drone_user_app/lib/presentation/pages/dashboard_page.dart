@@ -12,7 +12,7 @@ class DashboardPage extends StatefulWidget {
   }
 }
 
-class DashboardPageState extends State<DashboardPage>{
+class DashboardPageState extends State<DashboardPage> {
   DashboardBloc _bloc = DashboardBloc();
 
   @override
@@ -22,7 +22,7 @@ class DashboardPageState extends State<DashboardPage>{
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Container(
       child: DashBoardList(_bloc),
     );
@@ -35,12 +35,12 @@ class DashBoardList extends StatelessWidget {
   DashBoardList(this._bloc);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: EdgeInsets.all(10.0),
       child: BlocConsumer<DashboardBloc, DashboardState>(
         cubit: _bloc,
-        buildWhen: (prev, curr){
+        buildWhen: (prev, curr) {
           return curr.entries.isNotEmpty;
         },
         builder: (context, state) {
@@ -58,13 +58,13 @@ class DashBoardList extends StatelessWidget {
                 itemCount: state.entries.length,
                 itemBuilder: (context, index) {
                   Color color;
-                  if (state.entries[index].missionResult == MissionResultType.success){
+                  if (state.entries[index].missionResult == MissionResultType.success) {
                     color = Colors.green;
                   }
-                  else if (state.entries[index].missionResult == MissionResultType.fail){
+                  else if (state.entries[index].missionResult == MissionResultType.fail) {
                     color = Colors.red;
                   }
-                  else if (state.entries[index].missionResult == MissionResultType.ongoing){
+                  else if (state.entries[index].missionResult == MissionResultType.ongoing) {
                     color = Colors.orange;
                   }
                   else {
@@ -91,7 +91,7 @@ class DashBoardList extends StatelessWidget {
               ],
             );
           }
-          else if (state is ShowDashboardEntry){
+          else if (state is ShowDashboardEntry) {
             var index = state.focusedIndex;
             var display = Column(
               children: [
@@ -117,28 +117,28 @@ class DashBoardList extends StatelessWidget {
         },
         listenWhen: (prev, curr) {
           // return true only for new ongoing mission
-          for (int i = 0; i < prev.entries.length; i++){
-            if (prev.entries[i].missionResult == MissionResultType.ongoing){
+          for (int i = 0; i < prev.entries.length; i++) {
+            if (prev.entries[i].missionResult == MissionResultType.ongoing) {
               return false;
             }
           }
-          for (int i = 0; i < curr.entries.length; i++){
-            if(curr.entries[i].missionResult == MissionResultType.ongoing){
+          for (int i = 0; i < curr.entries.length; i++) {
+            if(curr.entries[i].missionResult == MissionResultType.ongoing) {
               return true;
             }
           }
           return false;
         },
         listener: (BuildContext context, state) {
-          for (int i = 0; i < state.entries.length; i++){
-            if (state.entries[i].missionResult == MissionResultType.ongoing){
+          for (int i = 0; i < state.entries.length; i++) {
+            if (state.entries[i].missionResult == MissionResultType.ongoing) {
               return showDialog(
                   context: context,
-                  builder: (BuildContext context){
+                  builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text("Drone is currently on a mission"),
                       actions: [
-                        TextButton(onPressed: () => {Navigator.of(context).pop()}, child: Text("Ok")),
+                        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text("Ok")),
                         TextButton(onPressed: () => {
                           Navigator.of(context).pop(),
                           _bloc.add(DashboardEntryClicked(i)),

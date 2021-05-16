@@ -5,14 +5,14 @@ import 'package:security_drone_user_app/presentation/pages/central_page.dart';
 
 import '../../style.dart';
 
-class LoginPage extends StatefulWidget{
+class LoginPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return LoginPageState();
   }
 }
 
-class LoginPageState extends State<LoginPage>{
+class LoginPageState extends State<LoginPage> {
   LoginBloc _bloc = LoginBloc();
   TextEditingController _username = TextEditingController();
   TextEditingController _password = TextEditingController();
@@ -109,7 +109,7 @@ class LoginPageState extends State<LoginPage>{
           return loginPage;
         },
         listenWhen: (prev, curr) {
-          if (curr is LoginDenied){
+          if (curr is LoginDenied) {
             return true;
           }
           return false;
@@ -117,11 +117,11 @@ class LoginPageState extends State<LoginPage>{
         listener: (prev, curr) {
           return showDialog(
               context: context,
-              builder: (BuildContext context){
+              builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text("Login failed"),
                   actions: [
-                    TextButton(onPressed: () => {Navigator.of(context).pop()}, child: Text("Ok")),
+                    TextButton(onPressed: () => Navigator.of(context).pop(), child: Text("Ok")),
                   ],
                 );
               }
@@ -129,5 +129,4 @@ class LoginPageState extends State<LoginPage>{
         }
     );
   }
-
 }
