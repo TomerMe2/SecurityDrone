@@ -40,11 +40,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
-  var routes = <String, Widget>{
+  Map<String, Widget> routes = <String, Widget>{
     'Patrol Page': PatrolSetPage(),
     'Thief Page' : ViewThiefPage(),
     'Dashboard Page' : DashboardPage()
   };
+
 
   TabController _controller;
 
@@ -72,13 +73,13 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
           controller: _controller,
           tabs: <Widget>[
             Tab(
-              text: 'Dashboard page',
+              text: 'Dashboard\npage',
             ),
             Tab(
-              text: 'thief page',
+              text: 'thief\npage',
             ),
             Tab(
-              text: 'Patrol page',
+              text: 'Patrol\npage',
             )
           ],
         ),

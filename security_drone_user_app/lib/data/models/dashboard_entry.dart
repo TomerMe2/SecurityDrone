@@ -35,7 +35,7 @@ class DashBoardEntry {
       DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
       DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
       DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
-      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
+      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.ongoing, "trigger", ""),
     ];
   }
 
@@ -78,4 +78,4 @@ class DashBoardEntry {
 
 }
 
-enum MissionResultType {success, fail}
+enum MissionResultType {success, fail, ongoing}

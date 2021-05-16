@@ -65,6 +65,9 @@ class DashBoardList extends StatelessWidget {
                   else if (state.entries[index].missionResult == MissionResultType.fail){
                     color = Colors.red;
                   }
+                  else if (state.entries[index].missionResult == MissionResultType.ongoing){
+                    color = Colors.orange;
+                  }
                   else {
                     color = Colors.grey;
                   }
@@ -113,8 +116,40 @@ class DashBoardList extends StatelessWidget {
             return Text("Unrecognized state");
           }
         },
+        listenWhen: (prev, curr) {
+          // return true only for new ongoing mission
+          for (int i = 0; i < prev.entries.length; i++){
+            if (prev.entries[i].missionResult == MissionResultType.ongoing){
+              return false;
+            }
+          }
+          for (int i = 0; i < curr.entries.length; i++){
+            if(curr.entries[i].missionResult == MissionResultType.ongoing){
+              return true;
+            }
+          }
+          return false;
+        },
         listener: (BuildContext context, state) {
-
+          for (int i = 0; i < state.entries.length; i++){
+            if (state.entries[i].missionResult == MissionResultType.ongoing){
+              return showDialog(
+                  context: context,
+                  builder: (BuildContext context){
+                    return AlertDialog(
+                      title: Text("Drone is currently on a mission"),
+                      actions: [
+                        TextButton(onPressed: () => {Navigator.of(context).pop()}, child: Text("Ok")),
+                        TextButton(onPressed: () => {
+                          Navigator.of(context).pop(),
+                          _bloc.add(DashboardEntryClicked(i)),
+                          }, child: Text("View"))
+                      ],
+                    );
+                  }
+              );
+            }
+          }
         },
 
       ),
