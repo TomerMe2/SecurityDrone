@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:security_drone_user_app/presentation/image_banner.dart';
 import 'package:security_drone_user_app/presentation/pages/dashboard_page.dart';
+import 'package:security_drone_user_app/presentation/pages/info_page.dart';
 import 'package:security_drone_user_app/presentation/pages/patrol_set_page.dart';
 import 'package:security_drone_user_app/presentation/pages/view_thief_page.dart';
 import 'style.dart';
@@ -40,19 +41,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
-  Map<String, Widget> routes = <String, Widget>{
-    'Patrol Page': PatrolSetPage(),
-    'Thief Page' : ViewThiefPage(),
-    'Dashboard Page' : DashboardPage()
-  };
-
-
+  final List<Widget> _pages = [
+    InfoPage(),
+    DashboardPage(),
+    ThiefPage(),
+    PatrolSetPage()
+  ];
   TabController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = new TabController(vsync: this, length: routes.length);
+    _controller = new TabController(vsync: this, length: this._pages.length);
   }
 
   @override
@@ -70,8 +70,11 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
           ImageBanner('assets/images/icon.jpg')
         ],
         bottom: TabBar(
-          controller: _controller,
+          controller: this._controller,
           tabs: <Widget>[
+            Tab(
+              text: 'Info\npage',
+            ),
             Tab(
               text: 'Dashboard\npage',
             ),
@@ -85,12 +88,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         ),
       ),
       body: TabBarView(
-        controller: _controller,
-          children: [
-            routes['Dashboard Page'],
-            routes['Thief Page'],
-            routes['Patrol Page']
-          ],
+        controller: this._controller,
+          children: this._pages,
       ),
 
     );
