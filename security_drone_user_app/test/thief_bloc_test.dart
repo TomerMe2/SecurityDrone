@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:security_drone_user_app/config.dart';
 import 'package:security_drone_user_app/data/models/lat_lng_point.dart';
 import 'package:security_drone_user_app/data/models/thief_entry.dart';
-import 'package:security_drone_user_app/logic/thief_page_bloc.dart';
+import 'package:security_drone_user_app/logic/bloc/thief_page_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'dart:io';
 

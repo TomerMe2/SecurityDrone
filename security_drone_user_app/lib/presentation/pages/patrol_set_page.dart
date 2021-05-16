@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:security_drone_user_app/data/models/lat_lng_point.dart';
-import 'package:security_drone_user_app/logic/patrol_map_bloc.dart';
+import 'package:security_drone_user_app/logic/bloc/patrol_map_bloc.dart';
 
 class PatrolSetPage extends StatefulWidget {
   @override
