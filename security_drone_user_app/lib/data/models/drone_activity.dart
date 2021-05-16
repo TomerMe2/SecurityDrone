@@ -7,7 +7,6 @@ class DroneActivity{
 
   @override
   String toString() {
-    // TODO: implement toString; what is interesting to present to the user?
     var str = "";
 
     for(int i=0; i < activities.length; i++){
@@ -15,5 +14,27 @@ class DroneActivity{
     }
     return str;
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is DroneActivity) {
+      if (other.activities.length != this.activities.length){
+        return false;
+      }
+
+      for (int i = 0; i < this.activities.length; i++){
+        if(this.activities[i] != (other.activities[i])){
+          return false;
+        }
+      }
+
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => super.hashCode;
+
 }
 

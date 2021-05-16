@@ -247,3 +247,5 @@ dmypy.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm
 server/.idea/
+security_drone_user_app/android/app/src/main/AndroidManifest.xml
+security_drone_user_app/test/communication_output.txt

@@ -22,7 +22,9 @@ class ViewThiefPageState extends State<ViewThiefPage>{
 
   @override
   Widget build(BuildContext context){
-    return ThiefList(_bloc);
+    return Container(
+      child: ThiefList(_bloc),
+    );
   }
 }
 

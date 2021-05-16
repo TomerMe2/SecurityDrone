@@ -24,7 +24,9 @@ class DashboardPageState extends State<DashboardPage>{
 
   @override
   Widget build(BuildContext context){
-    return DashBoardList(_bloc);
+    return Container(
+      child: DashBoardList(_bloc),
+    );
   }
 }
 

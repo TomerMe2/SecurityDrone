@@ -20,7 +20,7 @@ class DashBoardEntry {
       SubActivity(DroneActivityType.pursue, DateTime.parse("1999-01-12"), LatLngPoint(10,10))
     ];
     DroneActivity droneActivity = DroneActivity(subActivities);
-    return DashBoardEntry(droneActivity,DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.success, 'clock trigger', '');
+    return DashBoardEntry(droneActivity,DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.success, 'clock trigger', '');
   }
 
   static List<DashBoardEntry> dummyFetchAll() {
@@ -30,12 +30,12 @@ class DashBoardEntry {
     ];
     DroneActivity droneActivity = DroneActivity(subActivities);
     return [
-      DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.success, "trigger", ""),
-      DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.success, "trigger", ""),
-      DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
-      DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
-      DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
-      DashBoardEntry(droneActivity, DateTime.now(), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
+      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.success, "trigger", ""),
+      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.success, "trigger", ""),
+      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
+      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
+      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
+      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
     ];
   }
 
@@ -59,6 +59,23 @@ class DashBoardEntry {
         + "End time: " + endTime.toString()  + "\n"
         + "Result: "+ missionResult.toString().split(".").last + "\n";
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is DashBoardEntry){
+      return this.startTime.compareTo(other.startTime) == 0
+        && this.endTime.compareTo(other.endTime) == 0
+        && this.abortReason.compareTo(other.abortReason) == 0
+        && this.startReason.compareTo(other.startReason) == 0
+        && this.missionResult == other.missionResult
+        && this.activity == other.activity;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => super.hashCode;
+
 }
 
 enum MissionResultType {success, fail}

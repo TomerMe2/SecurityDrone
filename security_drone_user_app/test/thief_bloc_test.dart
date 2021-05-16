@@ -4,12 +4,6 @@ import 'package:security_drone_user_app/data/models/lat_lng_point.dart';
 import 'package:security_drone_user_app/data/models/thief_entry.dart';
 import 'package:security_drone_user_app/logic/bloc/thief_page_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'dart:io';
-
-void cleanFile() {
-  final file = new File(testsOutputFile);
-  file.writeAsStringSync('');
-}
 
 void main() {
 
