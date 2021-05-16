@@ -5,8 +5,9 @@ class TextSection extends StatelessWidget {
   final String _title;
   final String _body;
   static const double _PADDING = 16.0;
+  final double height;
 
-  TextSection(this._title, this._body);
+  TextSection(this._title, this._body,{this.height = 100.0});
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +18,19 @@ class TextSection extends StatelessWidget {
         Container(
           padding: const EdgeInsets.fromLTRB(_PADDING, 32.0, _PADDING, 4.0),
           child: Text(_title, style: TitleTextStyle),
+          constraints: BoxConstraints(
+            maxHeight: this.height,
+          ),
         ),
         Container(
           padding: const EdgeInsets.fromLTRB(_PADDING, _PADDING, _PADDING, _PADDING),
-          child: Text(_body, style: Body1TextStyle)
+          child: Text(_body, style: Body1TextStyle),
+          constraints: BoxConstraints(
+            maxHeight: this.height,
+          ),
         ),
         ],
+
     );
   }
 }

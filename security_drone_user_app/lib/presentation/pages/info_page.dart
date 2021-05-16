@@ -19,11 +19,15 @@ class InfoPageState extends State<InfoPage>{
           TextSection("Project vision:", "Provide security using a drone and AI.\n"
               + "Provide more time for our user to react to intrusions.\n"
               + "More specifically, give the user enough information about an intrusion to react quickly,\n"
-              + "and the ability to track the thief and have liable documentation of the crime."
+              + "and the ability to track the thief and have liable documentation of the crime.",
+            height: 150.0,
           ),
-          TextSection("Dveloper Team:", "Daniel Katz\nTomer laor\nShahar cohen hadad"),
-
+          TextSection("Developer Team:", "Daniel Katz\nTomer Laor\nShahar Cohen Hadad"),
         ],
+      ),
+      constraints: BoxConstraints(
+        maxHeight: 100.0,
+        maxWidth: 100.0
       ),
     );
   }
