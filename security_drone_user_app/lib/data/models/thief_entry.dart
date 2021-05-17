@@ -42,7 +42,6 @@ class ThiefEntry{
   }
 
   @override
-  // TODO: implement hashCode
   int get hashCode => super.hashCode;
 
 }
