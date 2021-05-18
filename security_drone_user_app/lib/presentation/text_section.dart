@@ -4,7 +4,7 @@ import 'package:security_drone_user_app/style.dart';
 class TextSection extends StatelessWidget {
   final String _title;
   final String _body;
-  static const double _PADDING = 16.0;
+  static const double _PADDING = 10.0;
   final double height;
 
   TextSection(this._title, this._body,{this.height = 100.0});
@@ -16,7 +16,7 @@ class TextSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(_PADDING, 32.0, _PADDING, 4.0),
+          padding: const EdgeInsets.fromLTRB(_PADDING, 20.0, _PADDING, 4.0),
           child: Text(_title, style: TitleTextStyle),
           constraints: BoxConstraints(
             maxHeight: this.height,
@@ -32,6 +32,7 @@ class TextSection extends StatelessWidget {
             maxHeight: this.height,
           ),
         ),
+
         ],
     );
   }
