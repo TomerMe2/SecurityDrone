@@ -22,6 +22,9 @@ class TextSection extends StatelessWidget {
             maxHeight: this.height,
           ),
         ),
+        Divider(
+          height: 5.0, thickness: 5.0, indent: 10.0, endIndent: 10, color: Colors.black38,
+        ),
         Container(
           padding: const EdgeInsets.fromLTRB(_PADDING, _PADDING, _PADDING, _PADDING),
           child: Text(_body, style: Body1TextStyle),
