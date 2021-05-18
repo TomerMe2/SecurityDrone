@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:security_drone_user_app/data/models/dashboard_entry.dart';
 import 'package:security_drone_user_app/logic/bloc/dashboard_bloc.dart';
-import 'package:security_drone_user_app/presentation/text_section.dart';
 import 'package:security_drone_user_app/style.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -36,8 +37,36 @@ class DashBoardList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Widget displayDashboardEntry(DashBoardEntry entry, int index){
+
+      List <Widget> endReason = [];
+      if (entry != null && entry.abortReason != "") {
+        endReason.add(Text("Abort reason: ${entry.abortReason}"));
+      }
+
+      return Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(index.toString()),
+            SizedBox(width: 20.0),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Start date: ${DateFormat.yMd().add_jm().format(entry.startTime)}"),
+                Text("End date: ${DateFormat.yMd().add_jm().format(entry.endTime)}"),
+                Text("Start reason: ${entry.startReason}"),
+              ] + endReason,
+            )
+          ]
+        )
+      );
+    }
+
     return SingleChildScrollView(
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(2.0),
       child: BlocConsumer<DashboardBloc, DashboardState>(
         cubit: _bloc,
         buildWhen: (prev, curr) {
@@ -54,7 +83,7 @@ class DashBoardList extends StatelessWidget {
             var builder = ListView.builder(
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(2.0),
                 itemCount: state.entries.length,
                 itemBuilder: (context, index) {
                   Color color;
@@ -71,14 +100,11 @@ class DashBoardList extends StatelessWidget {
                     color = Colors.grey;
                   }
                   return Card(
+                    color: color,
                     child: ListTile(
                       tileColor: color,
                       contentPadding: EdgeInsets.symmetric(horizontal: 50),
-                      title: Text(
-                          state.entries[index].entryMinimalDescription(),
-                          style: Body1TextStyle
-                      ),
-                      subtitle: Text(index.toString()),
+                      title: displayDashboardEntry(state.entries[index], index),
                       onTap: () => _bloc.add(DashboardEntryClicked(index)),
                     ),
                   );
@@ -92,15 +118,59 @@ class DashBoardList extends StatelessWidget {
             );
           }
           else if (state is ShowDashboardEntry) {
-            var index = state.focusedIndex;
-            var display = Column(
+            int index = state.focusedIndex;
+            DashBoardEntry entry = state.entries[index];
+
+            List <Widget> info = [
+              Text("Start date: ${DateFormat.yMd().add_jm().format(entry.startTime)}"),
+              Text("End date: ${DateFormat.yMd().add_jm().format(entry.endTime)}"),
+              Text("Start reason: ${entry.startReason}"),
+              Text("Abort reason: ${entry.abortReason}"),
+              Text("Mission result: ${entry.missionResult.toString().split('.').last}"),
+              SizedBox(height: 10),
+              Text("Activity Log: ", style: Body1TextStyle),
+              Container(height: 1.0, color: Colors.black38)
+            ];
+
+            for (int i = 0 ; i < entry.activity.activities.length ; i++) {
+              info.add(Text("Sub activity ${i.toString()}:"));
+              info.add(Text("Type: ${entry.activity.activities[i].type}"));
+              info.add(Text("Time: ${DateFormat.jms().format(entry.activity.activities[i].date)}"));
+              info.add(Text("Latitude: ${entry.activity.activities[i].location.lat}"));
+              info.add(Text("Longitude: ${entry.activity.activities[i].location.lng}"));
+              info.add(SizedBox(height: 10.0));
+            }
+
+            var builder = ListView.builder(
+                physics: ScrollPhysics(),
+                shrinkWrap: true,
+                padding: EdgeInsets.all(2.0),
+                itemCount: 1,
+                itemBuilder: (context, _) {
+                  return Card(
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 50),
+                      title: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: info,
+                        ),
+                      ),
+                      onTap: () => _bloc.add(DashboardEntryClicked(index)),
+                    ),
+                  );
+                }
+            );
+
+            return Column(
               children: [
-                TextSection(
-                    "Action Full Desctiption:",
-                    state.entries[index].toString()
+                Text("Action Full Description:", style: TitleTextStyle),
+                Divider(
+                  height: 5.0, thickness: 5.0, indent: 10.0, endIndent: 10, color: Colors.black38,
                 ),
-                ElevatedButton(
-                    child: Icon(Icons.keyboard_return),
+                builder,
+                TextButton(
+                    child: Icon(Icons.keyboard_return, color: Colors.white),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.blue)
                     ),
@@ -109,7 +179,7 @@ class DashBoardList extends StatelessWidget {
                     ))
               ],
             );
-            return display;
+
           }
           else {
             return Text("Unrecognized state");

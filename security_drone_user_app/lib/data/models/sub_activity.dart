@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import 'lat_lng_point.dart';
 
 class SubActivity{
@@ -9,7 +11,7 @@ class SubActivity{
 
   @override
   String toString() {
-    return "Activity: ${type.toString().split('.').last} \nDate: ${date.toString()} \n${location.toString()} ";
+    return "Type:  ${type.toString().split('.').last}\nDate: ${DateFormat.jms().format(date)}\n${location.toString()}";
   }
 
   @override

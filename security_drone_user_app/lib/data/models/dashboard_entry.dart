@@ -17,6 +17,12 @@ class DashBoardEntry {
     List<SubActivity> subActivities = [
       SubActivity(DroneActivityType.fly, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
       SubActivity(DroneActivityType.land, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.pursue, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.pursue, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.pursue, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.pursue, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.pursue, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.pursue, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
       SubActivity(DroneActivityType.pursue, DateTime.parse("1999-01-12"), LatLngPoint(10,10))
     ];
     DroneActivity droneActivity = DroneActivity(subActivities);
@@ -26,6 +32,11 @@ class DashBoardEntry {
   static List<DashBoardEntry> dummyFetchAll() {
     List<SubActivity> subActivities = [
       SubActivity(DroneActivityType.fly, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.land, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.land, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.land, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.land, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.land, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
       SubActivity(DroneActivityType.land, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
     ];
     DroneActivity droneActivity = DroneActivity(subActivities);

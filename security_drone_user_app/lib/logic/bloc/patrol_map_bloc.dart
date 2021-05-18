@@ -21,7 +21,6 @@ class PatrolMapBloc extends Bloc<PatrolMapEvent, PatrolMapState> {
     if (event is PatrolMapPointClicked) {
       var newPoint = event.pointClickedOn;
 
-
       double closestDistance;
       LatLngPoint closestPoint;
 
