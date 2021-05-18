@@ -1,7 +1,7 @@
 import 'package:security_drone_user_app/config.dart';
 import 'dart:io';
 
-Future<bool> sendWaypoints(String toSend) async {
+Future<bool> send(String toSend) async {
 
   if (debugTestingProd == 0) {
     print(toSend);

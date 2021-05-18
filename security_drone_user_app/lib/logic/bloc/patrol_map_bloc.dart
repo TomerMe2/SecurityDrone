@@ -56,6 +56,7 @@ class PatrolMapBloc extends Bloc<PatrolMapEvent, PatrolMapState> {
 
     else if (event is DonePickingPoints) {
       yield(SendingDataToServer(state.points));
+      //TODO: add support for failed transmission operation
       await sendPatrolWaypoints(state.points);
       yield(DoneSendDataToServer(state.points));
     }

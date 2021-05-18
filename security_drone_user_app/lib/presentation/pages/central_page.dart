@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:security_drone_user_app/presentation/pages/home_set_page.dart';
+import 'package:security_drone_user_app/presentation/pages/mission_page.dart';
 import 'package:security_drone_user_app/presentation/pages/patrol_set_page.dart';
 import 'package:security_drone_user_app/presentation/pages/view_thief_page.dart';
 import 'package:security_drone_user_app/presentation/pages/dashboard_page.dart';
@@ -20,7 +21,8 @@ class CentralPageState extends State<CentralPage> with SingleTickerProviderState
     DashboardPage(),
     ThiefPage(),
     PatrolSetPage(),
-    HomeMapPage()
+    HomeMapPage(),
+    MissionPage()
   ];
   TabController _controller;
 
@@ -63,6 +65,9 @@ class CentralPageState extends State<CentralPage> with SingleTickerProviderState
             Tab(
               text: 'Home',
               icon: Icon(Icons.map),
+            ),
+            Tab(
+              text: 'mission',
             )
           ],
         ),

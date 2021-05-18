@@ -35,6 +35,7 @@ class HomeMapBloc extends Bloc<HomeMapEvent, HomeMapState> {
     }
     else if (event is DonePickingPoints) {
       yield(SendingDataToServer(state.point));
+      //TODO: add support for failed transmission operation
       await sendHomeWaypoint(state.point);
       yield(DoneSendDataToServer(state.point));
     }
