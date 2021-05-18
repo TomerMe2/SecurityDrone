@@ -48,19 +48,21 @@ class CentralPageState extends State<CentralPage> with SingleTickerProviderState
           controller: this._controller,
           tabs: <Widget>[
             Tab(
-              text: 'Info\npage',
+              icon: Icon(Icons.info),
             ),
             Tab(
-              text: 'Dashboard\npage',
+              icon: Icon(Icons.dashboard),
             ),
             Tab(
-              text: 'thief\npage',
+              icon: Icon(Icons.photo_library)
             ),
             Tab(
-              text: 'Patrol\npage',
+              text: 'Patrol',
+              icon: Icon(Icons.map),
             ),
             Tab(
-              text: 'HomeMap\npage',
+              text: 'Home',
+              icon: Icon(Icons.map),
             )
           ],
         ),
