@@ -19,7 +19,7 @@ class MissionPageState extends State<MissionPage> {
   @override
   Widget build(BuildContext context) {
 
-    Widget createButton(Function() func, String text){
+    Widget createButton(Function() func, String text) {
       return Material(
         elevation: 5.0,
         borderRadius: BorderRadius.circular(30.0),

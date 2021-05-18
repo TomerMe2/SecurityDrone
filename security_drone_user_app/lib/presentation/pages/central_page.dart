@@ -59,15 +59,15 @@ class CentralPageState extends State<CentralPage> with SingleTickerProviderState
               icon: Icon(Icons.photo_library)
             ),
             Tab(
-              text: 'Patrol',
-              icon: Icon(Icons.map),
+              icon: ImageIcon(
+                AssetImage('assets/images/route.png')
+              ),
             ),
             Tab(
-              text: 'Home',
-              icon: Icon(Icons.map),
+              icon: Icon(Icons.home),
             ),
             Tab(
-              text: 'mission',
+              icon: Icon(Icons.settings),
             )
           ],
         ),

@@ -86,9 +86,7 @@ class LoginPageState extends State<LoginPage> {
                 usernameField,
                 SizedBox(height: 25.0),
                 passwordField,
-                SizedBox(
-                  height: 35.0,
-                ),
+                SizedBox(height: 35.0),
                 loginButton,
                 SizedBox(
                   height: 15.0,
