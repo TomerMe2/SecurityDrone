@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:security_drone_user_app/logic/bloc/thief_page_bloc.dart';
-import 'package:security_drone_user_app/presentation/text_section.dart';
+
+import '../../style.dart';
 
 class ThiefPage extends StatefulWidget {
   @override
@@ -59,8 +61,11 @@ class ThiefList extends StatelessWidget {
                   return Card(
                     child: ListTile(
                       contentPadding: EdgeInsets.symmetric(horizontal: 50),
-                      title: state.entries[index].image,
-                      subtitle: Text(index.toString()),
+                      title: SizedBox(
+                        height: 400.0,
+                        width: 300.0,
+                        child: state.entries[index].image,
+                      ),
                       onTap: () => _bloc.add(ThiefEntryClicked(index)),
                     ),
                   );
@@ -77,10 +82,33 @@ class ThiefList extends StatelessWidget {
             var index = state.focusedIndex;
             var display = Column(
               children: [
-                state.entries[index].image,
-                TextSection(
-                  state.entries[index].date.toString(),
-                  state.entries[index].waypoint.toString()
+                SizedBox(
+                  width: 400.0,
+                  height: 400.0,
+                  child: state.entries[index].image,
+                ),
+                SizedBox(height: 10.0),
+                Divider(
+                  height: 5.0,
+                  thickness: 5.0,
+                  indent: 10.0,
+                  endIndent: 10,
+                  color: Colors.black38,
+                ),
+                SizedBox(height: 10.0),
+                Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Date taken:\n${DateFormat.yMd().add_jm().format(state.entries[index].date)}",
+                          style: TitleTextStyle),
+                      SizedBox(height: 7.0),
+                      Text("Latitude: ${state.entries[index].waypoint.lat}",
+                      style: Body1TextStyle),
+                      Text("Longitude: ${state.entries[index].waypoint.lng}",
+                      style: Body1TextStyle)
+                    ],
+                  ),
                 ),
                 ElevatedButton(
                     child: Icon(Icons.keyboard_return),
