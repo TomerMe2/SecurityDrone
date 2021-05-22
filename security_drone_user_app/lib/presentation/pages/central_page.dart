@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:security_drone_user_app/presentation/pages/home_set_page.dart';
 import 'package:security_drone_user_app/presentation/pages/mission_page.dart';
-import 'package:security_drone_user_app/presentation/pages/patrol_set_page.dart';
 import 'package:security_drone_user_app/presentation/pages/view_thief_page.dart';
 import 'package:security_drone_user_app/presentation/pages/dashboard_page.dart';
 import 'package:security_drone_user_app/presentation/pages/info_page.dart';
@@ -20,8 +18,6 @@ class CentralPageState extends State<CentralPage> with SingleTickerProviderState
     InfoPage(),
     DashboardPage(),
     ThiefPage(),
-    PatrolSetPage(),
-    HomeMapPage(),
     MissionPage()
   ];
   TabController _controller;
@@ -57,14 +53,6 @@ class CentralPageState extends State<CentralPage> with SingleTickerProviderState
             ),
             Tab(
               icon: Icon(Icons.photo_library)
-            ),
-            Tab(
-              icon: ImageIcon(
-                AssetImage('assets/images/route.png')
-              ),
-            ),
-            Tab(
-              icon: Icon(Icons.home),
             ),
             Tab(
               icon: Icon(Icons.settings),

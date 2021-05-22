@@ -101,29 +101,33 @@ class LoginPageState extends State<LoginPage> {
     return BlocConsumer <LoginBloc, LoginState>(
         cubit: _bloc,
         builder: (context, state) {
-          if (state is LoginSuccessful) {
-            return CentralPage();
-          }
+          //if (state is LoginSuccessful) {
+           // return ();
+          //}
           return loginPage;
         },
         listenWhen: (prev, curr) {
-          if (curr is LoginDenied) {
+          if (curr is LoginDenied || curr is LoginSuccessful) {
             return true;
           }
           return false;
         },
         listener: (prev, curr) {
-          return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Login failed"),
-                  actions: [
-                    TextButton(onPressed: () => Navigator.of(context).pop(), child: Text("Ok")),
-                  ],
-                );
-              }
-          );
+          if (curr is LoginDenied) {
+            return showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text("Login failed"),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.of(context).pop(), child: Text("Ok")),
+                    ],
+                  );
+                }
+            );
+          } else {
+            return Navigator.push(context, MaterialPageRoute(builder: (context) => CentralPage()));
+          }
         }
     );
   }

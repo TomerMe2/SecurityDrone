@@ -18,6 +18,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       //TODO; add proper authentication
       if (dummyAuthenticate(event.username, event.password)) {
         yield LoginSuccessful();
+        yield LoginUninitialized();
       }
       else {
         yield LoginDenied();
