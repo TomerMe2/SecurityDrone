@@ -24,9 +24,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield LoginUninitialized();
       }
     }
-    else if (event is DisplayLoginPage) {
-      yield LoginUninitialized();
-    }
     else {
       throw Exception("Event not found $event");
     }

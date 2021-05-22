@@ -12,7 +12,7 @@ class PressedLoginButtonEvent extends LoginEvent {
   PressedLoginButtonEvent(this.username, this.password);
 }
 
-class DisplayLoginPage extends LoginEvent {}
+
 
 
 
