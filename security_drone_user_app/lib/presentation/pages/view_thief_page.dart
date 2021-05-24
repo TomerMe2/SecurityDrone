@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:security_drone_user_app/data/models/lat_lng_point.dart';
 import 'package:security_drone_user_app/logic/bloc/thief_page_bloc.dart';
+import 'package:date_format/date_format.dart';
 
 import '../../style.dart';
 
@@ -37,6 +39,25 @@ class ThiefList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Widget mapOnPoint(LatLngPoint point) {
+      CameraPosition pointLoc = CameraPosition(
+          target: LatLng(point.lat, point.lng),
+          zoom: 17.4746);
+      Marker marker = Marker(
+          markerId: MarkerId('loc'),
+          position: LatLng(point.lat, point.lng));
+
+      return Align(
+          alignment: Alignment.bottomCenter,
+          child: GoogleMap(
+            mapType: MapType.satellite,
+            initialCameraPosition: pointLoc,
+            markers: {marker},
+          )
+      );
+    }
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(10.0),
       child: BlocConsumer<ThiefPageBloc, ThiefPageState>(
@@ -79,7 +100,8 @@ class ThiefList extends StatelessWidget {
             );
           }
           else if (state is ShowThiefEntry) {
-            var index = state.focusedIndex;
+            int index = state.focusedIndex;
+            String date = formatDate(state.entries[index].date, [dd, '/', mm, '/', yy, ' ', HH, ':', nn]);
             var display = Column(
               children: [
                 SizedBox(
@@ -98,15 +120,35 @@ class ThiefList extends StatelessWidget {
                 SizedBox(height: 10.0),
                 Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Date taken:\n${DateFormat.yMd().add_jm().format(state.entries[index].date)}",
+                      Text("Taken on $date",
                           style: TitleTextStyle),
                       SizedBox(height: 7.0),
-                      Text("Latitude: ${state.entries[index].waypoint.lat}",
-                      style: Body1TextStyle),
-                      Text("Longitude: ${state.entries[index].waypoint.lng}",
-                      style: Body1TextStyle)
+                      TextButton(
+                          child: Text("View location", style: TextStyle(color: Colors.white)),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.blue)
+                          ),
+                          onPressed: () => {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    backgroundColor: Colors.transparent,
+                                    insetPadding: EdgeInsets.all(10.0),
+                                    child: Stack(
+                                      clipBehavior: Clip.none,
+                                      alignment: Alignment.center,
+                                      children: [
+                                        mapOnPoint(state.entries[index].waypoint)
+                                      ],
+                                    ),
+                                  );
+                                }
+                            )
+                          }
+                      )
                     ],
                   ),
                 ),
