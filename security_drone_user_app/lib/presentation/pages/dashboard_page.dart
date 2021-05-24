@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:security_drone_user_app/data/models/dashboard_entry.dart';
+import 'package:security_drone_user_app/data/models/lat_lng_point.dart';
 import 'package:security_drone_user_app/logic/bloc/dashboard_bloc.dart';
 import 'package:security_drone_user_app/style.dart';
+import 'package:date_format/date_format.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -38,28 +40,46 @@ class DashBoardList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Widget displayDashboardEntry(DashBoardEntry entry, int index){
+    Widget mapOnPoint(LatLngPoint point) {
+      CameraPosition pointLoc = CameraPosition(
+        target: LatLng(point.lat, point.lng),
+        zoom: 17.4746);
+      Marker marker = Marker(
+          markerId: MarkerId('loc'),
+          position: LatLng(point.lat, point.lng));
 
-      List <Widget> endReason = [];
-      if (entry != null && entry.abortReason != "") {
-        endReason.add(Text("Abort reason: ${entry.abortReason}"));
+      return Align(
+        alignment: Alignment.bottomCenter,
+        child: GoogleMap(
+          mapType: MapType.satellite,
+          initialCameraPosition: pointLoc,
+          markers: {marker},
+        )
+      );
+    }
+
+    Widget displayDashboardEntry(DashBoardEntry entry) {
+
+      String endReason = "And ended as Expected.";
+      if (entry.missionResult == MissionResultType.fail) {
+        endReason = "Aborted because of ${entry.abortReason}.";
       }
+      else if (entry.missionResult == MissionResultType.ongoing) {
+        endReason = "Currently ongoing.";
+      }
+
+      String startDate = formatDate(entry.startTime, [dd, '/', mm, '/', yy, ' ', HH, ':', nn]);
+      String endDate = formatDate(entry.endTime, [dd, '/', mm, '/', yy, ' ', HH, ':', nn]);
 
       return Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(index.toString()),
-            SizedBox(width: 20.0),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Start date: ${DateFormat.yMd().add_jm().format(entry.startTime)}"),
-                Text("End date: ${DateFormat.yMd().add_jm().format(entry.endTime)}"),
-                Text("Start reason: ${entry.startReason}"),
-              ] + endReason,
-            )
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text("Mission duration from $startDate\n"
+                + "to $endDate.\n"
+                + "Started because of ${entry.startReason}.\n"
+                + endReason),
           ]
         )
       );
@@ -88,13 +108,13 @@ class DashBoardList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   Color color;
                   if (state.entries[index].missionResult == MissionResultType.success) {
-                    color = Colors.green;
+                    color = Colors.greenAccent;
                   }
                   else if (state.entries[index].missionResult == MissionResultType.fail) {
-                    color = Colors.red;
+                    color = Colors.redAccent;
                   }
                   else if (state.entries[index].missionResult == MissionResultType.ongoing) {
-                    color = Colors.orange;
+                    color = Colors.orangeAccent;
                   }
                   else {
                     color = Colors.grey;
@@ -103,8 +123,8 @@ class DashBoardList extends StatelessWidget {
                     color: color,
                     child: ListTile(
                       tileColor: color,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 50),
-                      title: displayDashboardEntry(state.entries[index], index),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 40),
+                      title: displayDashboardEntry(state.entries[index]),
                       onTap: () => _bloc.add(DashboardEntryClicked(index)),
                     ),
                   );
@@ -120,54 +140,62 @@ class DashBoardList extends StatelessWidget {
           else if (state is ShowDashboardEntry) {
             int index = state.focusedIndex;
             DashBoardEntry entry = state.entries[index];
-
-            List <Widget> info = [
-              Text("Start date: ${DateFormat.yMd().add_jm().format(entry.startTime)}"),
-              Text("End date: ${DateFormat.yMd().add_jm().format(entry.endTime)}"),
-              Text("Start reason: ${entry.startReason}"),
-              Text("Abort reason: ${entry.abortReason}"),
-              Text("Mission result: ${entry.missionResult.toString().split('.').last}"),
-              SizedBox(height: 10),
-              Text("Activity Log: ", style: Body1TextStyle),
-              Container(height: 1.0, color: Colors.black38)
-            ];
-
-            for (int i = 0 ; i < entry.activity.activities.length ; i++) {
-              info.add(Text("Sub activity ${i.toString()}:"));
-              info.add(Text("Type: ${entry.activity.activities[i].type}"));
-              info.add(Text("Time: ${DateFormat.jms().format(entry.activity.activities[i].date)}"));
-              info.add(Text("Latitude: ${entry.activity.activities[i].location.lat}"));
-              info.add(Text("Longitude: ${entry.activity.activities[i].location.lng}"));
-              info.add(SizedBox(height: 10.0));
-            }
-
-            var builder = ListView.builder(
+            Widget entryView = displayDashboardEntry(entry);
+            ListView builder = ListView.builder(
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
                 padding: EdgeInsets.all(2.0),
-                itemCount: 1,
-                itemBuilder: (context, _) {
+                itemCount: entry.activity.activities.length,
+                itemBuilder: (context, subIndex) {
+                  String date = formatDate(entry.activity.activities[subIndex].date, [dd, '/', mm, '/', yy, ' ', HH, ':', nn]);
                   return Card(
                     child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 50),
-                      title: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: info,
-                        ),
+                      leading: Text("${entry.activity.activities[subIndex].type.toString().split('.').last}"
+                          + " at $date"),
+                      trailing: TextButton(
+                          child: Text("View location", style: TextStyle(color: Colors.white)),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.blue)
+                          ),
+                          onPressed: () => {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    backgroundColor: Colors.transparent,
+                                    insetPadding: EdgeInsets.all(10.0),
+                                    child: Stack(
+                                      clipBehavior: Clip.none,
+                                      alignment: Alignment.center,
+                                      children: [
+                                        mapOnPoint(entry.activity.activities[subIndex].location)
+                                      ],
+                                    ),
+                                  );
+                                }
+                            )
+                          }
                       ),
-                      onTap: () => _bloc.add(DashboardEntryClicked(index)),
-                    ),
+                    )
                   );
                 }
             );
 
             return Column(
               children: [
-                Text("Action Full Description:", style: TitleTextStyle),
+                Text("Mission Full Description", style: TitleTextStyle),
                 Divider(
                   height: 5.0, thickness: 5.0, indent: 10.0, endIndent: 10, color: Colors.black38,
                 ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    SizedBox(width: 10),
+                    entryView
+                  ],
+                ),
+                SizedBox(height: 10),
+                Text("Mission log", style: Body1TextStyle),
                 builder,
                 TextButton(
                     child: Icon(Icons.keyboard_return, color: Colors.white),
@@ -176,7 +204,7 @@ class DashBoardList extends StatelessWidget {
                     ),
                     onPressed: () => _bloc.add(
                         DisplayDashboardEntries()
-                    ))
+                    )),
               ],
             );
 

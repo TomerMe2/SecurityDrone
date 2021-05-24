@@ -38,14 +38,18 @@ class DashBoardEntry {
       SubActivity(DroneActivityType.land, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
       SubActivity(DroneActivityType.land, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
       SubActivity(DroneActivityType.land, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.fly, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.fly, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.fly, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
+      SubActivity(DroneActivityType.fly, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
     ];
     DroneActivity droneActivity = DroneActivity(subActivities);
     return [
       DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.success, "trigger", ""),
       DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.success, "trigger", ""),
-      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
-      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
-      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", ""),
+      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", "user request"),
+      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", "low battery"),
+      DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.fail, "trigger", "high winds"),
       DashBoardEntry(droneActivity, DateTime.parse("1999-01-12"), DateTime.parse("1999-01-12"), MissionResultType.ongoing, "trigger", ""),
     ];
   }
