@@ -89,9 +89,9 @@ class HomeMapPageState extends State<HomeMapPage> {
 
           ),
             Align(
-                alignment: Alignment.topRight,
+                alignment: Alignment.bottomLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(right: 5),
+                  padding: EdgeInsets.only(left: 5),
                   child: TextButton(
                       onPressed: () {_bloc.add(DonePickingPoints());},
                       style: ButtonStyle(

@@ -141,7 +141,22 @@ class ThiefList extends StatelessWidget {
                                       clipBehavior: Clip.none,
                                       alignment: Alignment.center,
                                       children: [
-                                        mapOnPoint(state.entries[index].waypoint)
+                                        mapOnPoint(state.entries[index].waypoint),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(left: 5),
+                                            child: TextButton(
+                                                onPressed: () {Navigator.pop(context);},
+                                                style: ButtonStyle(
+                                                    backgroundColor: MaterialStateProperty.all(Colors.blue)
+                                                ),
+                                                child:  Text('exit',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(fontSize: 19, color: Colors.white)
+                                                )),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   );

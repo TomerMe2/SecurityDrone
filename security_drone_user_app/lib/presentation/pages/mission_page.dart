@@ -44,17 +44,14 @@ class MissionPageState extends State<MissionPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           TextSection("Setting menu:", "", bodyHeight: 10.0),
-          SizedBox(height: 0.0),
           createButton(() => Navigator.push(context, MaterialPageRoute(builder: (context) => PatrolSetPage())), "Set patrol route"),
-          SizedBox(height: 5.0),
+          SizedBox(height: 10.0),
           createButton(() => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeMapPage())), "Set home point"),
-          SizedBox(height: 5.0),
           TextSection("Mission menu:", "", bodyHeight: 10.0),
-          SizedBox(height: 0.0),
           createButton(() => _bloc.add(PatrolRequest()), "Patrol request"),
-          SizedBox(height: 5.0),
+          SizedBox(height: 10.0),
           createButton(() => _bloc.add(WatchHerdRequest()), "Watch herd request"),
-          SizedBox(height: 5.0),
+          SizedBox(height: 10.0),
           createButton(() => _bloc.add(AbortMissionRequest()), "Abort request")
         ],
       ),
@@ -103,7 +100,7 @@ class MissionPageState extends State<MissionPage> {
               builder: (BuildContext context) {
                 MissionState currState = curr as MissionState;
                 return AlertDialog(
-                  title: TextSection(currState.requestType.toString().split('.').last + " request submitted", ""),
+                  title: Text(currState.requestType.toString().split('.').last + " request submitted"),
                   actions: [
                     TextButton(onPressed: () => Navigator.of(context).pop(), child: Text("Ok")),
                   ],
