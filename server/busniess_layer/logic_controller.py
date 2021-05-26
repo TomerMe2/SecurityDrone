@@ -22,6 +22,14 @@ class LogicController:
         data_controller = DataController()
         return data_controller.get_waypoints()
 
+    def update_home_waypoint(self, lat, lon):
+        data_controller = DataController()
+        return data_controller.update_home_waypoint(lat, lon)
+
+    def get_home_waypoint(self):
+        data_controller = DataController()
+        return data_controller.get_home_waypoint()
+
     def process_image(self, image_str, date, lat, lon, object_detector):
         """
         :param object_detector: yolov5 adaptor instance

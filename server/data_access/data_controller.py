@@ -28,7 +28,7 @@ class DataController:
 
         col.delete_many({})
 
-        insert_lst = [{'latitude': point['latitude'], 'longitude': point['longitude']} for point in waypoints]
+        insert_lst = [{'lat': point['lat'], 'lon': point['lon']} for point in waypoints]
         inserted = col.insert_many(insert_lst)
 
         self.__close_db()
@@ -61,10 +61,33 @@ class DataController:
         self.__connect_to_db()
 
         col = self.db[config['waypoints_db_name']]
-        waypoints = list(col.find())
+        waypoints = list(col.find({}, {'_id': 0}))
 
         self.__close_db()
         return waypoints
+
+    def update_home_waypoint(self, lat, lon):
+        self.__connect_to_db()
+        col = self.db[config['home_waypoint_db_name']]
+
+        col.delete_many({})
+        inserted = col.insert_one({'lat': lat, 'lon': lon})
+
+        self.__close_db()
+
+        return inserted.inserted_id is not None
+
+    def get_home_waypoint(self):
+        """
+        :return: the home waypoint that currently stored in the db
+        """
+        self.__connect_to_db()
+
+        col = self.db[config['home_waypoint_db_name']]
+        waypoint = list(col.find({}, {'_id': 0}))[0]
+
+        self.__close_db()
+        return waypoint
 
     def get_images_of_thieves(self, date_from, date_until, index_from, index_until):
         self.__connect_to_db()

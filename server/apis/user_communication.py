@@ -36,7 +36,7 @@ def token_required(f):
             return jsonify({'message': 'token is invalid'})
 
         except:
-            return jsonify({'message': 'token is invalid'})
+            return Response(status=400)
 
     return decorator
 
@@ -60,10 +60,36 @@ def notify(im_json):
 @token_required
 def update_waypoints():
     waypoints = request.get_json(force=True)
-
     logic_controller = LogicController()
-
     return do_and_return_response(lambda: logic_controller.update_waypoints(waypoints))
+
+
+@app.route('/update_home_waypoint', methods=['POST'])
+@token_required
+def update_home_waypoint():
+    waypoint = request.get_json(force=True)
+
+    if 'lat' not in waypoint or 'lon' not in waypoint:
+        return Response(status=400)
+
+    lat = waypoint['lat']
+    lon = waypoint['lon']
+    logic_controller = LogicController()
+    return do_and_return_response(lambda: logic_controller.update_home_waypoint(lat, lon))
+
+
+@app.route('/get_patrol_waypoints', methods=['GET'])
+@token_required
+def get_patrol_waypoints():
+    logic_controller = LogicController()
+    return jsonify(logic_controller.get_waypoints())
+
+
+@app.route('/get_home_waypoint', methods=['GET'])
+@token_required
+def get_home_waypoint():
+    logic_controller = LogicController()
+    return jsonify(logic_controller.get_home_waypoint())
 
 
 @app.route('/request_patrol_mission', methods=('POST',))
