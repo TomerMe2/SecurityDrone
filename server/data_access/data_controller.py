@@ -77,8 +77,22 @@ class DataController:
             query_params['$lte'] = date_until
 
         if query_params == {}:
-            return col.find({}, {'_id': 0}).sort('date', -1).skip(index_from).limit(index_until - index_from)
+            ans = col.find({}, {'_id': 0}).sort('date', -1).skip(index_from).limit(index_until - index_from)
         else:
-            return col.find({'date': query_params}, {'_id': 0}).sort('date', -1).\
+            ans = col.find({'date': query_params}, {'_id': 0}).sort('date', -1). \
                 skip(index_from).limit(index_until - index_from)
+        ans = list(ans)
 
+        self.__close_db()
+        return ans
+
+    def get_user(self, username):
+        self.__connect_to_db()
+        col = self.db[config['users_db_name']]
+
+        ans = col.find({'username': {'$eq': username},
+                        })
+
+        ans = list(ans)
+        self.__close_db()
+        return ans

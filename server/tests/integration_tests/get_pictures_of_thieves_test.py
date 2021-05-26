@@ -9,7 +9,7 @@ from apis.mediator_communication import app as app_mediator
 import cv2
 import pymongo
 import os
-
+from tests.tests_utils import create_test_user_and_delete_prev, get_token
 
 file_path = os.path.dirname(os.path.abspath(__file__))
 upload_images_url = '/image'
@@ -30,6 +30,9 @@ class TestGetPicturesOfThieves(unittest.TestCase):
         db = db_client[config['app_db_client_name']]
         col = db[config['thief_images_db_name']]
         col.delete_many({})
+
+        create_test_user_and_delete_prev()
+        cls.token = get_token(cls.user_test_client)
 
         # picture with a man in it
         img = cv2.imread(f'{file_path}/../dune-sand-man-desert.jpg')
@@ -66,7 +69,9 @@ class TestGetPicturesOfThieves(unittest.TestCase):
         time_yesterday = (time_now - datetime.timedelta(days=1)).strftime('%d_%m_%Y')
         time_tomorrow = (time_now + datetime.timedelta(days=1)).strftime('%d_%m_%Y')
 
-        response = self.user_test_client.get(get_images_url.format(time_yesterday, time_tomorrow, 0, 3))
+        response = self.user_test_client.get(get_images_url.format(time_yesterday, time_tomorrow, 0, 3), headers={
+            'x-access-tokens': self.token
+        })
         assert response.status_code == 200
 
         response_data = response.json
@@ -88,7 +93,9 @@ class TestGetPicturesOfThieves(unittest.TestCase):
         time_yesterday = (time_now - datetime.timedelta(days=1)).strftime('%d_%m_%Y')
         time_tomrrow = (time_now + datetime.timedelta(days=1)).strftime('%d_%m_%Y')
 
-        response = self.user_test_client.get(get_images_url.format(time_yesterday, time_tomrrow, 3, 5))
+        response = self.user_test_client.get(get_images_url.format(time_yesterday, time_tomrrow, 3, 5), headers={
+            'x-access-tokens': self.token
+        })
         assert response.status_code == 200
 
         response_data = response.json

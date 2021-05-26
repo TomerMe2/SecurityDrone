@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+from werkzeug.security import check_password_hash
+
 from data_access.data_controller import DataController
 
 
@@ -47,3 +49,20 @@ class LogicController:
             index_until = 20
 
         return list(data_controller.get_images_of_thieves(date_from, date_until, index_from, index_until))
+
+    def can_login(self, username, plaintext_password):
+        data_controller = DataController()
+
+        candidates = data_controller.get_user(username)
+        if len(candidates) == 1:
+            if check_password_hash(candidates[0]['password'], plaintext_password):
+                return True
+        return False
+
+    def is_username_exists(self, username):
+        data_controller = DataController()
+
+        candidates = data_controller.get_user(username)
+        if len(list(candidates)) == 1:
+            return True
+        return False

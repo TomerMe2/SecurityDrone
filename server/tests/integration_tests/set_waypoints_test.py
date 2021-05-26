@@ -7,6 +7,8 @@ from config import config
 
 # quick ref for mongod for sanity:
 # C:\Program Files\MongoDB\Server\4.4\bin\mongod.exe
+from tests.tests_utils import create_test_user_and_delete_prev, get_token
+
 test_url = '/update_waypoints'
 
 
@@ -24,6 +26,8 @@ class TestWaypointsUpdate(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.test_client = app.test_client()
+        create_test_user_and_delete_prev()
+        cls.token = get_token(cls.test_client)
 
     @classmethod
     def tearDownClass(cls):
@@ -31,7 +35,9 @@ class TestWaypointsUpdate(unittest.TestCase):
 
     def check_for_waypoints(self, waypoints):
         data = json.dumps(waypoints)
-        response = self.test_client.post(test_url, data=data)
+        response = self.test_client.post(test_url, data=data, headers={
+            'x-access-tokens': self.token
+        })
 
         assert response.status_code == 200
 
