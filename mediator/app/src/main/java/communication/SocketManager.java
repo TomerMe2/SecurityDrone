@@ -3,7 +3,7 @@ package communication;
 import BL.Missions.Mission;
 
 public interface SocketManager {
-    //should be interface
+    //should be singleton
     void init();
     //u can change it
     //it should call business layer but u can leave the call to me

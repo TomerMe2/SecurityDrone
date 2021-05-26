@@ -35,7 +35,7 @@ public class BuildInMissionControl {
         operator.loadMission(toExecute);
         long startTime = System.currentTimeMillis();
         while (operator.getCurrentState() != WaypointMissionState.READY_TO_UPLOAD) {
-            if(System.currentTimeMillis() - startTime < Config.timeUploadMission){
+            if(System.currentTimeMillis() - startTime > Config.timeUploadMission){
                 errorOccurred = true;
                 break;
             }
@@ -45,7 +45,7 @@ public class BuildInMissionControl {
             operator.uploadMission(null);
             startTime = System.currentTimeMillis();
             while (operator.getCurrentState() != WaypointMissionState.READY_TO_EXECUTE) {
-                if(System.currentTimeMillis() - startTime < Config.timeUploadMission){
+                if(System.currentTimeMillis() - startTime > Config.timeUploadMission){
                     errorOccurred = true;
                     break;
                 }

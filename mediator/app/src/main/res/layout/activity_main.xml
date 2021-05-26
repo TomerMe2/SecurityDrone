@@ -98,6 +98,41 @@
         android:layout_toEndOf="@+id/btn_take_off"
         android:layout_marginLeft="10dp" />
 
+    <Button
+        android:id="@+id/btn_init"
+        style="@style/common_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/btn_disable_virtual_stick"
+        android:layout_below="@+id/btn_disable_virtual_stick"
+        android:layout_alignEnd="@+id/btn_disable_virtual_stick"
+        android:layout_alignTop="@+id/btn_disable_virtual_stick"
+        android:layout_marginTop="60dp"
+        android:text="Init" />
+
+
+    <Button
+        android:id="@+id/btn_go_to_waypont"
+        style="@style/common_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btn_init"
+        android:layout_alignStart="@+id/btn_take_off"
+        android:layout_marginTop="0dp"
+        android:layout_alignEnd="@+id/btn_take_off"
+        android:text="go to waypoit" />
+
+    <Button
+        android:id="@+id/btn_get_loc"
+        style="@style/common_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btn_land"
+        android:layout_alignStart="@+id/btn_land"
+        android:layout_marginTop="60dp"
+        android:layout_alignEnd="@+id/btn_land"
+        android:text="get loc" />
+
     <simulator.OnScreenJoystick
         android:id="@+id/directionJoystickRight"
         android:layout_width="130dp"

@@ -27,6 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import Utils.Config;
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
 import dji.common.flightcontroller.simulator.InitializationData;
@@ -36,11 +37,19 @@ import dji.common.flightcontroller.virtualstick.FlightCoordinateSystem;
 import dji.common.flightcontroller.virtualstick.RollPitchControlMode;
 import dji.common.flightcontroller.virtualstick.VerticalControlMode;
 import dji.common.flightcontroller.virtualstick.YawControlMode;
+import dji.common.mission.waypoint.Waypoint;
+import dji.common.mission.waypoint.WaypointMission;
+import dji.common.mission.waypoint.WaypointMissionFinishedAction;
+import dji.common.mission.waypoint.WaypointMissionFlightPathMode;
+import dji.common.mission.waypoint.WaypointMissionHeadingMode;
+import dji.common.mission.waypoint.WaypointMissionState;
 import dji.common.model.LocationCoordinate2D;
 import dji.common.util.CommonCallbacks;
 import dji.sdk.base.BaseComponent;
 import dji.sdk.base.BaseProduct;
 import dji.sdk.flightcontroller.FlightController;
+import dji.sdk.mission.MissionControl;
+import dji.sdk.mission.waypoint.WaypointMissionOperator;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
@@ -86,6 +95,9 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
     private ToggleButton mBtnSimulator;
     private Button mBtnTakeOff;
     private Button mBtnLand;
+    private Button mBtnInit;
+    private Button mBtnWaypoint;
+    private Button mBtnLoc;
     private TextView mTextView;
     private AtomicBoolean isRegistrationInProgress = new AtomicBoolean(false);
     public static final String FLAG_CONNECTION_CHANGE = "dji_sdk_connection_change";
@@ -279,11 +291,17 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
         mConnectStatusTextView = (TextView) findViewById(R.id.ConnectStatusTextView);
         mScreenJoystickRight = (OnScreenJoystick)findViewById(R.id.directionJoystickRight);
         mScreenJoystickLeft = (OnScreenJoystick)findViewById(R.id.directionJoystickLeft);
+        mBtnInit = (Button)findViewById(R.id.btn_init);
+        mBtnWaypoint = (Button)findViewById(R.id.btn_go_to_waypont);
+        mBtnLoc = (Button)findViewById(R.id.btn_get_loc);
 
         mBtnEnableVirtualStick.setOnClickListener(this);
         mBtnDisableVirtualStick.setOnClickListener(this);
         mBtnTakeOff.setOnClickListener(this);
         mBtnLand.setOnClickListener(this);
+        mBtnInit.setOnClickListener(this);
+        mBtnWaypoint.setOnClickListener(this);
+        mBtnLoc.setOnClickListener(this);
 
         mBtnSimulator.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -387,6 +405,36 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
         });
     }
 
+    private void goByWaypoint(){
+        showToast("waypoint mission start");
+        MissionControl missionControl = DJISDKManager.getInstance().getMissionControl();
+        WaypointMissionOperator operator = missionControl.getWaypointMissionOperator();
+        float latitude = 23.3333f;
+        float longitude = 114.3333f;
+        float altitude = 100.0f;
+        float mSpeed = 10.0f;
+        List<Waypoint> waypointList = new ArrayList<>();
+        WaypointMissionFinishedAction mFinishedAction = WaypointMissionFinishedAction.NO_ACTION;
+        WaypointMissionHeadingMode mHeadingMode = WaypointMissionHeadingMode.AUTO;
+        WaypointMission.Builder waypointMissionBuilder = new WaypointMission.Builder()
+                .finishedAction(mFinishedAction)
+                .headingMode(mHeadingMode)
+                .autoFlightSpeed(mSpeed)
+                .maxFlightSpeed(mSpeed)
+                .flightPathMode(WaypointMissionFlightPathMode.NORMAL);
+        Waypoint waypoint = new Waypoint(latitude,longitude,altitude);
+        waypointList.add(waypoint);
+        waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
+        WaypointMission toExecute = waypointMissionBuilder.build();
+        operator.loadMission(toExecute);
+        operator.startMission(new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(DJIError djiError) {
+                showToast("Execution finished: " + (djiError == null ? "Success!" : djiError.getDescription()));
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -459,6 +507,17 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
                 }
 
                 break;
+
+            case R.id.btn_init:
+                updateTitleBar();
+                initFlightController();
+                break;
+
+            case R.id.btn_go_to_waypont:
+                goByWaypoint();
+                break;
+
+
         }
     }
 
@@ -493,8 +552,6 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
                         public void onProductConnect(BaseProduct baseProduct) {
                             Log.d(TAG, String.format("onProductConnect newProduct:%s", baseProduct));
                             showToast("Product Connected");
-                            updateTitleBar();
-                            initFlightController();
                             notifyStatusChange();
 
                         }
