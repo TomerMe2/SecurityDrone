@@ -6,12 +6,39 @@ from flask_socketio import SocketIO, emit, join_room
 from apis.api_utils import do_and_return_response
 from busniess_layer.logic_controller import LogicController
 from config import config
-from datetime import datetime
+import datetime
 from flask import jsonify
-
+import jwt
+from functools import wraps
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+app.config['SECRET_KEY'] = 'Th1s1ss3cr3t_NOT_FOR_PROD'
+jwt_algorithm = 'HS256'
+
+
+def token_required(f):
+    @wraps(f)
+    def decorator(*args, **kwargs):
+
+        if 'x-access-tokens' not in request.headers:
+            return jsonify({'message': 'a valid token is missing'})
+
+        token = request.headers['x-access-tokens']
+
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=[jwt_algorithm])
+
+            controller = LogicController()
+            if controller.is_username_exists(data['username']):
+                return f(*args, **kwargs)
+
+            return jsonify({'message': 'token is invalid'})
+
+        except:
+            return Response(status=400)
+
+    return decorator
 
 
 @socketio.on('join_user')
@@ -30,23 +57,90 @@ def notify(im_json):
 
 
 @app.route('/update_waypoints', methods=['POST'])
+@token_required
 def update_waypoints():
     waypoints = request.get_json(force=True)
-
     logic_controller = LogicController()
-
     return do_and_return_response(lambda: logic_controller.update_waypoints(waypoints))
 
 
-@app.route('/patrol', methods=('POST',))
-def send_patrol():
+@app.route('/update_home_waypoint', methods=['POST'])
+@token_required
+def update_home_waypoint():
+    waypoint = request.get_json(force=True)
+
+    if 'lat' not in waypoint or 'lon' not in waypoint:
+        return Response(status=400)
+
+    lat = waypoint['lat']
+    lon = waypoint['lon']
+    logic_controller = LogicController()
+    return do_and_return_response(lambda: logic_controller.update_home_waypoint(lat, lon))
+
+
+@app.route('/get_patrol_waypoints', methods=['GET'])
+@token_required
+def get_patrol_waypoints():
+    logic_controller = LogicController()
+    return jsonify(logic_controller.get_waypoints())
+
+
+@app.route('/get_home_waypoint', methods=['GET'])
+@token_required
+def get_home_waypoint():
+    logic_controller = LogicController()
+    return jsonify(logic_controller.get_home_waypoint())
+
+
+@app.route('/request_patrol_mission', methods=('POST',))
+@token_required
+def request_patrol_mission():
     socketio.emit('patrol_request', room='connector')
     # TODO: handle this with flight initiate
     return do_and_return_response(lambda: True)
 
 
+@app.route('/request_abort_mission', methods=['POST'])
+@token_required
+def request_abort_mission():
+    socketio.emit('abort_mission', room='connector')
+    # TODO: handle this
+    return do_and_return_response(lambda: True)
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    # params: username, password
+    # returns: response with code 401 for unsuccessful login.
+    # json with {token} for successful login
+    # password should be plaintext. This is fine since on production the server should run on HTTPS, and it encrypts
+    # the requests from end to end.
+    request_json = request.get_json(force=True)
+
+    if 'username' not in request_json or 'password' not in request_json:
+        return Response(status=400)
+
+    username = request_json['username']
+    plaintext_password = request_json['password']
+
+    controller = LogicController()
+    if controller.can_login(username, plaintext_password):
+        token = jwt.encode(
+            {'username': username,
+             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
+            app.config['SECRET_KEY'],
+            algorithm=jwt_algorithm
+        )
+        return jsonify({'token': token})
+
+    return Response(status=401)
+
+
 @app.route('/pictures_of_thieves', methods=('GET',))
+@token_required
 def get_pictures_of_thieves():
+    # parameters: date_from, date_until, index_from, index_until
+    # returns: a list, each entry is {image, date, lat, lon} where image is base64 encoded.
     # dates are formatted using d_m_Y
     # for example: 8_9_2018
 
@@ -57,9 +151,9 @@ def get_pictures_of_thieves():
 
     try:
         if date_from is not None:
-            date_from = datetime.strptime(date_from, '%d_%m_%Y')
+            date_from = datetime.datetime.strptime(date_from, '%d_%m_%Y')
         if date_until is not None:
-            date_until = datetime.strptime(date_until, '%d_%m_%Y')
+            date_until = datetime.datetime.strptime(date_until, '%d_%m_%Y')
         if index_from is not None:
             index_from = int(index_from)
         if index_until is not None:
@@ -78,6 +172,4 @@ def get_pictures_of_thieves():
 
 
 if __name__ == "__main__":
-    socketio.run(port=config['user_api_port'],app=app)
-
-
+    socketio.run(port=config['user_api_port'], app=app)

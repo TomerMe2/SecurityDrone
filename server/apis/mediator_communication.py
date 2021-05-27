@@ -1,4 +1,4 @@
-from flask import Flask, request, g
+from flask import Flask, request, g, Response
 from flask_socketio import SocketIO, emit, join_room
 from apis.api_utils import do_and_return_response
 from config import config
@@ -39,6 +39,10 @@ def patrol(waypoints):
 def process_image():
     current_date = datetime.now()
     request_json = request.get_json(force=True)
+
+    if 'image' not in request_json or 'lat' not in request_json or 'lon' not in request_json:
+        return Response(status=400)
+
     image = codecs.decode(request_json['image'].encode(), 'base64')
     lat = request_json['lat']
     lon = request_json['lon']

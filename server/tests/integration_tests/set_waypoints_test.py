@@ -7,7 +7,10 @@ from config import config
 
 # quick ref for mongod for sanity:
 # C:\Program Files\MongoDB\Server\4.4\bin\mongod.exe
-test_url = '/update_waypoints'
+from tests.tests_utils import create_test_user_and_delete_prev, get_token
+
+set_test_url = '/update_waypoints'
+get_test_url = '/get_patrol_waypoints'
 
 
 def compare_lst_from_db(true_lst, lst_from_db):
@@ -24,6 +27,8 @@ class TestWaypointsUpdate(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.test_client = app.test_client()
+        create_test_user_and_delete_prev()
+        cls.token = get_token(cls.test_client)
 
     @classmethod
     def tearDownClass(cls):
@@ -31,8 +36,9 @@ class TestWaypointsUpdate(unittest.TestCase):
 
     def check_for_waypoints(self, waypoints):
         data = json.dumps(waypoints)
-        response = self.test_client.post(test_url, data=data)
-
+        response = self.test_client.post(set_test_url, data=data, headers={
+            'x-access-tokens': self.token
+        })
         assert response.status_code == 200
 
         db_client = pymongo.MongoClient(config['db_url'])
@@ -44,16 +50,26 @@ class TestWaypointsUpdate(unittest.TestCase):
 
         db_client.close()
 
+        response_get = self.test_client.get(get_test_url, data=data, headers={
+            'x-access-tokens': self.token
+        })
+        assert response_get.status_code == 200
+        waypoints_from_api = response_get.json
+
+        assert waypoints == waypoints_from_api
+
+
+
     def test_update_waypoint_test1(self):
-        waypoint1 = {'latitude': 29.36, 'longitude': 30.55}
-        waypoint2 = {'latitude': 33.36, 'longitude': 31.55}
+        waypoint1 = {'lat': 29.36, 'lon': 30.55}
+        waypoint2 = {'lat': 33.36, 'lon': 31.55}
         waypoints = [waypoint1, waypoint2]
         self.check_for_waypoints(waypoints)
 
     def test_update_waypoint_test2(self):
-        waypoint2 = {'latitude': 33.36, 'longitude': 31.55}
-        waypoint3 = {'latitude': 41.36, 'longitude': 14.55}
-        waypoint4 = {'latitude': 39.11, 'longitude': 25.25}
+        waypoint2 = {'lat': 33.36, 'lon': 31.55}
+        waypoint3 = {'lat': 41.36, 'lon': 14.55}
+        waypoint4 = {'lat': 39.11, 'lon': 25.25}
         waypoints = [waypoint2, waypoint3, waypoint4]
         self.check_for_waypoints(waypoints)
 
