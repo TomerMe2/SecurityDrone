@@ -59,7 +59,7 @@ class DataController:
 
         return inserted.inserted_id is not None
 
-    def add_submission_to_open_mission(self, sub_mission: Mission, previous_mission_end_reason: EndReasonType, time: datetime):
+    def add_sub_mission_to_open_mission(self, sub_mission: Mission, previous_mission_end_reason: EndReasonType, time: datetime):
         assert sub_mission.end_time is None and sub_mission.end_reason is None
         self.__connect_to_db()
 
@@ -91,7 +91,8 @@ class DataController:
         self.__connect_to_db()
 
         col = self.db[config['missions_db_name']]
-        open_missions = list(col.find({'end_time': None}))
+        # Should be only one, but sort by by start_time DESC to avoid weird cases
+        open_missions = list(col.find({'end_time': None}).sort([("start_time", pymongo.DESCENDING)]))
 
         result = False
 
@@ -120,6 +121,19 @@ class DataController:
         self.__close_db()
 
         return inserted.inserted_id is not None
+
+    def get_open_mission(self):
+        col = self.db[config['missions_db_name']]
+        # Should be only one, but sort by by start_time DESC to avoid weird cases
+        open_missions = list(col.find({'end_time': None}).sort([("start_time", pymongo.DESCENDING)]))
+
+        if len(open_missions) != 0:
+            open_mission = open_missions[0]
+            del open_mission['_id']
+            open_mission = Mission(**open_mission)
+            return open_mission
+
+        return None
 
     def get_missions_log(self, date_from, date_until, index_from, index_until):
         self.__connect_to_db()

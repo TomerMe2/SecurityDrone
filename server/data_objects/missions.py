@@ -7,11 +7,13 @@ class MissionType(Enum):
     PATROL = auto(),
     GO_TO_WAYPOINT = auto(),
     GO_TO_HOME_WAYPOINT = auto(),
+    TRACK = auto()
 
 
 class StartReasonType(Enum):
     CLOCK = auto(),
-    USER_REQUEST = auto()
+    USER_REQUEST = auto(),
+    FOUND_THIEF = auto()
 
 
 class EndReasonType(Enum):

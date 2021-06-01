@@ -1,8 +1,9 @@
 import cv2
 import numpy as np
 from werkzeug.security import check_password_hash
-
+from datetime import datetime
 from data_access.data_controller import DataController
+from data_objects.missions import Mission, MissionType, StartReasonType, EndReasonType
 
 
 class LogicController:
@@ -44,9 +45,33 @@ class LogicController:
 
         if is_thief:
             data_controller = DataController()
-            return True, data_controller.save_thief_img(image_str, date, lat, lon)
+            has_saved_image = data_controller.save_thief_img(image_str, date, lat, lon)
+
+            if not has_saved_image:
+                return is_thief, False
+
+            time = datetime.now()
+            new_sub_mission = Mission(mission_type=MissionType.TRACK, sub_missions=[],
+                                      start_reason=StartReasonType.FOUND_THIEF,
+                                      end_reason=None,
+                                      start_time=time,
+                                      end_time=None)
+
+            open_mission = data_controller.get_open_mission()
+            if open_mission is None or len(open_mission.sub_missions) > 0:
+                return is_thief, False
+
+            # TODO: UNDO TRACKING IF NOT FINDING THIEF FOR A "LONG" TIME
+            if open_mission.sub_missions[-1].mission_type != MissionType.TRACK:
+                has_saved_mission = data_controller.add_sub_mission_to_open_mission(new_sub_mission,
+                                                                                    EndReasonType.FOUND_THIEF,
+                                                                                    time)
+                return is_thief, has_saved_mission
+
+            return is_thief, True
+
         else:
-            return False, True
+            return is_thief, True
 
     def get_images_of_thieves(self, date_from, date_until, index_from, index_until):
         data_controller = DataController()
