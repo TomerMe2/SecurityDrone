@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from datetime import datetime
 
 import pymongo
@@ -63,7 +64,8 @@ class DataController:
         self.__connect_to_db()
 
         col = self.db[config['missions_db_name']]
-        open_missions = list(col.find({'end_time': None}))
+        # Should be only one, but sort by by start_time DESC to avoid weird cases
+        open_missions = list(col.find({'end_time': None}).sort([("start_time", pymongo.DESCENDING)]))
 
         result = False
 
@@ -80,10 +82,64 @@ class DataController:
             open_mission.sub_missions.append(sub_mission)
 
             res_from_db = col.update_one({"_id": id_of_mission}, open_mission)
-            result = res_from_db.modified_count
+            result = res_from_db.modified_count == 1
 
         self.__close_db()
         return result
+
+    def end_open_mission(self, end_reason: EndReasonType, time: datetime):
+        self.__connect_to_db()
+
+        col = self.db[config['missions_db_name']]
+        open_missions = list(col.find({'end_time': None}))
+
+        result = False
+
+        if len(open_missions) != 0:
+            open_mission = open_missions[0]
+            id_of_mission = open_mission['_id']
+            del open_mission['_id']
+            open_mission = Mission(**open_mission)
+
+            # close the mission
+            open_mission.end_time = time
+            open_mission.end_reason = end_reason
+
+            res_from_db = col.update_one({"_id": id_of_mission}, open_mission)
+            result = res_from_db.modified_count == 1
+
+        self.__close_db()
+        return result
+
+    def add_new_mission(self, mission: Mission):
+        self.__connect_to_db()
+        col = self.db[config['missions_db_name']]
+
+        inserted = col.insert_one(asdict(mission))
+
+        self.__close_db()
+
+        return inserted.inserted_id is not None
+
+    def get_missions_log(self, date_from, date_until, index_from, index_until):
+        self.__connect_to_db()
+        col = self.db[config['missions_db_name']]
+
+        query_params = {}
+        if date_from is not None:
+            query_params['$gte'] = date_from
+        if date_until is not None:
+            query_params['$lte'] = date_until
+
+        if query_params == {}:
+            ans = col.find({}, {'_id': 0}).sort('start_time', -1).skip(index_from).limit(index_until - index_from)
+        else:
+            ans = col.find({'date': query_params}, {'_id': 0}).sort('start_time', -1). \
+                skip(index_from).limit(index_until - index_from)
+        ans = list(ans)
+
+        self.__close_db()
+        return ans
 
     def get_waypoints(self):
         """
