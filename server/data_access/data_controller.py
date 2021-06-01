@@ -1,4 +1,8 @@
+from datetime import datetime
+
 import pymongo
+
+from data_objects.missions import Mission, EndReasonType
 from config import config
 
 
@@ -53,6 +57,29 @@ class DataController:
         self.__close_db()
 
         return inserted.inserted_id is not None
+
+    def add_submission_to_open_mission(self, sub_mission: Mission, previous_mission_end_reason: EndReasonType, time: datetime):
+        assert sub_mission.end_time is None and sub_mission.end_reason is None
+        self.__connect_to_db()
+
+        col = self.db[config['missions_db_name']]
+        open_missions = list(col.find({'end_time': None}))
+
+        if len(open_missions) != 0:
+            open_mission = open_missions[0]
+            id_of_mission = open_mission['_id']
+            del open_mission['_id']
+            open_mission = Mission(**open_mission)
+
+            # close the previous sub mission
+            open_mission.sub_missions[-1].end_time = time
+            open_mission.sub_missions[-1].end_reason = previous_mission_end_reason
+            # add the new sub mission
+            open_mission.sub_missions.append(sub_mission)
+
+            col.update_one({"_id": id_of_mission}, open_mission)
+
+        self.__close_db()
 
     def get_waypoints(self):
         """
