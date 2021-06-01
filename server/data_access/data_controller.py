@@ -65,6 +65,8 @@ class DataController:
         col = self.db[config['missions_db_name']]
         open_missions = list(col.find({'end_time': None}))
 
+        result = False
+
         if len(open_missions) != 0:
             open_mission = open_missions[0]
             id_of_mission = open_mission['_id']
@@ -77,9 +79,11 @@ class DataController:
             # add the new sub mission
             open_mission.sub_missions.append(sub_mission)
 
-            col.update_one({"_id": id_of_mission}, open_mission)
+            res_from_db = col.update_one({"_id": id_of_mission}, open_mission)
+            result = res_from_db.modified_count
 
         self.__close_db()
+        return result
 
     def get_waypoints(self):
         """
