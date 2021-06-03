@@ -73,7 +73,7 @@ class DataController:
             open_mission = open_missions[0]
             id_of_mission = open_mission['_id']
             del open_mission['_id']
-            open_mission = Mission(**open_mission)
+            open_mission = Mission.from_dict(open_mission)
 
             # close the previous sub mission
             open_mission.sub_missions[-1].end_time = time
@@ -81,7 +81,7 @@ class DataController:
             # add the new sub mission
             open_mission.sub_missions.append(sub_mission)
 
-            res_from_db = col.update_one({"_id": id_of_mission}, open_mission)
+            res_from_db = col.update_one({"_id": id_of_mission}, open_mission.to_dict())
             result = res_from_db.modified_count == 1
 
         self.__close_db()
@@ -100,13 +100,13 @@ class DataController:
             open_mission = open_missions[0]
             id_of_mission = open_mission['_id']
             del open_mission['_id']
-            open_mission = Mission(**open_mission)
+            open_mission = Mission.from_dict(open_mission)
 
             # close the mission
             open_mission.end_time = time
             open_mission.end_reason = end_reason
 
-            res_from_db = col.update_one({"_id": id_of_mission}, open_mission)
+            res_from_db = col.update_one({"_id": id_of_mission}, open_mission.to_dict())
             result = res_from_db.modified_count == 1
 
         self.__close_db()
@@ -130,7 +130,7 @@ class DataController:
         if len(open_missions) != 0:
             open_mission = open_missions[0]
             del open_mission['_id']
-            open_mission = Mission(**open_mission)
+            open_mission = Mission.from_dict(open_mission)
             return open_mission
 
         return None
@@ -153,7 +153,8 @@ class DataController:
         ans = list(ans)
 
         self.__close_db()
-        return ans
+
+        return [Mission.from_dict(entry) for entry in ans]
 
     def get_waypoints(self):
         """
