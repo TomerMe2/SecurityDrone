@@ -9,6 +9,13 @@ class ThiefEntry{
 
   ThiefEntry(this.image, this.date, this.waypoint);
 
+  factory ThiefEntry.fromJson(Map<String, dynamic> json) {
+    return ThiefEntry(
+        json['image'],
+        json['date'],
+        LatLngPoint.fromJson(json['latLngPoint']));
+  }
+
   static ThiefEntry dummyFetch() {
     return ThiefEntry(Image.asset('assets/images/thief.jpg',fit: BoxFit.contain), DateTime.parse("1999-01-12"), LatLngPoint(10.0, 10.0));
   }

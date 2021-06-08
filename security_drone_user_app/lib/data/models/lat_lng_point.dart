@@ -12,6 +12,24 @@ class LatLngPoint {
 
   LatLngPoint(this.lat, this.lng);
 
+  factory LatLngPoint.fromJson(Map<String, dynamic> json) {
+    return LatLngPoint(
+        json['latitude'],
+        json['longitude']);
+  }
+
+  static LatLngPoint dummyFetch(){
+    return LatLngPoint(10.0, 10.0);
+  }
+
+  static List<LatLngPoint> dummyFetchAll(){
+    List<LatLngPoint> lst = [];
+    for (int i=0; i<10; i++) {
+      lst.add(LatLngPoint(10.0 + i, 10.0 + i));
+    }
+    return lst;
+  }
+
   l2Distance(LatLngPoint other) {
     double latDiff = pow(lat - other.lat, 2);
     double lngDiff = pow(lng - other.lng, 2);

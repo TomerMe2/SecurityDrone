@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:security_drone_user_app/data/data_api/dashboard_api.dart';
 import 'package:security_drone_user_app/data/models/dashboard_entry.dart';
 
 part '../event/dashboard_event.dart';
@@ -8,9 +9,10 @@ part '../state/dashboard_state.dart';
 
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  //TODO: replace current dummy thief entries and add api request for said entries
 
-  DashboardBloc() : super(ShowDashboardEntries([DashBoardEntry.dummyFetch()]));
+  DashboardAPI api = DashboardAPI();
+
+  DashboardBloc() : super(ShowDashboardEntries([]));
 
   // for testing purposes
   DashboardBloc.test(entry) : super(ShowDashboardEntries([entry]));
@@ -22,7 +24,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield ShowDashboardEntry(state.entries, event.clickedOn);
     }
     else if (event is RefreshDashboardEntries) {
-      List<DashBoardEntry> entries = DashBoardEntry.dummyFetchAll();
+      //TODO: token
+      List<DashBoardEntry> entries = await api.getDashboardEntries("");
       yield ShowDashboardEntries(entries);
     }
     else if (event is DisplayDashboardEntries) {

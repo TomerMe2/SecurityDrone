@@ -5,6 +5,13 @@ class DroneActivity{
 
   DroneActivity(this.activities);
 
+  factory DroneActivity.fromJson(Map<String, dynamic> json){
+    // TODO: check how we communicate lists
+    List<SubActivity> activities = [];
+    json.forEach((key, value) {activities.add(SubActivity.fromJson(value));});
+    return DroneActivity(activities);
+  }
+
   @override
   String toString() {
     var str = "";

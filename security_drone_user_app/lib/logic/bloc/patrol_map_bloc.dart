@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:security_drone_user_app/communication/data_sender/to_server.dart';
+
+import 'package:security_drone_user_app/data/data_api/patrol_points_api.dart';
 import 'package:security_drone_user_app/data/models/lat_lng_point.dart';
 
 part '../event/patrol_map_event.dart';
 part '../state/patrol_map_state.dart';
 
 class PatrolMapBloc extends Bloc<PatrolMapEvent, PatrolMapState> {
+  PatrolPointsAPI api = PatrolPointsAPI();
 
   static const double DISTANCE_OF_SAME_POINT = 0.00008;
   PatrolMapBloc() : super(PatrolMapShowingPoints([]));
@@ -55,8 +57,8 @@ class PatrolMapBloc extends Bloc<PatrolMapEvent, PatrolMapState> {
 
     else if (event is DonePickingPoints) {
       yield(SendingDataToServer(state.points));
-      //TODO: add support for failed transmission operation
-      await sendPatrolWaypoints(state.points);
+      //TODO: Token
+      await api.sendPatrolPoints(state.points, "");
       yield(DoneSendDataToServer(state.points));
     }
 

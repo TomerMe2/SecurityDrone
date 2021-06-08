@@ -1,13 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:security_drone_user_app/data/data_api/login_api.dart';
 
 part '../event/login_event.dart';
 part '../state/login_state.dart';
 
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-
+  LoginAPI api = LoginAPI();
 
   LoginBloc() : super(LoginUninitialized());
 
@@ -15,8 +16,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
 
     if (event is PressedLoginButtonEvent) {
-      //TODO; add proper authentication
-      if (dummyAuthenticate(event.username, event.password)) {
+      yield LoginUninitialized();
+      String token = await api.login(event.username, event.password);
+      if (token != "") {
         yield LoginSuccessful();
         yield LoginUninitialized();
       }
@@ -30,7 +32,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  bool dummyAuthenticate(String username, String password) {
-    return username.length > 3 && password.length > 3;
-  }
+
 }

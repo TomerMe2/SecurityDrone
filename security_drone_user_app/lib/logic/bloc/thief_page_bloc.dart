@@ -2,15 +2,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:security_drone_user_app/data/data_api/thief_api.dart';
 import 'package:security_drone_user_app/data/models/thief_entry.dart';
 part '../event/thief_page_event.dart';
 part '../state/thief_page_state.dart';
 
 
 class ThiefPageBloc extends Bloc<ThiefPageEvent, ThiefPageState> {
-  //TODO: replace current dummy thief entries and add api request for said entries
+  ThiefAPI api = ThiefAPI();
 
-  ThiefPageBloc() : super(ShowThiefEntries([ThiefEntry.dummyFetch()]));
+  ThiefPageBloc() : super(ShowThiefEntries([]));
 
   // for testing purposes
   ThiefPageBloc.test(ThiefEntry entry) : super(ShowThiefEntries([entry]));
@@ -22,7 +23,8 @@ class ThiefPageBloc extends Bloc<ThiefPageEvent, ThiefPageState> {
       yield ShowThiefEntry(state.entries, event.clickedOn);
     }
     else if (event is RefreshThiefEntries) {
-      List<ThiefEntry> entries = ThiefEntry.dummyFetchAll();
+      //TODO: Token
+      List<ThiefEntry> entries = await api.getThieves(DateTime.parse("1900-01-01"), DateTime.now(), 0, 10, "");
       yield ShowThiefEntries(entries);
     }
     else if (event is DisplayThiefEntries) {

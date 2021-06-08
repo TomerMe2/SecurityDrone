@@ -9,6 +9,13 @@ class SubActivity{
 
   SubActivity(this.type, this.date, this.location);
 
+  factory SubActivity.fromJson(Map<String, dynamic> json) {
+    return SubActivity(
+        json['type'],
+        json['date'],
+        LatLngPoint.fromJson(json['latLngPoint']));
+  }
+
   @override
   String toString() {
     return "Type:  ${type.toString().split('.').last}\nDate: ${DateFormat.jms().format(date)}\n${location.toString()}";

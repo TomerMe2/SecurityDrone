@@ -10,10 +10,11 @@ class InfoPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          TextSection("Project vision:", "Provide security using a drone and AI\n"
+          TextSection("Project vision:", "Provide security using a drone and AI.\n"
               + "More specifically, give the user enough information about an intrusion to react quickly, "
-              + "and the ability to track the thief and have liable documentation of the crime.",
-            height: 160.0,
+              + "to track the thief and have liable documentation of the crime.",
+            height: 70.0,
+            bodyHeight: 120,
           ),
           TextSection("Developer Team:", "Daniel Katz\nTomer Laor\nShahar Cohen Hadad",
             height: 90.0,

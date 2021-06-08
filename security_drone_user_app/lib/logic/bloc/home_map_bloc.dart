@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:security_drone_user_app/communication/data_sender/to_server.dart';
+import 'package:security_drone_user_app/data/data_api/home_point_api.dart';
 import 'package:security_drone_user_app/data/models/lat_lng_point.dart';
 
 part '../event/home_map_event.dart';
@@ -11,6 +11,8 @@ part '../state/home_map_state.dart';
 class HomeMapBloc extends Bloc<HomeMapEvent, HomeMapState> {
 
   static const double DISTANCE_OF_SAME_POINT = 0.00008;
+  HomePointAPI api = HomePointAPI();
+
   HomeMapBloc() : super(MapShowingPoint(null));
 
   @override
@@ -35,8 +37,8 @@ class HomeMapBloc extends Bloc<HomeMapEvent, HomeMapState> {
     }
     else if (event is DonePickingPoints) {
       yield(SendingDataToServer(state.point));
-      //TODO: add support for failed transmission operation
-      await sendHomeWaypoint(state.point);
+      //TODO: token
+      await api.sendHomePoint(state.point, "");
       yield(DoneSendDataToServer(state.point));
     }
 

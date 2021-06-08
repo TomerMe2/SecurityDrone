@@ -13,6 +13,16 @@ class DashBoardEntry {
 
   DashBoardEntry(this.activity, this.startTime, this.endTime, this.missionResult, this.startReason, this.abortReason);
 
+  factory DashBoardEntry.fromJson(Map<String, dynamic> json) {
+    return DashBoardEntry(
+        DroneActivity.fromJson(json['DroneActivity']),
+        json['startTime'],
+        json['endTime'],
+        json['missionResultType'],
+        json['startReason'],
+        json['abortReason']);
+  }
+
   static DashBoardEntry dummyFetch() {
     List<SubActivity> subActivities = [
       SubActivity(DroneActivityType.fly, DateTime.parse("1999-01-12"), LatLngPoint(10,10)),
@@ -67,12 +77,6 @@ class DashBoardEntry {
     + "Result: "+ missionResult.toString().split(".").last + "\n"
     + "Start reason: " + startReason.toString() + "\n"
     + abort;
-  }
-
-  String entryMinimalDescription() {
-    return "Start time: " + startTime.toString() + "\n"
-        + "End time: " + endTime.toString()  + "\n"
-        + "Result: "+ missionResult.toString().split(".").last + "\n";
   }
 
   @override
