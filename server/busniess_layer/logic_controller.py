@@ -31,6 +31,20 @@ class LogicController:
         data_controller = DataController()
         return data_controller.get_home_waypoint()
 
+    def start_patrol(self, reason, date):
+        patrol_mission = Mission(
+            MissionType.PATROL, [], reason, None, date, None
+        )
+
+        data_controller = DataController()
+        return data_controller.add_new_mission(patrol_mission)
+
+    def start_patrol_user_request(self, date):
+        return self.start_patrol(StartReasonType.USER_REQUEST, date)
+
+    def start_patrol_time_interval(self, date):
+        return self.start_patrol(StartReasonType.CLOCK, date)
+
     def process_image(self, image_str, date, lat, lon, object_detector):
         """
         :param object_detector: yolov5 adaptor instance

@@ -18,3 +18,4 @@ pandas
 seaborn
 pytest
 PyJWT
+APScheduler

@@ -6,9 +6,25 @@ from busniess_layer.logic_controller import LogicController
 from datetime import datetime
 from object_detection.yolov5_adapter import YoloAdapter
 import codecs
+import atexit
+from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+
+
+def do_patrol():
+    # triggered by time
+    pass
+
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=do_patrol, trigger="interval", seconds=60*60*3)  # every 3 hours
+scheduler.start()
+
+
+# Shut down the scheduler when exiting the app
+atexit.register(lambda: scheduler.shutdown())
 
 
 # handle yolo adapter as a singleton, to save RAM and save CPU time loading weights into the RAM each time a flask
