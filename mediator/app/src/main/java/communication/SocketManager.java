@@ -3,10 +3,11 @@ package communication;
 import BL.Missions.Mission;
 
 public interface SocketManager {
-    //should be singleton
+    //this class should be singleton
+
+    //init connection with the server
     void init();
-    //u can change it
-    //it should call business layer but u can leave the call to me
-    Mission decode(Byte[]buffer);
-    void sendServer(String msg);
+
+    //decode the mission sent by the server and add it to the TaskManager
+    Mission decode();
 }

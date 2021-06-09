@@ -35,8 +35,8 @@ public class BuildInMissionControl {
 
     public void goToWaypoint(float longitude, float latitude, float altitude, MissionState state){
         WaypointMission.Builder waypointMissionBuilder = new WaypointMission.Builder().finishedAction(mFinishedAction).headingMode(mHeadingMode).autoFlightSpeed(Config.flightSpeed).maxFlightSpeed(Config.flightSpeed).flightPathMode(WaypointMissionFlightPathMode.NORMAL);
-        Waypoint waypoint1 = new Waypoint(latitude,longitude,altitude);
-        Waypoint waypoint2 = new Waypoint(latitude+0.0001,longitude,altitude);
+        Waypoint waypoint1 = new Waypoint(31.259100f,34.831906f,7.0f);
+        Waypoint waypoint2 = new Waypoint(31.259163f,34.831628f,7.0f);
         waypointMissionBuilder.addWaypoint(waypoint2);
         waypointMissionBuilder.addWaypoint(waypoint1);
         WaypointMission toExecute = waypointMissionBuilder.build();

@@ -1,11 +1,12 @@
 package com.dji.drone_app;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -15,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -26,31 +26,25 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import BL.TaskManager;
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
-import dji.common.realname.AircraftBindingState;
-import dji.common.realname.AppActivationState;
-import dji.common.useraccount.UserAccountState;
-import dji.common.util.CommonCallbacks;
 import dji.sdk.base.BaseComponent;
 import dji.sdk.base.BaseProduct;
-import dji.sdk.realname.AppActivationManager;
+import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
-import dji.sdk.useraccount.UserAccountManager;
+import simulator.DJISimulatorApplication;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity  extends Activity implements View.OnClickListener {
 
-    private static final String TAG = MainActivity.class.getName();
-    public static final String FLAG_CONNECTION_CHANGE = "dji_sdk_connection_change";
-    private static BaseProduct mProduct;
-    private AppActivationManager appActivationManager;
-    private AppActivationState.AppActivationStateListener activationStateListener;
-    private AircraftBindingState.AircraftBindingStateListener bindingStateListener;
+
     private Handler mHandler;
-    protected TextView bindingStateTV;
-    protected TextView appActivationStateTV;
-    protected Button loginBtn;
-    protected Button logoutBtn;
-
+    private static final String TAG = MainActivity.class.getName();
+    private static final int REQUEST_PERMISSION_CODE = 12345;
+    protected TextView mConnectStatusTextView;
+    private Button mBtnInit;
+    private AtomicBoolean isRegistrationInProgress = new AtomicBoolean(false);
+    public static final String FLAG_CONNECTION_CHANGE = "dji_sdk_connection_change";
+    private List<String> missingPermission = new ArrayList<>();
+    private TaskManager manager;
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
             Manifest.permission.VIBRATE,
             Manifest.permission.INTERNET,
@@ -65,37 +59,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Manifest.permission.BLUETOOTH_ADMIN,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
-    private List<String> missingPermission = new ArrayList<>();
-    private AtomicBoolean isRegistrationInProgress = new AtomicBoolean(false);
-    private static final int REQUEST_PERMISSION_CODE = 12345;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // When the compile and target version is higher than 22, please request the following permission at runtime to ensure the SDK works well.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkAndRequestPermissions();
-        }
+        checkAndRequestPermissions();
+        mHandler = new Handler(Looper.getMainLooper());
 
         setContentView(R.layout.activity_main);
-
-        //Initialize DJI SDK Manager
-        mHandler = new Handler(Looper.getMainLooper());
         initUI();
-        initData();
-        TaskManager manager = TaskManager.getInstance();
-    }
-
-    private void initUI(){
-//        bindingStateTV = (TextView) findViewById(R.id.tv_binding_state_info);
-//        appActivationStateTV = (TextView) findViewById(R.id.tv_activation_state_info);
-//        loginBtn = (Button) findViewById(R.id.btn_login);
-//        logoutBtn = (Button) findViewById(R.id.btn_logout);
-        loginBtn.setOnClickListener(this);
-        logoutBtn.setOnClickListener(this);
-
     }
     /**
      * Checks if there is any missing permissions, and
@@ -112,12 +86,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (missingPermission.isEmpty()) {
             startSDKRegistration();
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            showToast("Need to grant the permissions!");
             ActivityCompat.requestPermissions(this,
                     missingPermission.toArray(new String[missingPermission.size()]),
                     REQUEST_PERMISSION_CODE);
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        Log.e(TAG, "onResume");
+        super.onResume();
+    }
+
+    private void updateTitleBar() {
+        if(mConnectStatusTextView == null) return;
+        boolean ret = false;
+        BaseProduct product = DJISimulatorApplication.getProductInstance();
+        if (product != null) {
+
+            if (product.isConnected()) {
+                //The product is connected
+                mConnectStatusTextView.setText(DJISimulatorApplication.getProductInstance().getModel() + " Connected");
+
+                ret = true;
+            } else {
+                if (product instanceof Aircraft) {
+                    Aircraft aircraft = (Aircraft) product;
+                    if (aircraft.getRemoteController() != null && aircraft.getRemoteController().isConnected()) {
+                        // The product is not connected, but the remote controller is connected
+                        mConnectStatusTextView.setText("only RC Connected");
+                        showToast("only RC Connected\"");
+                        ret = true;
+                    }
+                }
+            }
+        }
+
+        if(!ret) {
+            // The product or the remote controller are not connected.
+            mConnectStatusTextView.setText("Disconnected");
+        }
     }
 
     /**
@@ -144,135 +153,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void initData(){
-        setUpListener();
-
-        appActivationManager = DJISDKManager.getInstance().getAppActivationManager();
-
-        if (appActivationManager != null) {
-            appActivationManager.addAppActivationStateListener(activationStateListener);
-            appActivationManager.addAircraftBindingStateListener(bindingStateListener);
-            MainActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    appActivationStateTV.setText("" + appActivationManager.getAppActivationState());
-                    bindingStateTV.setText("" + appActivationManager.getAircraftBindingState());
-                }
-            });
-        }
-    }
-
-    private void setUpListener() {
-        // Example of Listener
-        activationStateListener = new AppActivationState.AppActivationStateListener() {
-            @Override
-            public void onUpdate(final AppActivationState appActivationState) {
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        appActivationStateTV.setText("" + appActivationState);
-                    }
-                });
-            }
-        };
-
-        bindingStateListener = new AircraftBindingState.AircraftBindingStateListener() {
-
-            @Override
-            public void onUpdate(final AircraftBindingState bindingState) {
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        bindingStateTV.setText("" + bindingState);
-                    }
-                });
-            }
-        };
-    }
-
-    private void tearDownListener() {
-        if (activationStateListener != null) {
-            appActivationManager.removeAppActivationStateListener(activationStateListener);
-            MainActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    appActivationStateTV.setText("Unknown");
-                }
-            });
-        }
-        if (bindingStateListener !=null) {
-            appActivationManager.removeAircraftBindingStateListener(bindingStateListener);
-            MainActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    bindingStateTV.setText("Unknown");
-                }
-            });
-        }
+    @Override
+    public void onPause() {
+        Log.e(TAG, "onPause");
+        super.onPause();
     }
 
     @Override
-    public void onResume() {
-        Log.e(TAG, "onResume");
-        setUpListener();
-        super.onResume();
+    public void onStop() {
+        Log.e(TAG, "onStop");
+        super.onStop();
+    }
+
+    public void onReturn(View view){
+        Log.e(TAG, "onReturn");
+        this.finish();
     }
 
     @Override
     protected void onDestroy() {
         Log.e(TAG, "onDestroy");
-        tearDownListener();
         super.onDestroy();
     }
 
-    private void loginAccount(){
+    private void initUI() {
+        mConnectStatusTextView = (TextView) findViewById(R.id.ConnectStatusTextView);
+        mBtnInit = (Button)findViewById(R.id.btn_init);
 
-        UserAccountManager.getInstance().logIntoDJIUserAccount(this,
-                new CommonCallbacks.CompletionCallbackWith<UserAccountState>() {
-                    @Override
-                    public void onSuccess(final UserAccountState userAccountState) {
-                        showToast("Login Success");
-                    }
-                    @Override
-                    public void onFailure(DJIError error) {
-                        showToast("Login Error:"
-                                + error.getDescription());
-                    }
-                });
+        mBtnInit.setOnClickListener(this);
 
     }
 
-    private void logoutAccount(){
-        UserAccountManager.getInstance().logoutOfDJIUserAccount(new CommonCallbacks.CompletionCallback() {
-            @Override
-            public void onResult(DJIError error) {
-                if (null == error) {
-                    showToast("Logout Success");
-                } else {
-                    showToast("Logout Error:"
-                            + error.getDescription());
-                }
-            }
-        });
-    }
+
 
     @Override
     public void onClick(View v) {
 
-//        switch (v.getId()) {
-//            case R.id.btn_login:{
-//                loginAccount();
-//                break;
-//            }
-//            case R.id.btn_logout:{
-//                logoutAccount();
-//                break;
-//            }
-//            default:
-//                break;
-//        }
-    }
+        switch (v.getId()) {
 
+            case R.id.btn_init:
+                updateTitleBar();
+                manager = TaskManager.getInstance();
+                break;
+        }
+    }
 
     private void startSDKRegistration() {
         if (isRegistrationInProgress.compareAndSet(false, true)) {
@@ -376,5 +300,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
     }
-
 }
