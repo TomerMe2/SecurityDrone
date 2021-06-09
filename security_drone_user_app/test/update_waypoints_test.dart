@@ -80,11 +80,6 @@ void main() {
         PatrolMapShowingPoints([point, farPoint]),
         SendingDataToServer([point, farPoint]),
         DoneSendDataToServer([point, farPoint])],
-      verify: (PatrolMapBloc bloc) async {
-        final file = new File(testsOutputFile);
-        String strFromFile = file.readAsStringSync();
-        expect(strFromFile, equals(jsonEncode(bloc.state.points)));
-      }
   );
 
 
