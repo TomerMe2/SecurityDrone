@@ -42,7 +42,7 @@ void main() {
       expect: [MapShowingPoint(point), WantApprovalForResetting(farPoint, point)]
   );
 
-  blocTest('Check do not delete close point',
+  blocTest('Check do not reset close point',
       build: () => HomeMapBloc(),
       act: (bloc) {
         bloc.add(MapPointClicked(point));
@@ -52,7 +52,7 @@ void main() {
       expect: [MapShowingPoint(point), WantApprovalForResetting(closePoint, point), MapShowingPoint(point)]
   );
 
-  blocTest('Check delete close point',
+  blocTest('Check reset close point',
       build: () => HomeMapBloc(),
       act: (bloc) {
         bloc.add(MapPointClicked(point));
