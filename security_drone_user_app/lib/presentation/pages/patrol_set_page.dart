@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:security_drone_user_app/data/models/lat_lng_point.dart';
-import 'package:security_drone_user_app/logic/patrol_map_bloc.dart';
+import 'package:security_drone_user_app/logic/bloc/patrol_map_bloc.dart';
 
 class PatrolSetPage extends StatefulWidget {
   @override
@@ -32,16 +30,18 @@ class PatrolSetPageState extends State<PatrolSetPage> {
         padding: EdgeInsets.all(3),
         child: SizedBox(
           width: 75,
-          child: FlatButton(
-            padding: EdgeInsets.all(0),
+          child: TextButton(
             onPressed: func,
             child: Text(text,
                 overflow: TextOverflow.visible,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 13)
             ),
-            color: Colors.transparent,
-            highlightColor: Colors.blueAccent,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+              foregroundColor: MaterialStateProperty.all(Colors.blueAccent),
+              padding: MaterialStateProperty.all(EdgeInsets.all(0))
+            ),
           ),
         ),
       );
@@ -85,20 +85,24 @@ class PatrolSetPageState extends State<PatrolSetPage> {
               _bloc.add(
                   PatrolMapPointClicked(LatLngPoint(loc.latitude, loc.longitude)));
             },
+
           ),
           Align(
-            alignment: Alignment.topRight,
+            alignment: Alignment.bottomLeft,
             child: Padding(
-              padding: EdgeInsets.only(right: 5),
-              child: FlatButton(
+              padding: EdgeInsets.only(left: 5),
+              child: TextButton(
                   onPressed: () {_bloc.add(DonePickingPoints());},
-                  color: Colors.blue,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue)
+                  ),
                   child:  Text('done',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 19, color: Colors.white)
                    )),
             )
-          )
+          ),
+
           ];
 
           if (state is WantApprovalForDeletion) {
@@ -145,7 +149,7 @@ class PatrolSetPageState extends State<PatrolSetPage> {
             }
             else {
               innerChildren = [
-                Text('Done sending data!', style: TextStyle(fontSize: 23))
+                Text('Done sending data!', style: TextStyle(fontSize: 23)),
               ];
             }
             children.add(

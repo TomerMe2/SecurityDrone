@@ -1,0 +1,1 @@
+enum RequestType {Patrol, WatchHerd, Abort, none}

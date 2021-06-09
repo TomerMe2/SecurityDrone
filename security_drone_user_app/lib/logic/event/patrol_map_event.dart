@@ -1,4 +1,4 @@
-part of 'patrol_map_bloc.dart';
+part of '../bloc/patrol_map_bloc.dart';
 
 @immutable
 abstract class PatrolMapEvent {}

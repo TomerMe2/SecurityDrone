@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:security_drone_user_app/communication/to_server.dart';
+
+import 'package:security_drone_user_app/data/data_api/patrol_points_api.dart';
 import 'package:security_drone_user_app/data/models/lat_lng_point.dart';
 
-part 'patrol_map_event.dart';
-part 'patrol_map_state.dart';
+part '../event/patrol_map_event.dart';
+part '../state/patrol_map_state.dart';
 
 class PatrolMapBloc extends Bloc<PatrolMapEvent, PatrolMapState> {
+  PatrolPointsAPI api = PatrolPointsAPI();
 
   static const double DISTANCE_OF_SAME_POINT = 0.00008;
   PatrolMapBloc() : super(PatrolMapShowingPoints([]));
@@ -20,7 +22,6 @@ class PatrolMapBloc extends Bloc<PatrolMapEvent, PatrolMapState> {
   ) async* {
     if (event is PatrolMapPointClicked) {
       var newPoint = event.pointClickedOn;
-
 
       double closestDistance;
       LatLngPoint closestPoint;
@@ -56,7 +57,8 @@ class PatrolMapBloc extends Bloc<PatrolMapEvent, PatrolMapState> {
 
     else if (event is DonePickingPoints) {
       yield(SendingDataToServer(state.points));
-      await sendPatrolWaypoints(state.points);
+      //TODO: Token
+      await api.sendPatrolPoints(state.points, "");
       yield(DoneSendDataToServer(state.points));
     }
 
