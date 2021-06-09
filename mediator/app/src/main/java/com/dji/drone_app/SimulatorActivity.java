@@ -4,9 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -18,18 +20,38 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import BL.TaskManager;
 import Utils.Config;
+import Utils.Logger;
+import Utils.MissionState;
+import components.AircraftController;
+import dji.common.camera.SettingsDefinitions;
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
+import dji.common.flightcontroller.FlightControllerState;
+import dji.common.flightcontroller.LocationCoordinate3D;
 import dji.common.flightcontroller.simulator.InitializationData;
 import dji.common.flightcontroller.simulator.SimulatorState;
 import dji.common.flightcontroller.virtualstick.FlightControlData;
@@ -39,17 +61,24 @@ import dji.common.flightcontroller.virtualstick.VerticalControlMode;
 import dji.common.flightcontroller.virtualstick.YawControlMode;
 import dji.common.mission.waypoint.Waypoint;
 import dji.common.mission.waypoint.WaypointMission;
+import dji.common.mission.waypoint.WaypointMissionDownloadEvent;
+import dji.common.mission.waypoint.WaypointMissionExecutionEvent;
 import dji.common.mission.waypoint.WaypointMissionFinishedAction;
 import dji.common.mission.waypoint.WaypointMissionFlightPathMode;
 import dji.common.mission.waypoint.WaypointMissionHeadingMode;
 import dji.common.mission.waypoint.WaypointMissionState;
+import dji.common.mission.waypoint.WaypointMissionUploadEvent;
 import dji.common.model.LocationCoordinate2D;
 import dji.common.util.CommonCallbacks;
 import dji.sdk.base.BaseComponent;
 import dji.sdk.base.BaseProduct;
+import dji.sdk.camera.Camera;
 import dji.sdk.flightcontroller.FlightController;
+import dji.sdk.media.MediaFile;
+import dji.sdk.media.MediaManager;
 import dji.sdk.mission.MissionControl;
 import dji.sdk.mission.waypoint.WaypointMissionOperator;
+import dji.sdk.mission.waypoint.WaypointMissionOperatorListener;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
@@ -97,7 +126,8 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
     private Button mBtnLand;
     private Button mBtnInit;
     private Button mBtnWaypoint;
-    private Button mBtnLoc;
+    private Button mBtnstop;
+    private Button mBtnGoHome;
     private TextView mTextView;
     private AtomicBoolean isRegistrationInProgress = new AtomicBoolean(false);
     public static final String FLAG_CONNECTION_CHANGE = "dji_sdk_connection_change";
@@ -121,6 +151,8 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
 
     private OnScreenJoystick mScreenJoystickRight;
     private OnScreenJoystick mScreenJoystickLeft;
+    private TaskManager manager;
+    private List<MediaFile> mediaFileList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,7 +325,8 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
         mScreenJoystickLeft = (OnScreenJoystick)findViewById(R.id.directionJoystickLeft);
         mBtnInit = (Button)findViewById(R.id.btn_init);
         mBtnWaypoint = (Button)findViewById(R.id.btn_go_to_waypont);
-        mBtnLoc = (Button)findViewById(R.id.btn_get_loc);
+        mBtnstop = (Button)findViewById(R.id.btn_stop_mission);
+        mBtnGoHome = (Button)findViewById(R.id.btn_home);
 
         mBtnEnableVirtualStick.setOnClickListener(this);
         mBtnDisableVirtualStick.setOnClickListener(this);
@@ -301,7 +334,8 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
         mBtnLand.setOnClickListener(this);
         mBtnInit.setOnClickListener(this);
         mBtnWaypoint.setOnClickListener(this);
-        mBtnLoc.setOnClickListener(this);
+        mBtnstop.setOnClickListener(this);
+        mBtnGoHome.setOnClickListener(this);
 
         mBtnSimulator.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -409,11 +443,10 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
         showToast("waypoint mission start");
         MissionControl missionControl = DJISDKManager.getInstance().getMissionControl();
         WaypointMissionOperator operator = missionControl.getWaypointMissionOperator();
-        float latitude = 23.3333f;
-        float longitude = 114.3333f;
-        float altitude = 100.0f;
+        float latitude = 22.5430f;
+        float longitude = 113.9590f;
+        float altitude = 12.0f;
         float mSpeed = 10.0f;
-        List<Waypoint> waypointList = new ArrayList<>();
         WaypointMissionFinishedAction mFinishedAction = WaypointMissionFinishedAction.NO_ACTION;
         WaypointMissionHeadingMode mHeadingMode = WaypointMissionHeadingMode.AUTO;
         WaypointMission.Builder waypointMissionBuilder = new WaypointMission.Builder()
@@ -422,15 +455,127 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
                 .autoFlightSpeed(mSpeed)
                 .maxFlightSpeed(mSpeed)
                 .flightPathMode(WaypointMissionFlightPathMode.NORMAL);
-        Waypoint waypoint = new Waypoint(latitude,longitude,altitude);
-        waypointList.add(waypoint);
-        waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
+        Waypoint waypoint1 = new Waypoint(latitude,longitude,altitude);
+        Waypoint waypoint2 = new Waypoint(latitude+0.0001,longitude,altitude);
+        waypointMissionBuilder.addWaypoint(waypoint1);
+        waypointMissionBuilder.addWaypoint(waypoint2);
         WaypointMission toExecute = waypointMissionBuilder.build();
-        operator.loadMission(toExecute);
-        operator.startMission(new CommonCallbacks.CompletionCallback() {
+        operator.addListener(new WaypointMissionOperatorListener() {
+            @Override
+            public void onDownloadUpdate(@NonNull WaypointMissionDownloadEvent waypointMissionDownloadEvent) {
+
+            }
+
+            @Override
+            public void onUploadUpdate(@NonNull WaypointMissionUploadEvent waypointMissionUploadEvent) {
+
+            }
+
+            @Override
+            public void onExecutionUpdate(@NonNull WaypointMissionExecutionEvent waypointMissionExecutionEvent) {
+
+            }
+
+            @Override
+            public void onExecutionStart() {
+
+            }
+
+            @Override
+            public void onExecutionFinish(@Nullable DJIError djiError) {
+                showToast("go waypoint finished");
+            }
+        });
+        DJIError loadError =  operator.loadMission(toExecute);
+        if(loadError != null){
+            showToast("load error " + loadError.getDescription() + " " + loadError.getClass().getName());
+        }
+
+        boolean errorOccurred = false;
+        long startTime = System.currentTimeMillis();
+        while (operator.getCurrentState() != WaypointMissionState.READY_TO_UPLOAD) {
+            if(System.currentTimeMillis() - startTime > Config.timeUploadMission){
+                errorOccurred = true;
+                break;
+            }
+        }
+
+        if(!errorOccurred) {
+            operator.uploadMission(new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onResult(DJIError error) {
+                    if (error == null) {
+                        showToast("Mission upload successfully!");
+                    } else {
+                        showToast("Mission upload failed, error: " + error.getDescription() + " retrying...");
+                    }
+                }
+            });
+            startTime = System.currentTimeMillis();
+            while (operator.getCurrentState() != WaypointMissionState.READY_TO_EXECUTE) {
+                if(System.currentTimeMillis() - startTime > Config.timeUploadMission){
+                    errorOccurred = true;
+                    break;
+                }
+            }
+        }
+        if(!errorOccurred) {
+            operator.startMission(new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onResult(DJIError djiError) {
+                    showToast("Execution finished: " + (djiError == null ? "Success!" : djiError.getDescription()));
+                }
+            });
+        }else{
+            showToast("error occurred");
+        }
+    }
+
+
+
+    private void download(){
+        BaseProduct mProduct = DJISDKManager.getInstance().getProduct();
+        Camera camera = mProduct.getCamera();
+        MediaManager mMediaManager = camera.getMediaManager();
+
+        mMediaManager.refreshFileListOfStorageLocation(SettingsDefinitions.StorageLocation.SDCARD, new CommonCallbacks.CompletionCallback() {
+
             @Override
             public void onResult(DJIError djiError) {
-                showToast("Execution finished: " + (djiError == null ? "Success!" : djiError.getDescription()));
+                if (null == djiError) {
+
+                    mediaFileList = mMediaManager.getSDCardFileListSnapshot();
+                    Collections.sort(mediaFileList, new Comparator<MediaFile>() {
+                        @Override
+                        public int compare(MediaFile lhs, MediaFile rhs) {
+                            if (lhs.getTimeCreated() < rhs.getTimeCreated()) {
+                                return 1;
+                            } else if (lhs.getTimeCreated() > rhs.getTimeCreated()) {
+                                return -1;
+                            }
+                            return 0;
+                        }
+                    });
+
+                    MediaFile file = mediaFileList.get(0);
+                    file.fetchPreview(new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(DJIError djiError) {
+                            if(djiError == null){
+                                Bitmap bitmap = file.getPreview();
+                                File toDownload = new File("/mnt/internal_sd/DJI/com.dji.industry.pilot/security", file.getFileName() + ".jpg") ;
+                                try {
+                                    FileOutputStream out = new FileOutputStream(toDownload);
+                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                                    out.flush();
+                                    out.close();
+                                    showToast("success");
+                                } catch (Exception e) {
+                                }
+                            }
+                        }
+                    });
+                }
             }
         });
     }
@@ -440,84 +585,43 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
 
         switch (v.getId()) {
             case R.id.btn_enable_virtual_stick:
-                if (mFlightController != null){
-
-                    mFlightController.setVirtualStickModeEnabled(true, new CommonCallbacks.CompletionCallback() {
-                        @Override
-                        public void onResult(DJIError djiError) {
-                            if (djiError != null){
-                                showToast(djiError.getDescription());
-                            }else
-                            {
-                                showToast("Enable Virtual Stick Success");
-                            }
-                        }
-                    });
+                try {
+                    manager.takePhotos();
+                }catch (Exception e){
+                    Logger.sendData(e.getMessage());
                 }
                 break;
 
             case R.id.btn_disable_virtual_stick:
-                if (mFlightController != null){
-                    mFlightController.setVirtualStickModeEnabled(false, new CommonCallbacks.CompletionCallback() {
-                        @Override
-                        public void onResult(DJIError djiError) {
-                            if (djiError != null) {
-                                showToast(djiError.getDescription());
-                            } else {
-                                showToast("Disable Virtual Stick Success");
-                            }
-                        }
-                    });
-                }
+                manager.stopTakingPhotos();
                 break;
             case R.id.btn_take_off:
-                if (mFlightController != null){
-                    mFlightController.startTakeoff(
-                            new CommonCallbacks.CompletionCallback() {
-                                @Override
-                                public void onResult(DJIError djiError) {
-                                    if (djiError != null) {
-                                        showToast(djiError.getDescription());
-                                    } else {
-                                        showToast("Take off Success");
-                                    }
-                                }
-                            }
-                    );
-                }
-
+                manager.addTakeOffMission();
                 break;
 
             case R.id.btn_land:
-                if (mFlightController != null){
-
-                    mFlightController.startLanding(
-                            new CommonCallbacks.CompletionCallback() {
-                                @Override
-                                public void onResult(DJIError djiError) {
-                                    if (djiError != null) {
-                                        showToast(djiError.getDescription());
-                                    } else {
-                                        showToast("Start Landing");
-                                    }
-                                }
-                            }
-                    );
-
-                }
-
+                manager.addLandMission();
                 break;
 
             case R.id.btn_init:
                 updateTitleBar();
-                initFlightController();
+                manager = TaskManager.getInstance();
+//                initFlightController();
                 break;
 
             case R.id.btn_go_to_waypont:
-                goByWaypoint();
+//                goByWaypoint();
+                manager.addGoToWaypointMission(113.9590f,22.5430f,10.0f);
+
                 break;
 
+            case R.id.btn_stop_mission:
+                manager.stopAllMissions();
+                break;
 
+            case R.id.btn_home:
+                manager.addGoHomeMission();
+                break;
         }
     }
 
@@ -533,8 +637,7 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
                         public void onRegister(DJIError djiError) {
                             if (djiError == DJISDKError.REGISTRATION_SUCCESS) {
                                 showToast("Register Success");
-                                 Boolean result = DJISDKManager.getInstance().startConnectionToProduct();
-                                 showToast(result.toString());
+                                DJISDKManager.getInstance().startConnectionToProduct();
                             } else {
                                 showToast("Register sdk fails, please check the bundle id and network connection!");
                             }

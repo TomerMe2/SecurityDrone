@@ -7,6 +7,7 @@ import dji.sdk.sdkmanager.DJISDKManager;
 
 public class AircraftController {
     private Aircraft m_aircraft;
+    private CameraController cameraController;
     private FlightControl controller;
     private static AircraftController instance;
     private BuildInMissionControl buildInMissionControl;
@@ -23,25 +24,28 @@ public class AircraftController {
         m_aircraft = (Aircraft) DJISDKManager.getInstance().getProduct();
         controller = new FlightControl(m_aircraft);
         buildInMissionControl = new BuildInMissionControl();
+        cameraController = new CameraController(m_aircraft);
     }
 
-    public synchronized void takeOff(MissionState state){
+    public  void takeOff(MissionState state){
         controller.takeOff(state);
     }
-    public synchronized void stopTakeOff(MissionState state){controller.cancelTakeOff(state);}
-    public synchronized void goHome(MissionState state){
+    public  void stopTakeOff(MissionState state){controller.cancelTakeOff(state);}
+    public  void goHome(MissionState state){
         controller.goHome(state);
     }
-    public synchronized void stopGoHome(MissionState state){
+    public  void setHome(MissionState state,LocationCoordinate2D loc){controller.setHome(loc,state);}
+    public  void stopGoHome(MissionState state){
         controller.stopGoHome(state);
     }
-    public synchronized void startLanding(MissionState state){
+    public  void startLanding(MissionState state){
         controller.startLanding(state);
     }
-    public synchronized void stopLanding(MissionState state){
+    public  void stopLanding(MissionState state){
         controller.stopLanding(state);
     }
-    public synchronized void goToWaypoint(float longitude, float latitude, float altitude, MissionState state){buildInMissionControl.goToWaypoint(longitude,latitude,altitude,state);}
-    public synchronized void stopGoToWaypoint(MissionState state){buildInMissionControl.stopGoWaypoint(state);}
-    public synchronized LocationCoordinate2D getLocation(MissionState state){return controller.getLocation(state);}
+    public  void goToWaypoint(float longitude, float latitude, float altitude, MissionState state){buildInMissionControl.goToWaypoint(longitude,latitude,altitude,state);}
+    public  void stopGoToWaypoint(MissionState state){buildInMissionControl.stopGoWaypoint(state);}
+    public  LocationCoordinate2D getLocation(MissionState state){return controller.getLocation(state);}
+    public  void takePhoto (MissionState state){cameraController.takePhoto(state);}
 }

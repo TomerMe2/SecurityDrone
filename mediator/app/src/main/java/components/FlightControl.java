@@ -1,6 +1,7 @@
 package components;
 
 import Utils.Config;
+import Utils.Logger;
 import Utils.MissionState;
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.LocationCoordinate3D;
@@ -28,7 +29,7 @@ public class FlightControl {
                     @Override
                     public void onResult(DJIError djiError) {
                         if (djiError != null) {
-                            state.fail();
+                            state.fail(djiError.getDescription());
                         } else {
                             state.success();
                         }
@@ -42,7 +43,7 @@ public class FlightControl {
                     @Override
                     public void onResult(DJIError djiError) {
                         if (djiError != null) {
-                            state.fail();
+                            state.fail(djiError.getDescription());
                         } else {
                             state.success();
                         }
@@ -56,8 +57,10 @@ public class FlightControl {
             @Override
             public void onResult(DJIError djiError) {
                 if (djiError != null) {
-                    state.fail();
+                    Logger.sendData(djiError.getDescription());
+                    state.fail(djiError.getDescription());
                 } else {
+                    Logger.sendData("go home done");
                     state.success();
                 }
             }
@@ -69,8 +72,10 @@ public class FlightControl {
             @Override
             public void onResult(DJIError djiError) {
                 if (djiError != null) {
-                    state.fail();
+                    Logger.sendData(djiError.getDescription());
+                    state.fail(djiError.getDescription());
                 } else {
+                    Logger.sendData("set home done");
                     state.success();
                 }
             }
@@ -84,9 +89,11 @@ public class FlightControl {
             public void onResult(DJIError djiError) {
 
                 if (djiError!= null){
-                    state.fail();
+                    Logger.sendData(djiError.getDescription());
+                    state.fail(djiError.getDescription());
                 }
                 else{
+                    Logger.sendData("stop go home done");
                     state.success();
                 }
             }
@@ -104,13 +111,13 @@ public class FlightControl {
             public void onResult(DJIError djiError) {
 
                 if (djiError!= null){
-                    state.fail();
+                    state.fail(djiError.getDescription());
                 }
                 else{
                     long startTime = System.currentTimeMillis();
                     while (!isFinishedLanding() && landing){
                         if(System.currentTimeMillis() - startTime > Config.MAX_TIME_WAIT_FOR_LANDING){
-                            state.fail();
+                            state.fail(djiError.getDescription());
                         }
                         try {
                             Thread.sleep(1000);
@@ -141,7 +148,7 @@ public class FlightControl {
             @Override
             public void onResult(DJIError djiError) {
                 if (djiError!= null){
-                    state.fail();
+                    state.fail(djiError.getDescription());
                 }
                 else{
                     state.success();

@@ -43,7 +43,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enable Virtual Stick"
+        android:text="show camera name"
         style="@style/common_button"
         android:id="@+id/btn_enable_virtual_stick"
         android:layout_marginLeft="5dp"
@@ -54,7 +54,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Disable Virtual Stick"
+        android:text="stop taking photos"
         style="@style/common_button"
         android:id="@+id/btn_disable_virtual_stick"
         android:layout_below="@+id/btn_enable_virtual_stick"
@@ -123,7 +123,7 @@
         android:text="go to waypoit" />
 
     <Button
-        android:id="@+id/btn_get_loc"
+        android:id="@+id/btn_stop_mission"
         style="@style/common_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -131,7 +131,19 @@
         android:layout_alignStart="@+id/btn_land"
         android:layout_marginTop="60dp"
         android:layout_alignEnd="@+id/btn_land"
-        android:text="get loc" />
+        android:text="stop mission" />
+
+    <Button
+        android:id="@+id/btn_home"
+        style="@style/common_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/btn_init"
+        android:layout_below="@+id/btn_init"
+        android:layout_alignEnd="@+id/btn_init"
+        android:layout_alignTop="@+id/btn_init"
+        android:layout_marginTop="60dp"
+        android:text="go home" />
 
     <simulator.OnScreenJoystick
         android:id="@+id/directionJoystickRight"
