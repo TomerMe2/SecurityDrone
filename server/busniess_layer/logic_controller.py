@@ -1,8 +1,9 @@
 import cv2
 import numpy as np
 from werkzeug.security import check_password_hash
-
+from datetime import datetime
 from data_access.data_controller import DataController
+from data_objects.missions import Mission, MissionType, StartReasonType, EndReasonType
 
 
 class LogicController:
@@ -30,6 +31,20 @@ class LogicController:
         data_controller = DataController()
         return data_controller.get_home_waypoint()
 
+    def start_patrol(self, reason, date):
+        patrol_mission = Mission(
+            MissionType.PATROL, [], reason, None, date, None
+        )
+
+        data_controller = DataController()
+        return data_controller.add_new_mission(patrol_mission)
+
+    def start_patrol_user_request(self, date):
+        return self.start_patrol(StartReasonType.USER_REQUEST, date)
+
+    def start_patrol_time_interval(self, date):
+        return self.start_patrol(StartReasonType.CLOCK, date)
+
     def process_image(self, image_str, date, lat, lon, object_detector):
         """
         :param object_detector: yolov5 adaptor instance
@@ -44,9 +59,33 @@ class LogicController:
 
         if is_thief:
             data_controller = DataController()
-            return True, data_controller.save_thief_img(image_str, date, lat, lon)
+            has_saved_image = data_controller.save_thief_img(image_str, date, lat, lon)
+
+            if not has_saved_image:
+                return is_thief, False
+
+            time = datetime.now()
+            new_sub_mission = Mission(mission_type=MissionType.TRACK, sub_missions=[],
+                                      start_reason=StartReasonType.FOUND_THIEF,
+                                      end_reason=None,
+                                      start_time=time,
+                                      end_time=None)
+
+            open_mission = data_controller.get_open_mission()
+            if open_mission is None or len(open_mission.sub_missions) > 0:
+                return is_thief, False
+
+            # TODO: UNDO TRACKING IF NOT FINDING THIEF FOR A "LONG" TIME
+            if open_mission.sub_missions[-1].mission_type != MissionType.TRACK:
+                has_saved_mission = data_controller.add_sub_mission_to_open_mission(new_sub_mission,
+                                                                                    EndReasonType.FOUND_THIEF,
+                                                                                    time)
+                return is_thief, has_saved_mission
+
+            return is_thief, True
+
         else:
-            return False, True
+            return is_thief, True
 
     def get_images_of_thieves(self, date_from, date_until, index_from, index_until):
         data_controller = DataController()

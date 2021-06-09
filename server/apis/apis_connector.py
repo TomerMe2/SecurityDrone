@@ -1,4 +1,6 @@
 from socketIO_client import SocketIO, LoggingNamespace
+from datetime import datetime
+from busniess_layer.logic_controller import LogicController
 from config import config
 
 
@@ -17,6 +19,7 @@ class ProductionApisConnector:
         self.socket_mediator.emit('join_connector')
         self.socket_user.emit('join_connector')
         self.socket_mediator.on('thief_found', self.thief_found)
+        self.socket_user.on('patrol_time', self.send_patrol)
         self.socket_user.on('patrol', self.send_patrol)
         self.socket_mediator.wait()
         self.socket_user.wait()
@@ -25,5 +28,12 @@ class ProductionApisConnector:
         self.socket_user.emit('notify_thief', img_json)
 
     def send_patrol(self):
-        pass
+        logic = LogicController()
+        logic.start_patrol_user_request(datetime.now())
+
+    def patrol_time(self):
+        # should start patrol because of time interval
+        logic = LogicController()
+        logic.start_patrol_time_interval(datetime.now())
+
 

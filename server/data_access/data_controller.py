@@ -1,4 +1,9 @@
+from dataclasses import asdict
+from datetime import datetime
+
 import pymongo
+
+from data_objects.missions import Mission, EndReasonType
 from config import config
 
 
@@ -53,6 +58,103 @@ class DataController:
         self.__close_db()
 
         return inserted.inserted_id is not None
+
+    def add_sub_mission_to_open_mission(self, sub_mission: Mission, previous_mission_end_reason: EndReasonType, time: datetime):
+        assert sub_mission.end_time is None and sub_mission.end_reason is None
+        self.__connect_to_db()
+
+        col = self.db[config['missions_db_name']]
+        # Should be only one, but sort by by start_time DESC to avoid weird cases
+        open_missions = list(col.find({'end_time': None}).sort([("start_time", pymongo.DESCENDING)]))
+
+        result = False
+
+        if len(open_missions) != 0:
+            open_mission = open_missions[0]
+            id_of_mission = open_mission['_id']
+            del open_mission['_id']
+            open_mission = Mission.from_dict(open_mission)
+
+            # close the previous sub mission
+            open_mission.sub_missions[-1].end_time = time
+            open_mission.sub_missions[-1].end_reason = previous_mission_end_reason
+            # add the new sub mission
+            open_mission.sub_missions.append(sub_mission)
+
+            res_from_db = col.update_one({"_id": id_of_mission}, open_mission.to_dict())
+            result = res_from_db.modified_count == 1
+
+        self.__close_db()
+        return result
+
+    def end_open_mission(self, end_reason: EndReasonType, time: datetime):
+        self.__connect_to_db()
+
+        col = self.db[config['missions_db_name']]
+        # Should be only one, but sort by by start_time DESC to avoid weird cases
+        open_missions = list(col.find({'end_time': None}).sort([("start_time", pymongo.DESCENDING)]))
+
+        result = False
+
+        if len(open_missions) != 0:
+            open_mission = open_missions[0]
+            id_of_mission = open_mission['_id']
+            del open_mission['_id']
+            open_mission = Mission.from_dict(open_mission)
+
+            # close the mission
+            open_mission.end_time = time
+            open_mission.end_reason = end_reason
+
+            res_from_db = col.update_one({"_id": id_of_mission}, open_mission.to_dict())
+            result = res_from_db.modified_count == 1
+
+        self.__close_db()
+        return result
+
+    def add_new_mission(self, mission: Mission):
+        self.__connect_to_db()
+        col = self.db[config['missions_db_name']]
+
+        inserted = col.insert_one(asdict(mission))
+
+        self.__close_db()
+
+        return inserted.inserted_id is not None
+
+    def get_open_mission(self):
+        col = self.db[config['missions_db_name']]
+        # Should be only one, but sort by by start_time DESC to avoid weird cases
+        open_missions = list(col.find({'end_time': None}).sort([("start_time", pymongo.DESCENDING)]))
+
+        if len(open_missions) != 0:
+            open_mission = open_missions[0]
+            del open_mission['_id']
+            open_mission = Mission.from_dict(open_mission)
+            return open_mission
+
+        return None
+
+    def get_missions_log(self, date_from, date_until, index_from, index_until):
+        self.__connect_to_db()
+        col = self.db[config['missions_db_name']]
+
+        query_params = {}
+        if date_from is not None:
+            query_params['$gte'] = date_from
+        if date_until is not None:
+            query_params['$lte'] = date_until
+
+        if query_params == {}:
+            ans = col.find({}, {'_id': 0}).sort('start_time', -1).skip(index_from).limit(index_until - index_from)
+        else:
+            ans = col.find({'date': query_params}, {'_id': 0}).sort('start_time', -1). \
+                skip(index_from).limit(index_until - index_from)
+        ans = list(ans)
+
+        self.__close_db()
+
+        return [Mission.from_dict(entry) for entry in ans]
 
     def get_waypoints(self):
         """

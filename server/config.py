@@ -4,6 +4,7 @@ config = {
   "home_waypoint_db_name": "home_waypoint",
   "waypoints_db_name": "waypoints",
   "thief_images_db_name": "thieves",
+  "missions_db_name": "missions",
   "users_db_name": "users",
   "user_api_port": 5002,
   "mediator_api_port": 5001,
