@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:security_drone_user_app/config.dart';
 import 'package:security_drone_user_app/communication/mock_sender.dart' if (isMockingServer) 'package:security_drone_user_app/communication/general_api.dart';
 
 class MissionAPI {

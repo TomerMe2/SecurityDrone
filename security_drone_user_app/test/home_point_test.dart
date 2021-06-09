@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:security_drone_user_app/config.dart';
 import 'package:security_drone_user_app/data/models/lat_lng_point.dart';
 import 'package:security_drone_user_app/logic/bloc/home_map_bloc.dart';
-import 'package:test/test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'dart:io';
 
