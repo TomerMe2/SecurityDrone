@@ -32,224 +32,150 @@
             android:textSize="19sp" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn_init"
-        style="@style/common_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:layout_marginLeft="150dp"
-        android:text="Init" />
-
-    <!--    <TextView-->
-<!--        android:layout_marginTop="70dp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:text="Simulator is off."-->
-<!--        android:id="@+id/textview_simulator"/>-->
-
-<!--    <Button-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="show camera name"-->
-<!--        style="@style/common_button"-->
-<!--        android:id="@+id/btn_enable_virtual_stick"-->
-<!--        android:layout_marginLeft="5dp"-->
-<!--        android:layout_alignTop="@+id/btn_start_simulator"-->
-<!--        android:layout_alignStart="@+id/directionJoystickRight"-->
-<!--        android:layout_marginTop="0dp" />-->
-
-<!--    <Button-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="set home point"-->
-<!--        style="@style/common_button"-->
-<!--        android:id="@+id/btn_disable_virtual_stick"-->
-<!--        android:layout_below="@+id/btn_enable_virtual_stick"-->
-<!--        android:layout_alignStart="@+id/btn_enable_virtual_stick"-->
-<!--        android:layout_marginLeft="0dp"-->
-<!--        android:layout_alignEnd="@+id/btn_enable_virtual_stick" />-->
-
-<!--    <Button-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Take Off"-->
-<!--        style="@style/common_button"-->
-<!--        android:id="@+id/btn_take_off"-->
-<!--        android:layout_alignTop="@+id/btn_disable_virtual_stick"-->
-<!--        android:layout_alignStart="@+id/btn_start_simulator"-->
-<!--        android:layout_marginTop="0dp"-->
-<!--        android:layout_alignEnd="@+id/btn_start_simulator" />-->
-
-<!--    <ToggleButton-->
-<!--        android:id="@+id/btn_start_simulator"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Start Simulator"-->
-<!--        android:textOff="Start Simulator"-->
-<!--        android:textOn="Stop Simulator"-->
-<!--        style="@style/common_button"-->
-<!--        android:layout_below="@+id/textview_simulator"-->
-<!--        android:layout_toEndOf="@+id/btn_enable_virtual_stick"-->
-<!--        android:layout_marginTop="107dp"-->
-<!--        android:layout_marginLeft="10dp" />-->
-
-<!--    <Button-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Land"-->
-<!--        style="@style/common_button"-->
-<!--        android:id="@+id/btn_land"-->
-<!--        android:layout_alignTop="@+id/btn_take_off"-->
-<!--        android:layout_marginTop="0dp"-->
-<!--        android:layout_alignEnd="@+id/directionJoystickLeft"-->
-<!--        android:layout_toEndOf="@+id/btn_take_off"-->
-<!--        android:layout_marginLeft="10dp" />-->
-
 <!--    <Button-->
 <!--        android:id="@+id/btn_init"-->
 <!--        style="@style/common_button"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignStart="@+id/btn_disable_virtual_stick"-->
-<!--        android:layout_below="@+id/btn_disable_virtual_stick"-->
-<!--        android:layout_alignEnd="@+id/btn_disable_virtual_stick"-->
-<!--        android:layout_alignTop="@+id/btn_disable_virtual_stick"-->
-<!--        android:layout_marginTop="60dp"-->
+<!--        android:layout_marginTop="300dp"-->
+<!--        android:layout_marginLeft="150dp"-->
 <!--        android:text="Init" />-->
 
+        <TextView
+        android:layout_marginTop="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Simulator is off."
+        android:id="@+id/textview_simulator"/>
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_go_to_waypont"-->
-<!--        style="@style/common_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignTop="@+id/btn_init"-->
-<!--        android:layout_alignStart="@+id/btn_take_off"-->
-<!--        android:layout_marginTop="0dp"-->
-<!--        android:layout_alignEnd="@+id/btn_take_off"-->
-<!--        android:text="go to waypoit" />-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="show camera name"
+        style="@style/common_button"
+        android:id="@+id/btn_enable_virtual_stick"
+        android:layout_marginLeft="5dp"
+        android:layout_alignTop="@+id/btn_start_simulator"
+        android:layout_marginTop="0dp" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_stop_mission"-->
-<!--        style="@style/common_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignTop="@+id/btn_land"-->
-<!--        android:layout_alignStart="@+id/btn_land"-->
-<!--        android:layout_marginTop="60dp"-->
-<!--        android:layout_alignEnd="@+id/btn_land"-->
-<!--        android:text="stop mission" />-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="set home point"
+        style="@style/common_button"
+        android:id="@+id/btn_disable_virtual_stick"
+        android:layout_below="@+id/btn_enable_virtual_stick"
+        android:layout_alignStart="@+id/btn_enable_virtual_stick"
+        android:layout_marginLeft="0dp"
+        android:layout_alignEnd="@+id/btn_enable_virtual_stick" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_home"-->
-<!--        style="@style/common_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignStart="@+id/btn_init"-->
-<!--        android:layout_below="@+id/btn_init"-->
-<!--        android:layout_alignEnd="@+id/btn_init"-->
-<!--        android:layout_alignTop="@+id/btn_init"-->
-<!--        android:layout_marginTop="60dp"-->
-<!--        android:text="go home" />-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take Off"
+        style="@style/common_button"
+        android:id="@+id/btn_take_off"
+        android:layout_alignTop="@+id/btn_disable_virtual_stick"
+        android:layout_alignStart="@+id/btn_start_simulator"
+        android:layout_marginTop="0dp"
+        android:layout_alignEnd="@+id/btn_start_simulator" />
 
-<!--    <simulator.OnScreenJoystick-->
-<!--        android:id="@+id/directionJoystickRight"-->
-<!--        android:layout_width="130dp"-->
-<!--        android:layout_height="130dp"-->
-<!--        android:layout_alignParentLeft="true"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_marginBottom="10dp"-->
-<!--        android:layout_marginLeft="10dp"-->
-<!--        android:background="@mipmap/joystick_bg"/>-->
+    <ToggleButton
+        android:id="@+id/btn_start_simulator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Simulator"
+        android:textOff="Start Simulator"
+        android:textOn="Stop Simulator"
+        style="@style/common_button"
+        android:layout_below="@+id/textview_simulator"
+        android:layout_toEndOf="@+id/btn_enable_virtual_stick"
+        android:layout_marginTop="107dp"
+        android:layout_marginLeft="10dp" />
 
-<!--    <simulator.OnScreenJoystick-->
-<!--        android:id="@+id/directionJoystickLeft"-->
-<!--        android:layout_width="130dp"-->
-<!--        android:layout_height="130dp"-->
-<!--        android:layout_alignParentRight="true"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_marginBottom="10dp"-->
-<!--        android:layout_marginRight="10dp"-->
-<!--        android:background="@mipmap/joystick_bg"/>-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Land"
+        style="@style/common_button"
+        android:id="@+id/btn_land"
+        android:layout_alignTop="@+id/btn_take_off"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/btn_take_off"
+        android:layout_marginLeft="10dp" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/binding_state_label"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:layout_below="@+id/textView"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:layout_marginTop="50dp"-->
-<!--        android:gravity="center"-->
-<!--        android:text="Binding State:"-->
-<!--        android:textColor="#000000"-->
-<!--        android:textSize="17sp"-->
-<!--        android:textStyle="bold" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/tv_binding_state_info"-->
-<!--        android:layout_width="220dp"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:layout_below="@+id/binding_state_label"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:gravity="center"-->
-<!--        android:text="Unknown"-->
-<!--        android:textColor="#000000"-->
-<!--        android:textSize="17sp" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btn_login"-->
-<!--        style="@style/common_button"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_alignStart="@+id/tv_activation_state_info"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:layout_marginBottom="79dp"-->
-<!--        android:text="Login" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btn_logout"-->
-<!--        style="@style/common_button"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_alignEnd="@+id/tv_activation_state_info"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:layout_marginBottom="79dp"-->
-<!--        android:text="Logout" />-->
+    <Button
+        android:id="@+id/btn_init"
+        style="@style/common_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/btn_disable_virtual_stick"
+        android:layout_below="@+id/btn_disable_virtual_stick"
+        android:layout_alignEnd="@+id/btn_disable_virtual_stick"
+        android:layout_alignTop="@+id/btn_disable_virtual_stick"
+        android:layout_marginTop="60dp"
+        android:text="Init" />
 
 
-<!--    <TextView-->
-<!--        android:id="@+id/textView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:text="Application Activation Demo"-->
-<!--        android:textSize="17sp"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:layout_centerHorizontal="true" />-->
+    <Button
+        android:id="@+id/btn_go_to_waypont"
+        style="@style/common_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btn_init"
+        android:layout_alignStart="@+id/btn_take_off"
+        android:layout_marginTop="0dp"
+        android:layout_alignEnd="@+id/btn_take_off"
+        android:text="go to waypoit" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/activation_state_label"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:layout_below="@+id/tv_binding_state_info"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginTop="11dp"-->
-<!--        android:text="App Activation State:"-->
-<!--        android:textColor="#000000"-->
-<!--        android:textSize="17sp"-->
-<!--        android:textStyle="bold" />-->
+    <Button
+        android:id="@+id/btn_stop_mission"
+        style="@style/common_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btn_land"
+        android:layout_alignStart="@+id/btn_land"
+        android:layout_marginTop="60dp"
+        android:layout_alignEnd="@+id/btn_land"
+        android:text="stop mission" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/tv_activation_state_info"-->
-<!--        android:layout_width="220dp"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:layout_alignEnd="@+id/tv_binding_state_info"-->
-<!--        android:layout_below="@+id/activation_state_label"-->
-<!--        android:text="Unknown"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textColor="#000000"-->
-<!--        android:textSize="17sp" />-->
+    <Button
+        android:id="@+id/btn_home"
+        style="@style/common_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/btn_init"
+        android:layout_below="@+id/btn_init"
+        android:layout_alignEnd="@+id/btn_init"
+        android:layout_alignTop="@+id/btn_init"
+        android:layout_marginTop="60dp"
+        android:text="go home" />
+
+    <Button
+        android:id="@+id/btn_rotate"
+        style="@style/common_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/btn_go_to_waypont"
+        android:layout_below="@+id/btn_go_to_waypont"
+        android:layout_alignEnd="@+id/btn_go_to_waypont"
+        android:layout_alignTop="@+id/btn_go_to_waypont"
+        android:layout_marginTop="60dp"
+        android:text="rotate" />
+
+    <Button
+        android:id="@+id/exit"
+        style="@style/common_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/btn_go_to_waypont"
+        android:layout_below="@+id/btn_go_to_waypont"
+        android:layout_alignEnd="@+id/btn_go_to_waypont"
+        android:layout_alignTop="@+id/btn_go_to_waypont"
+        android:layout_marginTop="200dp"
+        android:text="exit" />
+
+
 
 </RelativeLayout>

@@ -29,7 +29,7 @@ public class TakePhoto extends Mission {
             try{
                 wait(30000);
             }catch (Exception e){
-
+                Logger.sendData(e.getMessage());
             }
         }
     }

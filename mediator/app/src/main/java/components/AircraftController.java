@@ -27,25 +27,26 @@ public class AircraftController {
         cameraController = new CameraController(m_aircraft);
     }
 
-    public  void takeOff(MissionState state){
+    public void takeOff(MissionState state){
         controller.takeOff(state);
     }
-    public  void stopTakeOff(MissionState state){controller.cancelTakeOff(state);}
-    public  void goHome(MissionState state){
+    public void stopTakeOff(MissionState state){controller.cancelTakeOff(state);}
+    public void goHome(MissionState state){
         controller.goHome(state);
     }
-    public  void setHome(MissionState state,LocationCoordinate2D loc){controller.setHome(loc,state);}
-    public  void stopGoHome(MissionState state){
+    public void setHome(MissionState state,LocationCoordinate2D loc){controller.setHome(loc,state);}
+    public void stopGoHome(MissionState state){
         controller.stopGoHome(state);
     }
-    public  void startLanding(MissionState state){
+    public void startLanding(MissionState state){
         controller.startLanding(state);
     }
-    public  void stopLanding(MissionState state){
+    public void stopLanding(MissionState state){
         controller.stopLanding(state);
     }
-    public  void goToWaypoint(float longitude, float latitude, float altitude, MissionState state){buildInMissionControl.goToWaypoint(longitude,latitude,altitude,state);}
-    public  void stopGoToWaypoint(MissionState state){buildInMissionControl.stopGoWaypoint(state);}
-    public  LocationCoordinate2D getLocation(MissionState state){return controller.getLocation(state);}
-    public  void takePhoto (MissionState state){cameraController.takePhoto(state);}
+    public void goToWaypoint(float longitude, float latitude, float altitude, MissionState state){buildInMissionControl.goToWaypoint(longitude,latitude,altitude,state);}
+    public void stopGoToWaypoint(MissionState state){buildInMissionControl.stopGoWaypoint(state);}
+    public LocationCoordinate2D getLocation(MissionState state){return controller.getLocation(state);}
+    public void takePhoto (MissionState state){cameraController.takePhoto(state);}
+    public void rotateGimbal(MissionState state, float yaw,float pitch,float roll){cameraController.rotateGimbal(state,roll,yaw,pitch);}
 }

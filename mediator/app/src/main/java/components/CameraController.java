@@ -1,6 +1,5 @@
 package components;
 import android.graphics.Bitmap;
-import android.os.Handler;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,19 +11,24 @@ import Utils.Logger;
 import Utils.MissionState;
 import dji.common.camera.SettingsDefinitions;
 import dji.common.error.DJIError;
+import dji.common.gimbal.Rotation;
+import dji.common.gimbal.RotationMode;
 import dji.common.util.CommonCallbacks;
 import dji.sdk.camera.Camera;
+import dji.sdk.gimbal.Gimbal;
 import dji.sdk.media.MediaFile;
 import dji.sdk.media.MediaManager;
 import dji.sdk.products.Aircraft;
 
 public class CameraController {
     private Camera camera;
+    private Gimbal gimbal;
     private List<MediaFile> mediaFileList;
     private MediaManager mMediaManager;
 
     public CameraController(Aircraft aircraft){
         camera = aircraft.getCamera();
+        gimbal = aircraft.getGimbal();
         mMediaManager = camera.getMediaManager();
     }
 
@@ -73,6 +77,7 @@ public class CameraController {
     }
 
     public void takePhoto(MissionState state){
+        Logger.sendData("take pic was called");
         SettingsDefinitions.ShootPhotoMode photoMode = SettingsDefinitions.ShootPhotoMode.SINGLE; // Set the camera capture mode as Single mode
         camera.setShootPhotoMode(photoMode, new CommonCallbacks.CompletionCallback(){
             @Override
@@ -89,6 +94,26 @@ public class CameraController {
                             }
                         }
                     });
+                }
+            }
+        });
+    }
+
+    public void rotateGimbal(MissionState state , float roll,float yaw,float pitch){
+        Logger.sendData("camera was rotated");
+        Rotation.Builder builder = new Rotation.Builder();
+        builder.pitch(pitch);
+        builder.roll(roll);
+        builder.yaw(yaw);
+        builder.mode(RotationMode.RELATIVE_ANGLE);
+        Rotation rotation = builder.build();
+        gimbal.rotate(rotation, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(DJIError djiError) {
+                if (djiError == null) {
+                    state.success();
+                }else{
+                    state.fail(djiError.getDescription());
                 }
             }
         });

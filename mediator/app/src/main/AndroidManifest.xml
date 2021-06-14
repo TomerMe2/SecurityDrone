@@ -48,7 +48,7 @@
 
         <!-- DJI SDK -->
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".SimulatorActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait">
             <intent-filter>
