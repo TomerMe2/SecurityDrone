@@ -11,18 +11,18 @@ public class Logger {
 
     public static void sendData(String msg) {
 
-//        Socket socket = new Socket();
-//        try {
-//            socket.connect(new InetSocketAddress(host,port));
-//
-//            PrintWriter writer= new PrintWriter(socket.getOutputStream());
-//
-//            writer.println(msg);
-//
-//            writer.close();
-//            socket.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        Socket socket = new Socket();
+        try {
+            socket.connect(new InetSocketAddress(host,port));
+
+            PrintWriter writer= new PrintWriter(socket.getOutputStream());
+
+            writer.println(msg);
+
+            writer.close();
+            socket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

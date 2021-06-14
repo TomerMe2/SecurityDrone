@@ -1,14 +1,10 @@
 package BL;
 
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import BL.Missions.GoHome;
 import BL.Missions.GoToWaypoint;
 import BL.Missions.Land;
 import BL.Missions.Mission;
+import BL.Missions.MoveGimbal;
 import BL.Missions.SetHomeLocation;
 import BL.Missions.TakeOff;
 import BL.Missions.TakePhoto;
@@ -21,6 +17,7 @@ public class TaskManager {
     private Mission currentMission;
     private Mission cameraMission;
     private static TaskManager instance=null;
+    private AircraftController controller;
 
     public static synchronized TaskManager getInstance(){
         if (instance == null){
@@ -29,8 +26,11 @@ public class TaskManager {
         return instance;
     }
 
+    public TaskManager(){
+        controller = AircraftController.getInstance();
+    }
+
     public void addTakeOffMission(){
-        AircraftController controller = AircraftController.getInstance();
         Mission m = new TakeOff(controller);
         Thread t = new Thread(new Runnable() {
             @Override
@@ -44,7 +44,6 @@ public class TaskManager {
     }
 
     public void addLandMission(){
-        AircraftController controller = AircraftController.getInstance();
         Mission m = new Land(controller);
         Thread t = new Thread(new Runnable() {
             @Override
@@ -58,7 +57,6 @@ public class TaskManager {
     }
 
     public void addGoHomeMission(){
-        AircraftController controller = AircraftController.getInstance();
         Mission m = new GoHome(controller);
         Thread t = new Thread(new Runnable() {
             @Override
@@ -72,7 +70,6 @@ public class TaskManager {
     }
 
     public void addSetHomeMission(LocationCoordinate2D loc){
-        AircraftController controller = AircraftController.getInstance();
         Mission m = new SetHomeLocation(controller,loc);
         Thread t = new Thread(new Runnable() {
             @Override
@@ -86,7 +83,6 @@ public class TaskManager {
     }
 
     public void addGoToWaypointMission(float longitude,float latitude,float altitude){
-        AircraftController controller = AircraftController.getInstance();
         Mission m = new GoToWaypoint(controller, longitude, latitude, altitude);
         Thread t = new Thread(new Runnable() {
             @Override
@@ -101,7 +97,6 @@ public class TaskManager {
     public void takePhotos(){
         try {
 
-            AircraftController controller = AircraftController.getInstance();
 
             cameraMission = new TakePhoto(controller);
             Thread t = new Thread(new Runnable() {
@@ -112,8 +107,25 @@ public class TaskManager {
             });
             t.start();
         }catch (Exception e){
-            Logger.sendData(e.getMessage());
+            Thread n = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Logger.sendData(e.getMessage());
+                }
+            });
+           n.start();
         }
+    }
+
+    public void moveGimbal(float yaw,float roll,float pitch){
+        Thread n = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Mission rotate = new MoveGimbal(controller,roll,pitch,yaw);
+                rotate.run();
+            }
+        });
+        n.start();
     }
 
     public void stopTakingPhotos(){
