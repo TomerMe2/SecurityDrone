@@ -49,4 +49,6 @@ public class AircraftController {
     public LocationCoordinate2D getLocation(MissionState state){return controller.getLocation(state);}
     public void takePhoto (MissionState state){cameraController.takePhoto(state);}
     public void rotateGimbal(MissionState state, float yaw,float pitch,float roll){cameraController.rotateGimbal(state,roll,yaw,pitch);}
+    public void startActiveTrack(MissionState state){buildInMissionControl.startActiveTracing(state);}
+    public void stopActiveTrack(MissionState state){buildInMissionControl.stopActiveTrack(state);}
 }

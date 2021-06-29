@@ -1,5 +1,6 @@
 package BL;
 
+import BL.Missions.ActiveTrack;
 import BL.Missions.GoHome;
 import BL.Missions.GoToWaypoint;
 import BL.Missions.Land;
@@ -9,6 +10,7 @@ import BL.Missions.SetHomeLocation;
 import BL.Missions.TakeOff;
 import BL.Missions.TakePhoto;
 import Utils.Logger;
+import Utils.MissionState;
 import components.AircraftController;
 import dji.common.model.LocationCoordinate2D;
 
@@ -16,6 +18,7 @@ import dji.common.model.LocationCoordinate2D;
 public class TaskManager {
     private Mission currentMission;
     private Mission cameraMission;
+    private Mission activeTrack;
     private static TaskManager instance=null;
     private AircraftController controller;
 
@@ -96,8 +99,6 @@ public class TaskManager {
 
     public void takePhotos(){
         try {
-
-
             cameraMission = new TakePhoto(controller);
             Thread t = new Thread(new Runnable() {
                 @Override
@@ -150,6 +151,31 @@ public class TaskManager {
             t.start();
         }
 
+    }
+
+    public LocationCoordinate2D getLoc(){
+        return controller.getLocation(new MissionState());
+    }
+
+    public void startTracking(){
+        activeTrack = new ActiveTrack(controller);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                activeTrack.run();
+            }
+        });
+        t.start();
+    }
+
+    public void stopTracking(){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                activeTrack.stop();
+            }
+        });
+        t.start();
     }
 
 }

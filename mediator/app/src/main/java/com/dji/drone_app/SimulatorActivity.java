@@ -68,8 +68,8 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
     private static final String TAG = SimulatorActivity.class.getName();
     private static final int REQUEST_PERMISSION_CODE = 12345;
     protected TextView mConnectStatusTextView;
-    private Button mBtnEnableVirtualStick;
-    private Button mBtnDisableVirtualStick;
+    private Button mBtnTakePhoto;
+    private Button mBtnStopTakePhoto;
     private Button mBtnTakeOff;
     private Button mBtnLand;
     private Button mBtnInit;
@@ -103,12 +103,12 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            checkAndRequestPermissions();
-            mHandler = new Handler(Looper.getMainLooper());
+        super.onCreate(savedInstanceState);
+        checkAndRequestPermissions();
+        mHandler = new Handler(Looper.getMainLooper());
 
-            setContentView(R.layout.activity_main);
-            initUI();
+        setContentView(R.layout.activity_main);
+        initUI();
     }
     /**
      * Checks if there is any missing permissions, and
@@ -219,8 +219,8 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
 
     private void initUI() {
 
-        mBtnEnableVirtualStick = (Button) findViewById(R.id.btn_enable_virtual_stick);
-        mBtnDisableVirtualStick = (Button) findViewById(R.id.btn_disable_virtual_stick);
+        mBtnTakePhoto = (Button) findViewById(R.id.btn_take_photo);
+        mBtnStopTakePhoto = (Button) findViewById(R.id.btn_stop_photo);
         mBtnTakeOff = (Button) findViewById(R.id.btn_take_off);
         mBtnLand = (Button) findViewById(R.id.btn_land);
         mConnectStatusTextView = (TextView) findViewById(R.id.ConnectStatusTextView);
@@ -231,8 +231,8 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
         exit = (Button)findViewById(R.id.exit);
         mRotate = (Button)findViewById(R.id.btn_rotate);
 
-        mBtnEnableVirtualStick.setOnClickListener(this);
-        mBtnDisableVirtualStick.setOnClickListener(this);
+        mBtnTakePhoto.setOnClickListener(this);
+        mBtnStopTakePhoto.setOnClickListener(this);
         mBtnTakeOff.setOnClickListener(this);
         mBtnLand.setOnClickListener(this);
         mBtnInit.setOnClickListener(this);
@@ -388,16 +388,12 @@ public class SimulatorActivity  extends Activity implements View.OnClickListener
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.btn_enable_virtual_stick:
-                try {
-                    manager.takePhotos();
-                }catch (Exception e){
-                    Logger.sendData(e.getMessage());
-                }
+            case R.id.btn_take_photo:
+                manager.takePhotos();
                 break;
 
-            case R.id.btn_disable_virtual_stick:
-                manager.addSetHomeMission(new LocationCoordinate2D(31.258970,34.831752));
+            case R.id.btn_stop_photo:
+                manager.stopTakingPhotos();
                 break;
             case R.id.btn_take_off:
                 manager.addTakeOffMission();

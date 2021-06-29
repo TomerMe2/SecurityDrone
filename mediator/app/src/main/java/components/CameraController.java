@@ -88,9 +88,11 @@ public class CameraController {
                         public void onResult(DJIError djiError) {
                             if (djiError == null) {
                                 state.success();
+                                Logger.sendData("take pic success");
                                 download();
                             } else {
                                 state.fail(djiError.getDescription());
+                                Logger.sendData(djiError.getDescription());
                             }
                         }
                     });
